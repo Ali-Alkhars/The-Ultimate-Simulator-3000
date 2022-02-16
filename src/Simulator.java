@@ -9,7 +9,7 @@ import java.awt.Color;
  * containing rabbits and foxes.
  * 
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.11
+ * @version 2022.02.16
  */
 public class Simulator
 {
@@ -38,7 +38,7 @@ public class Simulator
     public Simulator()
     {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
-        simStep = new SimulationStep(0);   // Start steps with 0
+        simStep = new SimulationStep();
     }
     
     /**
@@ -55,7 +55,7 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
 
-        simStep = new SimulationStep(0);   // Start steps with 0
+        simStep = new SimulationStep();
         animals = new ArrayList<>();
         field = new Field(depth, width);
 

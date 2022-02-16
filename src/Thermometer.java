@@ -9,6 +9,7 @@ public class Thermometer
     // the current temperature
     private int currentTemp;
 
+
     /**
      * Construct a Thermometer object with the given temperature.
      * @param initialTemp the initial temperature

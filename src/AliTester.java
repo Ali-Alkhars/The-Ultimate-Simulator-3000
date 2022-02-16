@@ -9,7 +9,11 @@ public class AliTester
 //        sim.runLongSimulation();
 
 //        timeClassTest();
-        habitatTester();
+//        habitatTester();
+
+        ClimateChange cg = ClimateChange.SCENARIO1;
+
+        System.out.println(cg.getChangePercentage());
     }
 
     public static void timeClassTest()
@@ -34,7 +38,7 @@ public class AliTester
         Season autumn = new Season("autumn", 15, 5);
         SimulationStep sim = new SimulationStep();
 
-        Habitat italy = new Habitat(sim, false, spring, summer, autumn, winter);
+        Habitat italy = new Habitat(sim, spring, summer, autumn, winter);
         Time time = new Time(sim, false);
 
         for(int i=0; i < 729; i++)

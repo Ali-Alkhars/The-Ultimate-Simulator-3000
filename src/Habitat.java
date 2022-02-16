@@ -19,8 +19,6 @@ public class Habitat
     private Season currentSeason;
     // keep track of the simulation steps.
     private SimulationStep simStep;
-    // True if the habitat has some water bodies
-    private boolean hasWater;
     private Random random;
 
     /**
@@ -28,16 +26,14 @@ public class Habitat
      * seasons Hash map
      *
      * @param simStep a SimulationStep object to keep track of the steps
-     * @param hasWater a boolean which is true if the habitat contains water bodies
      * @param spring a Season object representing spring
      * @param summer a Season object representing summer
      * @param autumn a Season object representing autumn
      * @param winter a Season object representing winter
      */
-    public Habitat(SimulationStep simStep, boolean hasWater, Season spring, Season summer, Season autumn, Season winter)
+    public Habitat(SimulationStep simStep, Season spring, Season summer, Season autumn, Season winter)
     {
         this.simStep = simStep;
-        this.hasWater = hasWater;
         random = new Random();
         currentSeason = spring;   // the simulation always starts with spring
 
@@ -47,14 +43,6 @@ public class Habitat
         seasons.add(summer);
         seasons.add(autumn);
         seasons.add(winter);
-    }
-
-    /**
-     * @return hasWater
-     */
-    public boolean getHasWater()
-    {
-        return hasWater;
     }
 
     /**
