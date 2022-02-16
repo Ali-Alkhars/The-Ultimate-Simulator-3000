@@ -1,9 +1,9 @@
 /**
  * Keep track of the time in the simulation
- * by specifying if it is day or night
+ * and specify if it is day or night
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.11
+ * @version 2022.02.16
  */
 public class Time
 {
@@ -11,8 +11,10 @@ public class Time
     private boolean isNight;
     // keep track of the simulation steps.
     private SimulationStep simStep;
+    // keep track of the hour of the day
+    private int currentHour;
     // the number of steps before the type of day changes
-    private static final int CHANGE_STEPS = 2;
+    private static final int DAY_CHANGE = 1;
 
     /**
      * Construct a Time object with the given parameters
@@ -23,6 +25,13 @@ public class Time
     {
         this.simStep = simStep;
         isNight = startNight;
+
+        if(isNight) {
+            currentHour = 18;
+        }
+        else {
+            currentHour = 6;
+        }
     }
 
     /**
@@ -35,24 +44,34 @@ public class Time
 
     /**
      * Create a String indicating night or day
-     * @return "Night" if isNight is true, "Day" otherwise
+     * and the specific hour
+     *
+     * @return a String with the time's full information
      */
     public String timeString()
     {
+        String tString = "";
+
         if(isNight) {
-            return "Night";
+            tString += "Night \t";
         }
-        return "Day";
+        else {
+            tString += "Day \t";
+        }
+
+        tString += "Time: " + getHourDisplay();
+
+        return tString;
     }
 
     /**
      * change the day status if 'CHANGE_STEPS' steps have passed
      */
-    public void checkTime()
+    public void checkDay()
     {
         int step = simStep.getCurrentStep();
 
-        if(step != 0 && step % CHANGE_STEPS == 0)
+        if(step != 0 && (step+1) % DAY_CHANGE == 0) // step+1 because step starts with 0
         {
             toggleIsNight();
         }
@@ -64,5 +83,27 @@ public class Time
     private void toggleIsNight()
     {
         isNight = ! isNight;
+    }
+
+    /**
+     * Increment the hours to go through the day evenly.
+     */
+    public void incHour()
+    {
+        currentHour = (currentHour + (24 / (DAY_CHANGE * 2))) % 24;
+    }
+
+    /**
+     * Create a string displaying time in 24-hour style
+     * @return a String holding the current time
+     */
+    public String getHourDisplay()
+    {
+        if(currentHour < 10)
+        {
+            return "0" + currentHour + ":00";
+        }
+
+        return currentHour + ":00";
     }
 }

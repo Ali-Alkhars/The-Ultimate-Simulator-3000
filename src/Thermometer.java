@@ -1,9 +1,8 @@
 /**
- * A simple class to keep track of and
- * manipulate the temperature in the simulation
+ * A generic class that represents the temperature level
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.11
+ * @version 2022.02.16
  */
 public class Thermometer
 {

@@ -3,7 +3,7 @@
  * the steps in the simulation.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.11
+ * @version 2022.02.16
  */
 public class SimulationStep
 {
@@ -16,6 +16,14 @@ public class SimulationStep
     public SimulationStep(int initialStep)
     {
         currentStep = initialStep;
+    }
+
+    /**
+     * Construct a SimulationStep object starting with step 0.
+     */
+    public SimulationStep()
+    {
+        currentStep = 0;
     }
 
     /**
