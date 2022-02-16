@@ -9,7 +9,7 @@ import java.util.Random;
  * Each position is able to store a single animal.
  * 
  * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29
+ * @version 2022.02.14 -- need to change comments
  */
 public class Field
 {
@@ -58,20 +58,20 @@ public class Field
      * Place an animal at the given location.
      * If there is already an animal at the location it will
      * be lost.
-     * @param animal The animal to be placed.
+     * @param species The animal to be placed.
      * @param row Row coordinate of the location.
      * @param col Column coordinate of the location.
      */
-    public void place(Object animal, int row, int col)
+    public void place(Object species, int row, int col)
     {
-        place(animal, new Location(row, col));
+        place(species, new Location(row, col));
     }
     
     /**
      * Place an animal at the given location.
      * If there is already an animal at the location it will
      * be lost.
-     * @param animal The animal to be placed.
+     * @param species The animal to be placed.
      * @param location Where to place the animal.
      */
     public void place(Object species, Location location)

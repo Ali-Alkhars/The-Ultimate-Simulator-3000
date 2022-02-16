@@ -23,8 +23,8 @@ public class Simulator
     // The probability that a rabbit will be created in any given grid position.
     private static final double RABBIT_CREATION_PROBABILITY = 0.08;    
 
-    // List of animals in the field.
-    private List<Animal> animals;
+    // List of species in the field.
+    private List<Species> species;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -53,13 +53,20 @@ public class Simulator
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
+<<<<<<< Updated upstream
         
         animals = new ArrayList<>();
+=======
+
+        simStep = new SimulationStep(0);   // Start steps with 0
+
+        species = new ArrayList<>();
+>>>>>>> Stashed changes
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Rabbit.class, Color.ORANGE);
+        view.setColor(Rabbit.class, Color.ORANGE); // to be changed !! <-- all the color assignment mechanism mus tbe changed
         view.setColor(Fox.class, Color.BLUE);
         
         // Setup a valid starting point.
@@ -72,7 +79,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(4000);
+        simulate(4000); // Should we change this ?
     }
     
     /**
@@ -98,18 +105,18 @@ public class Simulator
         step++;
 
         // Provide space for newborn animals.
-        List<Animal> newAnimals = new ArrayList<>();        
+        List<Species> newSpecies = new ArrayList<>();
         // Let all rabbits act.
-        for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
-            Animal animal = it.next();
-            animal.act(newAnimals);
-            if(! animal.isAlive()) {
+        for(Iterator<Species> it = species.iterator(); it.hasNext(); ) {
+            Species species = it.next();
+            species.act(newSpecies);
+            if(! species.isAlive()) {
                 it.remove();
             }
         }
                
         // Add the newly born foxes and rabbits to the main lists.
-        animals.addAll(newAnimals);
+        species.addAll(newSpecies);
 
         view.showStatus(step, field);
     }
@@ -119,8 +126,13 @@ public class Simulator
      */
     public void reset()
     {
+<<<<<<< Updated upstream
         step = 0;
         animals.clear();
+=======
+        simStep.reset();
+        species.clear();
+>>>>>>> Stashed changes
         populate();
         
         // Show the starting state in the view.
