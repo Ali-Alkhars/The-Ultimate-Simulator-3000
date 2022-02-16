@@ -8,8 +8,8 @@ import java.awt.Color;
  * A simple predator-prey simulator, based on a rectangular field
  * containing rabbits and foxes.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29 (2)
+ * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
+ * @version 2022.02.11
  */
 public class Simulator
 {
@@ -27,8 +27,8 @@ public class Simulator
     private List<Species> species;
     // The current state of the field.
     private Field field;
-    // The current step of the simulation.
-    private int step;
+    // keep track of the simulation steps.
+    private SimulationStep simStep;
     // A graphical view of the simulation.
     private SimulatorView view;
     
@@ -38,6 +38,7 @@ public class Simulator
     public Simulator()
     {
         this(DEFAULT_DEPTH, DEFAULT_WIDTH);
+        simStep = new SimulationStep(0);   // Start steps with 0
     }
     
     /**
@@ -53,15 +54,9 @@ public class Simulator
             depth = DEFAULT_DEPTH;
             width = DEFAULT_WIDTH;
         }
-<<<<<<< Updated upstream
-        
-        animals = new ArrayList<>();
-=======
 
         simStep = new SimulationStep(0);   // Start steps with 0
-
-        species = new ArrayList<>();
->>>>>>> Stashed changes
+        animals = new ArrayList<>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
@@ -102,7 +97,7 @@ public class Simulator
      */
     public void simulateOneStep()
     {
-        step++;
+        simStep.incStep();
 
         // Provide space for newborn animals.
         List<Species> newSpecies = new ArrayList<>();
@@ -118,7 +113,7 @@ public class Simulator
         // Add the newly born foxes and rabbits to the main lists.
         species.addAll(newSpecies);
 
-        view.showStatus(step, field);
+        view.showStatus(simStep.getCurrentStep(), field);
     }
         
     /**
@@ -126,17 +121,12 @@ public class Simulator
      */
     public void reset()
     {
-<<<<<<< Updated upstream
-        step = 0;
-        animals.clear();
-=======
         simStep.reset();
         species.clear();
->>>>>>> Stashed changes
         populate();
         
         // Show the starting state in the view.
-        view.showStatus(step, field);
+        view.showStatus(simStep.getCurrentStep(), field);
     }
     
     /**
