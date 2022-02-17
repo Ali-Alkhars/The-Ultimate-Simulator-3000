@@ -6,6 +6,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.util.HashMap;
+
 public class GUIHandler extends Application {
 
     private Scene menuScene;
@@ -13,13 +15,15 @@ public class GUIHandler extends Application {
     private MenuScene menuSceneMaker;
     private SimulatorScene simulatorSceneMaker;
     private Stage primaryStage;
+    private Initializer simulationInitializer;
+    private Simulator simulatorOnDisplay;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        simulationInitializer = new Initializer();
         menuSceneMaker = new MenuScene(this);
-        simulatorSceneMaker = new SimulatorScene(this);
+
         menuScene = menuSceneMaker.createScene();
-        simulatorScene = simulatorSceneMaker.createScene();
 
         this.primaryStage = primaryStage;
 
@@ -27,15 +31,18 @@ public class GUIHandler extends Application {
         primaryStage.show();
     }
 
-    public void switchToSimulatorView()
+    public void switchToSimulatorView(String selectedHabitat,HashMap<String, Integer> selectedAnimals)
     {
+        simulatorOnDisplay = simulationInitializer.initializeSimulation(selectedHabitat, selectedAnimals);
+        simulatorSceneMaker = new SimulatorScene(this, simulationInitializer.getSimulatorView());
+        simulatorScene = simulatorSceneMaker.createScene();
         primaryStage.setScene(simulatorScene);
         // start simulation
     }
 
     public void switchToMenuView()
     {
-        //end simulation
+        simulatorOnDisplay.endSimulation();
         primaryStage.setScene(menuScene);
     }
 
