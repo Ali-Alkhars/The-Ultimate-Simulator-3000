@@ -11,9 +11,8 @@ public class AliTester
 //        timeClassTest();
 //        habitatTester();
 
-        ClimateChange cg = ClimateChange.SCENARIO1;
 
-        System.out.println(cg.getChangePercentage());
+//        System.out.println(cg.getChangePercentage());
     }
 
     public static void timeClassTest()
@@ -36,15 +35,17 @@ public class AliTester
         Season spring = new Season("spring", 20, 1);
         Season winter = new Season("winter", 0, 10);
         Season autumn = new Season("autumn", 15, 5);
+        ClimateChange change = new ChangeScenario2();
+
         SimulationStep sim = new SimulationStep();
 
-        Habitat italy = new Habitat(sim, spring, summer, autumn, winter);
+        Habitat italy = new Habitat(sim, change, new int[]{30, 5}, new int[]{20, 7}, new int[]{-4, 10}, new int[]{0, 5});
         Time time = new Time(sim, false);
 
         for(int i=0; i < 729; i++)
         {
             System.out.println("Step: " + sim.getCurrentStep() + "\n" + time.timeString()+ "\nSeason: " + italy.getCurrentSeason() + "\nTemperature: " + italy.getCurrentTemperature() + "\n");
-            italy.checkSeason();
+            italy.habitatStep();
             time.checkDay();
             sim.incStep();
             time.incHour();

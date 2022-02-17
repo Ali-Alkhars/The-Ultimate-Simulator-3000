@@ -1,16 +1,41 @@
-public enum ClimateChange
+/**
+ * An abstract class that specifies the actions
+ * of the different climate change scenarios
+ *
+ * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
+ * @version 2022.02.17
+ */
+public abstract class ClimateChange
 {
-    SCENARIO1(0.05), SCENARIO2(0.1), SCENARIO3(0.3);
+    private double concreteChange;
+    private final double changePercentage;
 
-    private double changePercentage;
-
-    ClimateChange(double changePercentage)
+    /**
+     * Initialise ClimateChange and its fields
+     *
+     * @param concreteChange hold the actual temperature change value
+     * @param changePercentage the change percentage that is added to the concreteChange each year
+     */
+    public ClimateChange(int concreteChange, double changePercentage)
     {
+        this.concreteChange = concreteChange;
         this.changePercentage = changePercentage;
     }
 
-    public double getChangePercentage()
+    /**
+     * @return the concreteChange as a rounded int
+     */
+    public int getClimateChangeEffect()
     {
-        return changePercentage;
+        return (int) Math.round(concreteChange);
     }
+
+    /**
+     * increase the concreteChange by the changePercentage
+     */
+    public void doClimateChange()
+    {
+        concreteChange = concreteChange + (changePercentage * concreteChange);
+    }
+
 }

@@ -8,21 +8,17 @@
 public class Season
 {
     private final String name;
-    private final int aveTemperature;
+    private int aveTemperature;
     private final int tempChange;
     // store the current temperature of this season
     private Thermometer currentTemp;
-    // the maximum temperature of this season
-    private int upperLimitTemp;
-    // the minimum temperature of this season
-    private int lowerLimitTemp;
 
     /**
      * Initialise the Season object
      *
      * @param name the name of the season
      * @param aveTemperature the average temperature of this season
-     * @param tempChange the amount that the season's temperature can go up or down from during the season
+     * @param tempChange the amount that the season's temperature can go up or down from the average temperature
      */
     public Season(String name, int aveTemperature, int tempChange)
     {
@@ -31,8 +27,6 @@ public class Season
         this.tempChange = tempChange;
 
         currentTemp = new Thermometer(aveTemperature);
-        upperLimitTemp = aveTemperature + tempChange;
-        lowerLimitTemp = aveTemperature - tempChange;
     }
 
     /**
@@ -52,6 +46,15 @@ public class Season
     }
 
     /**
+     * Increment the season's average temperature by the given parameter
+     * @param inc the increment
+     */
+    public void incAveTemperature(int inc)
+    {
+        aveTemperature += inc;
+    }
+
+    /**
      * @return tempChange
      */
     public int getTempChange()
@@ -60,19 +63,19 @@ public class Season
     }
 
     /**
-     * @return upperLimitTemp
+     * @return the upper limit temperature that the season could reach
      */
     public int getUpperLimitTemp()
     {
-        return upperLimitTemp;
+        return aveTemperature + tempChange;
     }
 
     /**
-     * @return lowerLimitTemp
+     * @return the lower limit temperature that the season could drop to
      */
     public int getLowerLimitTemp()
     {
-        return lowerLimitTemp;
+        return aveTemperature - tempChange;
     }
 
     /**

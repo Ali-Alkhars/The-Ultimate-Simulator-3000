@@ -1,5 +1,5 @@
 //02.11
-public class Grass extends Species{
+public class Plant extends Species{
 
     public void act(List<Species> newSpecies){}
     public void isEaten() {}

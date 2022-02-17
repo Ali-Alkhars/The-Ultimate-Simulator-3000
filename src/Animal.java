@@ -156,10 +156,10 @@ public class Animal extends Species
         while(it.hasNext()) {
             Location where = it.next();
             Object species = field.getObjectAt(where); // change in Field
-            if(species instanceof Grass) {
-                Grass grassSquare = (Grass) species;
-                if(grassSquare.isAlive()) {
-                    grassSquare.isEaten();
+            if(species instanceof Plant) {
+                Plant plantSquare = (Plant) species;
+                if(plantSquare.isAlive()) {
+                    plantSquare.isEaten();
                     foodLevel += GRASS_FOOD_VALUE;
                     return where;
                 }
