@@ -5,7 +5,7 @@
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
  * @version 2022.02.16
  */
-public class Season
+public class  Season
 {
     private final String name;
     private final int aveTemperature;

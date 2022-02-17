@@ -12,7 +12,7 @@ public class SimulatorScene {
 
     private GUIHandler handler;
 
-    public SimulatorScene (GUIHandler handler) {
+    public SimulatorScene (GUIHandler handler, SimulatorView simulatorView) {
         this.handler = handler;
     }
     public Scene createScene() {
