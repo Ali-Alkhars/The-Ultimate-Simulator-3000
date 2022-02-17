@@ -77,7 +77,7 @@ public abstract class Species {
      */
     protected void setLocation(Location newLocation)
     {
-        if(!(field.getObjectAt(newLocation) instanceof Grass ||  location != null)) {
+        if(!(field.getObjectAt(newLocation) instanceof Plant ||  location != null)) {
             field.clear(location);
         }
         location = newLocation;

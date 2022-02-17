@@ -9,7 +9,7 @@ import java.awt.Color;
  * containing rabbits and foxes.
  * 
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.11
+ * @version 2022.02.16
  */
 public class Simulator
 {
@@ -39,7 +39,6 @@ public class Simulator
         this.view = simulatorView;
         this.simulationIsOn = true;
     }
-
 
     
     /**

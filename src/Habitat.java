@@ -7,7 +7,7 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.16
+ * @version 2022.02.17
  */
 public class Habitat
 {
@@ -19,8 +19,8 @@ public class Habitat
     private Season currentSeason;
     // keep track of the simulation steps.
     private SimulationStep simStep;
-    // True if the habitat has some water bodies
-    private boolean hasWater;
+    // hold a climate change scenario
+    private ClimateChange changeScenario;
     private Random random;
 
     /**
@@ -28,33 +28,22 @@ public class Habitat
      * seasons Hash map
      *
      * @param simStep a SimulationStep object to keep track of the steps
-     * @param hasWater a boolean which is true if the habitat contains water bodies
-     * @param spring a Season object representing spring
-     * @param summer a Season object representing summer
-     * @param autumn a Season object representing autumn
-     * @param winter a Season object representing winter
+     * @param changeScenario a climate change scenario
+     * @param spring an integer array with two elements: [0]= spring aveTemperature, [1] = spring tempChange
+     * @param summer an integer array with two elements: [0]= summer aveTemperature, [1] = summer tempChange
+     * @param autumn an integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
+     * @param winter an integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
      */
-    public Habitat(SimulationStep simStep, boolean hasWater, Season spring, Season summer, Season autumn, Season winter)
+    public Habitat(SimulationStep simStep, ClimateChange changeScenario, int[] spring, int[] summer, int[] autumn, int[] winter)
     {
         this.simStep = simStep;
-        this.hasWater = hasWater;
+        this.changeScenario = changeScenario;
         random = new Random();
-        currentSeason = spring;   // the simulation always starts with spring
 
-        // Initialise seasons and fill it
-        seasons = new ArrayList<>();
-        seasons.add(spring);
-        seasons.add(summer);
-        seasons.add(autumn);
-        seasons.add(winter);
-    }
-
-    /**
-     * @return hasWater
-     */
-    public boolean getHasWater()
-    {
-        return hasWater;
+        // Season initialisations
+        initialiseSeasons(spring, summer, autumn, winter);
+        currentSeason = seasons.get(0);   // the simulation always starts with spring
+        climateChangeEffect(); // do the climate change effect on the first season
     }
 
     /**
@@ -74,19 +63,57 @@ public class Habitat
     }
 
     /**
-     * change the season if 'SEASON_CHANGE' steps have passed
-     * and change the temperature each step
+     * should be called on every step of the simulation.
+     *
+     * 1) increase the climate change effect if a year has passed
+     * 2) change the season if 'SEASON_CHANGE' steps have passed.
+     * 3) do the climate change effect on the new season
+     * 4) change the temperature each step
      */
-    public void checkSeason()
+    public void habitatStep()
     {
         int step = simStep.getCurrentStep();
 
-        if(step != 0 && (step+1) % SEASON_CHANGE == 0) // step+1 because step starts with 0
+        // 1)
+        if(step != 0 && (step+1) % (SEASON_CHANGE * 4) == 0) // step+1 because step starts with 0
         {
-            changeSeason();
+            changeScenario.doClimateChange();
         }
 
+        // 2) & 3)
+        if(step != 0 && (step+1) % SEASON_CHANGE == 0)
+        {
+            changeSeason();
+            climateChangeEffect();
+        }
+
+        // 4)
         randomizeTemperature();
+    }
+
+    /**
+     * Create and initialise the appropriate Season objects with
+     * the given values. Add them to the seasons List with the
+     * order: spring, summer, autumn, winter.
+     *
+     * @param springValues an integer array with two elements: [0]= spring aveTemperature, [1] = spring tempChange
+     * @param summerValues an integer array with two elements: [0]= summer aveTemperature, [1] = summer tempChange
+     * @param autumnValues an integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
+     * @param winterValues an integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
+     */
+    private void initialiseSeasons(int[] springValues, int[] summerValues, int[] autumnValues, int[] winterValues)
+    {
+        Season spring = new Season("spring", springValues[0], springValues[1]);
+        Season summer = new Season("summer", summerValues[0], summerValues[1]);
+        Season autumn = new Season("autumn", autumnValues[0], autumnValues[1]);
+        Season winter = new Season("winter", winterValues[0], winterValues[1]);
+
+        // Initialise seasons and fill it
+        seasons = new ArrayList<>();
+        seasons.add(spring);
+        seasons.add(summer);
+        seasons.add(autumn);
+        seasons.add(winter);
     }
 
     /**
@@ -123,5 +150,14 @@ public class Habitat
         else if(randomize == 1 && (getCurrentTemperature() - change) >= currentSeason.getLowerLimitTemp()) {
             currentTemp.decTemperature(change);
         }
+    }
+
+    /**
+     * increase the season's average temperature by the
+     * climate change scenario's concreteChange
+     */
+    private void climateChangeEffect()
+    {
+        currentSeason.incAveTemperature(changeScenario.getClimateChangeEffect());
     }
 }
