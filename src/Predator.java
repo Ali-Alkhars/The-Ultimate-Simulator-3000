@@ -1,4 +1,4 @@
-//02.11
+//02.19
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -8,8 +8,9 @@ public class Predator extends Animal{
     // The predator's strength, if it is strong enough he can attack other predators
     private static int strength;
 
-    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature,  boolean isFemale, int maxAge, int breedingAge, double breedingProbability, int maxLitterSize, int nutritionalValue, boolean randomAge) {
-        super(field, location, name, maximumTemperature, minimumTemperature,  isFemale, maxAge, breedingAge, breedingProbability, maxLitterSize, nutritionalValue, randomAge);
+    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, boolean isFemale, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge)
+    {
+        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, isFemale, maxAge, breedingAge, maxLitterSize, randomAge);
 
         this.strength = strength;
     }
@@ -112,7 +113,7 @@ public class Predator extends Animal{
         int births = super.breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getIsFemale(), getMaxAge(), getBreedingAge(), getBreedingProbability(), getMaxLitterSize(),getNutritionalValue(),false);
+            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), getIsFemale(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false);
             newOfThisKind.add(young);
         }
     }

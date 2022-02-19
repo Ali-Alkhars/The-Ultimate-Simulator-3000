@@ -1,4 +1,4 @@
-//02.11
+//02.19
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,16 +23,12 @@ public class Animal extends Species
     private final int breedingAge;
     // The age to which a rabbit can live.
     private final int maxAge;
-    // The likelihood of a rabbit breeding.
-    private final double breedingProbability;
     // The maximum number of births.
     private final int maxLitterSize;
     // A shared random number generator to control breeding.
     private final Random rand = Randomizer.getRandom();
     // The animal's sex
     private final boolean isFemale;
-    // The food value animal provides when eaten
-    private final int nutritionalValue;
 
     // Fields prone to change during the animal's live
 
@@ -50,16 +46,14 @@ public class Animal extends Species
      * @param location The location within the field.
      */
 
-    public Animal(Field field, Location location, String name, int maximumTemperature, int minimumTemperature,  boolean isFemale, int maxAge, int breedingAge, double breedingProbability, int maxLitterSize, int nutritionalValue, boolean randomAge)
+    public Animal(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability,  boolean isFemale, int maxAge, int breedingAge, int maxLitterSize, boolean randomAge)
     {
-        super(field, location, name, maximumTemperature, minimumTemperature);
+        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability);
 
         this.isFemale = isFemale;
         this.maxAge = maxAge;
         this.breedingAge = breedingAge;
-        this.breedingProbability = breedingProbability;
         this.maxLitterSize = maxLitterSize;
-        this.nutritionalValue = nutritionalValue;
 
         if (randomAge) {
             age = rand.nextInt(maxAge);
@@ -172,7 +166,6 @@ public class Animal extends Species
     /**
      * Check whether or not this fox is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newOfThisKind A list to return newly born foxes.
      */
     protected boolean canReproduce(ArrayList<Animal> neighboringAnimalsList)
     {
@@ -196,7 +189,7 @@ public class Animal extends Species
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(),isFemale, maxAge, breedingAge, breedingProbability, maxLitterSize, nutritionalValue,false);
+            Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), isFemale, maxAge, breedingAge, maxLitterSize,false);
             newOfThisKind.add(young);
         }
     }
@@ -209,7 +202,7 @@ public class Animal extends Species
     protected int breed()
     {
         int births = 0;
-        if(canBreed() && rand.nextDouble() <= breedingProbability) {
+        if(canBreed() && rand.nextDouble() <= getReproductionProbability()) {
             births = rand.nextInt(maxLitterSize) + 1;
         }
         return births;
@@ -221,11 +214,6 @@ public class Animal extends Species
     protected boolean canBreed()
     {
         return age >= breedingAge;
-    }
-
-    protected int getNutritionalValue()
-    {
-        return nutritionalValue;
     }
 
     protected boolean getIsFemale ()
@@ -244,11 +232,6 @@ public class Animal extends Species
     protected int getMaxLitterSize ()
     {
         return maxLitterSize;
-    }
-
-    protected double getBreedingProbability()
-    {
-        return breedingProbability;
     }
 
 }
