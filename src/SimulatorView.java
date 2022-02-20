@@ -147,7 +147,7 @@ public class SimulatorView extends JFrame
      * This is rather advanced GUI stuff - you can ignore this 
      * for your project if you like.
      */
-    private class FieldView extends JPanel
+    class FieldView extends JPanel
     {
         private final int GRID_VIEW_SCALING_FACTOR = 6;
 

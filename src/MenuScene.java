@@ -1,3 +1,4 @@
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -5,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ public class MenuScene{
     private GUIHandler handler;
     private ArrayList<String> habitatList;
     private ArrayList<String> animalList;
+    private ArrayList<String> climateChangeScenarioList;
     private ArrayList<TextField> animalNumberReceivers;
-    private ComboBox habitatChoiceDisplay;
     private HashMap<String, Integer> selectedAnimals;
 
 
@@ -29,6 +31,7 @@ public class MenuScene{
     {
         habitatList = new ArrayList<>();
         animalList = new ArrayList<>();
+        climateChangeScenarioList = new ArrayList<>();
         habitatList.add("hr");
         habitatList.add("hr");
         habitatList.add("hr");
@@ -38,8 +41,12 @@ public class MenuScene{
         animalList.add("lioffn");
         animalList.add("lisdweon");
         animalList.add("fefe");
+        climateChangeScenarioList.add("ff");
+        climateChangeScenarioList.add("ff");
+        climateChangeScenarioList.add("ff");
+        climateChangeScenarioList.add("ff");
         this.handler = handler;
-        habitatChoiceDisplay = new ComboBox();
+
         animalNumberReceivers = new ArrayList<>();
         selectedAnimals = new HashMap<>();
     }
@@ -54,6 +61,7 @@ public class MenuScene{
 
         // HABITAT CHOICE
         VBox habitatChoiceComponent = new VBox(5);
+        ComboBox habitatChoiceDisplay = new ComboBox();
         habitatChoiceComponent.setPadding(new Insets(20,0,0,0));
         Label habitatChoicePrompt = new Label("Please choose a habitat for your simulation:");
         habitatChoiceComponent.getChildren().add(habitatChoicePrompt);
@@ -85,20 +93,33 @@ public class MenuScene{
         }
         animalChoiceComponent.getChildren().addAll(animalChoicePrompt, animalListDisplay);
 
+        // SCENARIO CHOICE
+        VBox climateChangeScenarioChoiceComponent = new VBox(5);
+        ComboBox climateChangeScenarioChoiceDisplay = new ComboBox();
+        climateChangeScenarioChoiceComponent.setPadding(new Insets(20,0,0,0));
+        Label climateChangeScenarioChoicePrompt = new Label("Please choose a climate change scenario for your simulation:");
+        climateChangeScenarioChoiceComponent.getChildren().add(climateChangeScenarioChoicePrompt);
+
+        for (String scenarioName : climateChangeScenarioList) {
+            climateChangeScenarioChoiceDisplay.getItems().add(scenarioName);
+        }
+
+        climateChangeScenarioChoiceComponent.getChildren().add(climateChangeScenarioChoiceDisplay);
+
         Button actionButton = new Button();
         actionButton.setText("Simulate");
         actionButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
-                getInputsAndLaunchSimulation(habitatChoiceDisplay, animalNumberReceivers);
+                getInputsAndLaunchSimulation(habitatChoiceDisplay, animalNumberReceivers, climateChangeScenarioChoiceDisplay);
                 ArrayList<Integer> numberInputed = getNumericValuesOfUserInputs(animalNumberReceivers);
                 generateAnimalDictionary(numberInputed);
             }
         });
 
         VBox choiceComponents = new VBox();
-        choiceComponents.getChildren().addAll(habitatChoiceComponent, animalChoiceComponent);
+        choiceComponents.getChildren().addAll(habitatChoiceComponent, animalChoiceComponent, climateChangeScenarioChoiceComponent);
 
         root.setTop(welcomeLabel);
         root.setBottom(actionButton);
@@ -159,33 +180,34 @@ public class MenuScene{
         return chosenHabitat;
     }
 
-    private void getInputsAndLaunchSimulation(ComboBox habitatChoiceDisplay, ArrayList<TextField> animalNumberReceivers) {
+    private String getScenarioInput(ComboBox scenarioCoiceDisplay)
+    {
+        String chosenHabitat = (String) scenarioCoiceDisplay.getValue();
+        if (chosenHabitat == null) {
+            throwErrorMessage("You must choose a climate change scenario.");
+            return null;
+        }
+        return chosenHabitat;
+    }
+
+    private void getInputsAndLaunchSimulation(ComboBox habitatChoiceDisplay, ArrayList<TextField> animalNumberReceivers, ComboBox climateChangeScenarioChoiceDisplay) {
         String chosenHabitat = getHabitatInput(habitatChoiceDisplay);
         if (chosenHabitat != null) {
             ArrayList<Integer> numbersInputed = getNumericValuesOfUserInputs(animalNumberReceivers);
             System.out.println("Ici" + numbersInputed.size());
             if (numbersInputed != null) {
                 boolean generationSuccessful = generateAnimalDictionary(numbersInputed);
-                for (String name : selectedAnimals.keySet()) {
-                    System.out.println(name + ": "+selectedAnimals.get(name));
-                }
-                System.out.println("%^&*(&^%^*()");
                 if (generationSuccessful) {
-                    launchSimulation(chosenHabitat);
+                    String chosenSimulation = getScenarioInput(climateChangeScenarioChoiceDisplay);
+                    launchSimulation(chosenHabitat, chosenSimulation);
                 }
             }
         }
 
     }
 
-    private void launchSimulation(String chosenHabitat)
+    private void launchSimulation(String chosenHabitat, String chosenScenario)
     {
-        // call constructor of a class
-        System.out.println(selectedAnimals.keySet().size());
-        for (String name : selectedAnimals.keySet()) {
-            System.out.println(name + ": "+selectedAnimals.get(name));
-        }
-        System.out.println("Habitat : " + chosenHabitat);
-        handler.switchToSimulatorView(chosenHabitat, selectedAnimals);
+        handler.switchToSimulatorView(chosenHabitat,selectedAnimals,chosenScenario);
     }
 }
