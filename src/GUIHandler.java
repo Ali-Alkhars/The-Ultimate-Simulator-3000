@@ -1,10 +1,6 @@
-import javafx.application.Application;
+`import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.util.HashMap;
 
@@ -31,9 +27,9 @@ public class GUIHandler extends Application {
         primaryStage.show();
     }
 
-    public void switchToSimulatorView(String selectedHabitat,HashMap<String, Integer> selectedAnimals)
+    public void switchToSimulatorView(String selectedHabitat,HashMap<String, Integer> selectedAnimals, String selectedScenario)
     {
-        simulatorOnDisplay = simulationInitializer.initializeSimulation(selectedHabitat, selectedAnimals);
+        simulatorOnDisplay = simulationInitializer.initializeSimulation(selectedHabitat, selectedAnimals, selectedScenario);
         simulatorSceneMaker = new SimulatorScene(this, simulationInitializer.getSimulatorView());
         simulatorScene = simulatorSceneMaker.createScene();
         primaryStage.setScene(simulatorScene);
@@ -46,4 +42,4 @@ public class GUIHandler extends Application {
         primaryStage.setScene(menuScene);
     }
 
-}
+}`

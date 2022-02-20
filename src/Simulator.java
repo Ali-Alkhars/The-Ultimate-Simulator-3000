@@ -22,7 +22,7 @@ public class Simulator
     private SimulationStep simStep;
     // A graphical view of the simulation.
     private SimulatorView view;
-
+    private Habitat simulationHabitat;
     private boolean simulationIsOn;
 
     private static final int DEFAULT_DELAY = 0;
@@ -30,9 +30,9 @@ public class Simulator
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator(List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
+    public Simulator(Habitat simulationHabitat, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
     {
-
+        this.simulationHabitat = simulationHabitat;
         this.species = speciesInSimulation;
         this.field = field;
         this.simStep = simulationStepCounter;

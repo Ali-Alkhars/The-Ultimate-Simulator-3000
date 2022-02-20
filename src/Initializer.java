@@ -1,8 +1,8 @@
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
+
+import javafx.application.Application;
 import java.util.List;
-import java.util.Random;
 
 public class Initializer {
 
@@ -13,20 +13,18 @@ public class Initializer {
     private static final int DEFAULT_DEPTH = 80;
 
     private static final boolean RANDOM_ANIMAL_AGE = true;
+    private static final ArrayList<String> CLIMATE_CHANGE_SCENARIO_NAMES = new ArrayList<>(Arrays.asList("none", "low", "medium", "high"));
 
-    private Habitat simulationHabitat;
     // List of species in the field.
     private List<Species> speciesToEvolveInSimulation;
-
-    private Field field;
     // A graphical view of the simulation.
-    private SimulatorView view;
-
     private HabitatCSVReader habitatReader;
     private AnimalCSVReader animalReader;
 
     private int fieldDepth;
     private int fieldWidth;
+
+    private SimulatorView view;
 
     private double habitatPlantConcentration;
 
@@ -34,7 +32,6 @@ public class Initializer {
 
     private Simulator createdSimulator;
 
-    private SimulationStep simulatorStepCounter;
 
 
     /**
@@ -61,25 +58,34 @@ public class Initializer {
 
         rand = new Random();
         speciesToEvolveInSimulation = new ArrayList<>();
-        field = new Field(depth, width);
         fieldDepth = depth;
         fieldWidth = width;
-
-        // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
-
         habitatReader = new HabitatCSVReader();
+        animalReader = new AnimalCSVReader();
+
+        openGUI();
 
         // define colors attribution
     }
 
-    public Simulator initializeSimulation(String chosenHabitat, HashMap<String, Integer> animalsToCreate)
+    private void openGUI()
     {
-        simulationHabitat = createHabitat(chosenHabitat);
-        populateWithAnimals(animalsToCreate);
+        ArrayList<String> animalChoices = animalReader.getChoicesList();
+        ArrayList<String> habitatChoices = habitatReader.getChoicesList();
+        // build GUI
+    }
+
+    public Simulator initializeSimulation(String chosenHabitat, HashMap<String, Integer> animalsToCreate, String scenarioName)
+    {
+        SimulationStep simulatorStepCounter = new SimulationStep();
+        Field field = new Field(fieldDepth, fieldWidth);
+        view = new SimulatorView(fieldDepth, fieldWidth);
+
+        ClimateChange chosenClimateChangeScenario = createChosenClimateChangeScneario(scenarioName);
+        Habitat simulationHabitat = createHabitat(chosenHabitat, simulatorStepCounter, chosenClimateChangeScenario);
+        populateWithAnimals(animalsToCreate, field);
         populateWithPlants();
-        simulatorStepCounter = new SimulationStep();
-        createdSimulator = new Simulator(speciesToEvolveInSimulation, field, simulatorStepCounter, view);
+        createdSimulator = new Simulator(simulationHabitat, speciesToEvolveInSimulation, field, simulatorStepCounter, view);
         return createdSimulator;
     }
 
@@ -88,11 +94,11 @@ public class Initializer {
         return view;
     }
 
-    private Habitat createHabitat (String habitatName)
+    private Habitat createHabitat (String habitatName, SimulationStep simulatorStepCounter, ClimateChange climateChangeScenario)
     {
         if (habitatName != null) {
             habitatReader.extractDataFor(habitatName);
-            Habitat chosenHabitat = new Habitat(habitatReader.getSpringTemperatures(), habitatReader.getSummerTemperatures(), habitatReader.getAutumnTemperatures(), habitatReader.getWinterTemperatures());
+            Habitat chosenHabitat = new Habitat(simulatorStepCounter, climateChangeScenario ,habitatReader.getSpringTemperatures(), habitatReader.getSummerTemperatures(), habitatReader.getAutumnTemperatures(), habitatReader.getWinterTemperatures());
             habitatPlantConcentration = habitatReader.getPlantConcentration();
             return chosenHabitat;
         } else {
@@ -101,7 +107,7 @@ public class Initializer {
         }
     }
 
-    private void populateWithAnimals(HashMap<String, Integer> animalsToCreate) {
+    private void populateWithAnimals(HashMap<String, Integer> animalsToCreate, Field field) {
         Location freeLocationToPlaceAnimal;
 
         for(String animalName : animalsToCreate.keySet()) {
@@ -119,7 +125,7 @@ public class Initializer {
                 int nutritionalValue = animalReader.getNutritionalValue();
 
                 for (int i = 0; i< animalsToCreate.get(animalName); i++) {
-                    freeLocationToPlaceAnimal = findAvailableLocation();
+                    freeLocationToPlaceAnimal = findAvailableLocation(field);
                     Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, isFemale, maxAge, breedingAge, breedingProbability, maxLitterSize, nutritionalValue, RANDOM_ANIMAL_AGE);
                     speciesToEvolveInSimulation.add(newPredator);
                 }
@@ -136,7 +142,7 @@ public class Initializer {
                 int nutritionalValue = animalReader.getNutritionalValue();
 
                 for (int i = 0; i< animalsToCreate.get(animalName); i++) {
-                    freeLocationToPlaceAnimal = findAvailableLocation();
+                    freeLocationToPlaceAnimal = findAvailableLocation(field);
                     Animal newAnimal = new Animal(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature,  isFemale, maxAge,breedingAge, breedingProbability, maxLitterSize, nutritionalValue, RANDOM_ANIMAL_AGE);
                     speciesToEvolveInSimulation.add(newAnimal);
                 }
@@ -144,7 +150,23 @@ public class Initializer {
         }
     }
 
-    private Location findAvailableLocation()
+    private ClimateChange createChosenClimateChangeScneario(String scenarioName)
+    {
+        ClimateChange chosenScenario;
+        // inversé comme ca si ya un pb le default c de ne pas en avoir
+        if (scenarioName == CLIMATE_CHANGE_SCENARIO_NAMES.get(3)) {
+            chosenScenario = new ChangeScenario4();
+        } else if (scenarioName == CLIMATE_CHANGE_SCENARIO_NAMES.get(2)) {
+            chosenScenario = new ChangeScenario3();
+        } else if (scenarioName == CLIMATE_CHANGE_SCENARIO_NAMES.get(1)) {
+            chosenScenario = new ChangeScenario2();
+        } else{
+            chosenScenario = new ChangeScenario1();
+        }
+        return chosenScenario;
+    }
+
+    private Location findAvailableLocation(Field field)
     {
         int randomWidth = rand.nextInt(fieldWidth);
         int randomDepth = rand.nextInt(fieldDepth);
