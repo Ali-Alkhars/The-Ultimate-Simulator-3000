@@ -1,4 +1,4 @@
-//02.19
+//02.20
 import java.util.List;
 
 public abstract class Species
@@ -60,6 +60,15 @@ public abstract class Species
     {
         return alive;
     }
+
+    /**
+     * if alive is true change to false, vice versa.
+     */
+    protected void toggleIsAlive()
+    {
+        alive = ! alive;
+    }
+
 
     /**
      * Indicate that the animal is no longer alive.

@@ -7,14 +7,14 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.17
+ * @version 2022.02.20
  */
 public class Habitat
 {
     // holds the habitat's seasons
     private List<Season> seasons;
     // the number of steps before the season changes
-    private static final int SEASON_CHANGE = 182;
+    public static final int SEASON_CHANGE = 182;
     // hold the current season
     private Season currentSeason;
     // keep track of the simulation steps.
@@ -52,6 +52,14 @@ public class Habitat
     public String getCurrentSeason()
     {
         return currentSeason.getName();
+    }
+
+    /**
+     * @return true if the current season is spring
+     */
+    public boolean isSpring()
+    {
+        return seasons.get(0).equals(currentSeason);
     }
 
     /**
