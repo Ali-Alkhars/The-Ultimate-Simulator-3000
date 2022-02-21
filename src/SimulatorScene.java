@@ -18,7 +18,7 @@ public class SimulatorScene {
     public Scene createScene() {
         BorderPane root = new BorderPane();
         final SwingNode simulatorView = new SwingNode();
-        HelloWorldSwing simulatorViewHandler = new HelloWorldSwing();
+        SimulatorView simulatorViewHandler = new SimulatorView();
         simulatorView.setContent(simulatorViewHandler.createAndShowGUI());
 
 
