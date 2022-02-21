@@ -26,11 +26,15 @@ public class Animal extends Species
     private final boolean hibernates;
     // true if the animal is active at night
     private final boolean isNocturnal;
+    // the number of steps that should pass until an animal in hibernation moves
+    private static final int STAY_STEPS = 25;
 
     // Fields prone to change during the animal's life
 
     // The animal's food level
     protected int foodLevel;
+    // number of steps where the animal is in hibernation
+    private int hiberSteps;
     // true if the animal is currently hibernating
     private boolean inHibernation;
     // The animal's age.
@@ -44,7 +48,6 @@ public class Animal extends Species
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-
     public Animal(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability,  boolean isFemale, int maxAge, int breedingAge, int maxLitterSize, boolean randomAge, boolean hibernates, boolean isNocturnal)
     {
         super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability);
@@ -56,6 +59,7 @@ public class Animal extends Species
         this.hibernates = hibernates;
         this.isNocturnal = isNocturnal;
         inHibernation = false;
+        hiberSteps = 0;
 
         // the initial food level is its nutritional value
         if (randomAge) {
@@ -68,43 +72,94 @@ public class Animal extends Species
     }
 
     /**
-     * This is what the animal does most of the time: it looks for plants.
-     * In the process, it might reproduce, die of hunger,
-     * die of old age, or die of overcrowding.
+     * Imitate an animal's step by doing the following:
+     * 1) increment the animal's age.
+     * 2) if the animal is alive, then:
+     *      i) check if the animal should hibernate.
+     *      ii) if the animal can't withstand the current temperature, then it dies.
+     *      iii) if the animal is in hibernation, then:
+     *          a) if it passed STAY_STEPS steps without moving, then move and increment hunger.
+     *          b) increment hiberSteps.
+     *      iv) if the animal is not in hibernation, then:
+     *          a) if it is day, or it is night and the animal is nocturnal, then move.
+     *          b) increment hunger.
      *
-     * @param newSpecies A list to return newly born animals.
+     * @param newSpecies A list to receive newly born animals.
+     * @param isNight true if it is night in the simulation
+     * @param temperature the current temperature of the simulation
      */
     public void act(List<Species> newSpecies, boolean isNight, int temperature)
+    {
+        // 1)
+        incrementAge();
+
+        // 2)
+        if(isAlive())
+        {
+            // i)
+            checkHibernation(temperature);
+
+            // ii)
+            if (! survivesTemperature(temperature))
+            {
+                setDead();
+            }
+            // iii)
+            else if (inHibernation)
+            {
+                // a)
+                if (hiberSteps % STAY_STEPS == 0)   {
+                    makeMove(newSpecies);
+                    incrementHunger();
+                }
+                // b)
+                incrementHiberSteps();
+            }
+            // iv)
+            else
+            {
+                // a)
+                if (!isNight || isNocturnal) {
+                    makeMove(newSpecies);
+                }
+                // b)
+                incrementHunger();
+            }
+        }
+    }
+
+    /**
+     * An animal movement. It tries to reproduce, then looks for a plant to eat,
+     * or dies of overcrowding.
+     *
+     * @param newSpecies A list to receive newly born animals.
+     */
+    protected void makeMove(List<Species> newSpecies)
     {
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
-        incrementAge();
-        incrementHunger();
+        ArrayList<Animal> neighboringAnimalsList = getNeighboringAnimalsList(field, it);
 
-        if(isAlive())
-        {
-            ArrayList<Animal> neighboringAnimalsList = getNeighboringAnimalsList(field, it);
-            if (canReproduce(neighboringAnimalsList)) {
-                reproduce(newSpecies);
-            }
+        if (canReproduce(neighboringAnimalsList)) {
+            reproduce(newSpecies);
+        }
 
-            // Move towards a source of food if found.
-            Location newLocation = findFood();
+        // Move towards a source of food if found.
+        Location newLocation = findFood();
 
-            if(newLocation == null) {
-                // No food found - try to move to a free location.
-                newLocation = getField().freeAdjacentLocation(getLocation());
-            }
+        if(newLocation == null) {
+            // No food found - try to move to a free location.
+            newLocation = getField().freeAdjacentLocation(getLocation());
+        }
 
-            // See if it was possible to move.
-            if(newLocation != null) {
-                setLocation(newLocation);
-            }
-            else {
-                // Overcrowding.
-                setDead();
-            }
+        // See if it was possible to move.
+        if(newLocation != null) {
+            setLocation(newLocation);
+        }
+        else {
+            // Overcrowding.
+            setDead();
         }
     }
 
@@ -147,6 +202,14 @@ public class Animal extends Species
     }
 
     /**
+     * Increment hiberSteps by 1
+     */
+    protected void incrementHiberSteps()
+    {
+        hiberSteps++;
+    }
+
+    /**
      * Look for plants adjacent to the current location.
      * Only the first plant is eaten.
      * @return Where food was found, or null if it wasn't.
@@ -176,6 +239,7 @@ public class Animal extends Species
      * Check whether or not this animal is to give birth at this step.
      * New births will be made into free adjacent locations.
      */
+    // Ali: in the second if statement, why == instead of .equals()?
     protected boolean canReproduce(ArrayList<Animal> neighboringAnimalsList)
     {
         // task to reproduce is handed to women only so that the same reproduction does not happen twice
@@ -191,7 +255,6 @@ public class Animal extends Species
         return false;
     }
 
-    // Ali: Do they only reproduce females?
     protected void reproduce(List<Species> newOfThisKind)
     {
         Field field = getField();
@@ -199,9 +262,20 @@ public class Animal extends Species
         int births = numberOfBirths();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), isFemale, maxAge, breedingAge, maxLitterSize,false, hibernates, isNocturnal);
+            Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), maxAge, breedingAge, maxLitterSize,false, hibernates, isNocturnal);
             newOfThisKind.add(young);
         }
+    }
+
+    /**
+     * this method returns a boolean randomly, which indicates that the
+     * sex is male or female.
+     *
+     * @return true (female) if the number is 1, false (male) if it is 0
+     */
+    protected boolean randomSex()
+    {
+        return rand.nextInt(2) == 1;
     }
 
     /**
@@ -226,19 +300,45 @@ public class Animal extends Species
         return age >= breedingAge;
     }
 
-    protected boolean getIsFemale ()
+    /**
+     * Check if the animal should be in hibernation.
+     *
+     * Change inHibernation to true if the animal can hibernate
+     * and the current temperature is less than or equal the
+     * minimum temperature of the animal + 5
+     *
+     * @param currentTemperature the current temperature of the simulation
+     */
+    protected void checkHibernation(int currentTemperature)
     {
-        return isFemale;
+        if (hibernates && currentTemperature <= getMinimumTemperature() + 5)  {
+            inHibernation = true;
+        }
+        else {
+            inHibernation = false;
+            hiberSteps = 0;
+        }
     }
 
+    /**
+     * @return The maximum age to which an animal can live
+     */
     protected int getMaxAge ()
     {
         return maxAge;
     }
+
+    /**
+     * @return The age at which an animal can start to breed
+     */
     protected int getBreedingAge ()
     {
         return breedingAge;
     }
+
+    /**
+     * @return The maximum number of births at once
+     */
     protected int getMaxLitterSize ()
     {
         return maxLitterSize;
@@ -258,6 +358,22 @@ public class Animal extends Species
     protected boolean getIsNocturnal()
     {
         return isNocturnal;
+    }
+
+    /**
+     * @return the number of steps that have passed since the animal was in hibernation
+     */
+    protected int getHiberSteps()
+    {
+        return hiberSteps;
+    }
+
+    /**
+     * @return true if the animal is currently hibernating
+     */
+    protected boolean getInHibernation()
+    {
+        return inHibernation;
     }
 
 }

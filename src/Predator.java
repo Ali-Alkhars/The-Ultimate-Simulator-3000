@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Predator extends Animal{
 
     // The predator's strength, if it is strong enough he can attack other predators
-    private static int strength;
+    private final int strength;
 
     public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, boolean isFemale, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge, boolean hibernates, boolean isNocturnal)
     {
@@ -21,6 +21,7 @@ public class Predator extends Animal{
      * or die of old age.
      * @param newSpecies A list to return newly born foxes.
      */
+    // Discuss deleting this and only making a different makeMove() method for predator
     public void act(List<Species> newSpecies, boolean isNight, int temperature)
     {
         incrementAge();
@@ -118,7 +119,7 @@ public class Predator extends Animal{
         int births = super.numberOfBirths();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), getIsFemale(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false, getHibernates(), getIsNocturnal());
+            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false, getHibernates(), getIsNocturnal());
             newOfThisKind.add(young);
         }
     }
