@@ -1,4 +1,4 @@
-`import javafx.application.Application;
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,8 +14,12 @@ public class GUIHandler extends Application {
     private Initializer simulationInitializer;
     private Simulator simulatorOnDisplay;
 
+    static Stage classStage = new Stage();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        classStage = primaryStage;
         simulationInitializer = new Initializer();
         menuSceneMaker = new MenuScene(this);
 
@@ -42,4 +46,4 @@ public class GUIHandler extends Application {
         primaryStage.setScene(menuScene);
     }
 
-}`
+}

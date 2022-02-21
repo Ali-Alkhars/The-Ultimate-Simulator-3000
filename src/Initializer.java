@@ -32,8 +32,6 @@ public class Initializer {
 
     private Simulator createdSimulator;
 
-
-
     /**
      * Construct a simulation field with default size.
      */
@@ -72,7 +70,12 @@ public class Initializer {
     {
         ArrayList<String> animalChoices = animalReader.getChoicesList();
         ArrayList<String> habitatChoices = habitatReader.getChoicesList();
-        // build GUI
+        GUIHandler g = new GUIHandler();
+        try {
+            g.start(GUIHandler.classStage);
+        } catch(Exception e) {
+            System.out.println("Error while launching GUI.");
+        }
     }
 
     public Simulator initializeSimulation(String chosenHabitat, HashMap<String, Integer> animalsToCreate, String scenarioName)
@@ -84,7 +87,7 @@ public class Initializer {
         ClimateChange chosenClimateChangeScenario = createChosenClimateChangeScneario(scenarioName);
         Habitat simulationHabitat = createHabitat(chosenHabitat, simulatorStepCounter, chosenClimateChangeScenario);
         populateWithAnimals(animalsToCreate, field);
-        populateWithPlants();
+        populateWithPlants(field);
         createdSimulator = new Simulator(simulationHabitat, speciesToEvolveInSimulation, field, simulatorStepCounter, view);
         return createdSimulator;
     }
@@ -126,7 +129,7 @@ public class Initializer {
 
                 for (int i = 0; i< animalsToCreate.get(animalName); i++) {
                     freeLocationToPlaceAnimal = findAvailableLocation(field);
-                    Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, isFemale, maxAge, breedingAge, breedingProbability, maxLitterSize, nutritionalValue, RANDOM_ANIMAL_AGE);
+                    Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, isFemale, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE);
                     speciesToEvolveInSimulation.add(newPredator);
                 }
             } else {
@@ -183,12 +186,15 @@ public class Initializer {
         return fieldWidth*fieldDepth;
     }
 
-    private void populateWithPlants()
+    private void populateWithPlants(Field field)
     {
         int fieldArea = calculateFieldArea();
         int numberOfPlants = (int)(fieldArea * habitatPlantConcentration);
+        Location freeLocationToPlaceAnimal;
         for (int i = 0; i< numberOfPlants; i++) {
-            //create plant and place it
+            freeLocationToPlaceAnimal = findAvailableLocation(field);
+            Plant createdPlant = new Plant(field, freeLocationToPlaceAnimal, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int initialHealth, Habitat habitat)
+            speciesToEvolveInSimulation.add(createdPlant);
         }
     }
 
