@@ -1,4 +1,3 @@
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -6,7 +5,7 @@ import java.util.List;
  * that inherits class Species
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.20
+ * @version 2022.02.21
  */
 public class Plant extends Species
 {
@@ -14,10 +13,13 @@ public class Plant extends Species
     private final int initialHealth;
     // keep track of the plant's health
     private int currentHealth;
-    // reference to the habitat
-    private Habitat habitat;
-    // the number of steps that passed since the plant died
-    private int stepSinceDeath;
+    // true if the current season is Spring
+    private boolean isSpring;
+    // true if the plant can regrow,
+    // needs at least one season till it is true again
+    private boolean canRegrow;
+    // the probability that the plant's health grows
+    private static final double GROWING_PROBABILITY = 0.1;
 
     /**
      * Create an instance of Plant
@@ -30,45 +32,73 @@ public class Plant extends Species
      * @param nutritionalValue the nutritional value given to the specie that eats this plant
      * @param reproductionProbability the probability that this plant will reproduce
      * @param initialHealth the plant's initial health
-     * @param habitat a reference to the plant's habitat
      */
-    public Plant(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int initialHealth, Habitat habitat)
+    public Plant(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int initialHealth)
     {
         super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability);
         this.initialHealth = initialHealth;
         currentHealth = initialHealth;
-        this.habitat = habitat;
-        stepSinceDeath = 0;
+        isSpring = true; // true or not??
+        canRegrow = true;
     }
 
-    public void act(List<Species> newPlants)
+    /**
+     * Imitate a plant's step by doing the following:
+     * 1) if the plant can't survive the temperature, then it dies
+     * 2) else if the time is day:
+     *      i) if the plant is dead, and it's spring, and the temperature is suitable,
+     *         then grow back
+     *      ii) else if the plant is alive, then reproduce and grow
+     *
+     * @param newPlants A list to return the new plant
+     * @param isNight true if it is night in the simulation
+     * @param temperature the current temperature of the simulation
+     */
+    public void act(List<Species> newPlants, boolean isNight, int temperature)
     {
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-        int currentTemperature = habitat.getCurrentTemperature();
-
-        if (isAlive() && ! survivesTemperature(currentTemperature))
+        // 1)
+        if (isAlive() && ! survivesTemperature(temperature))
         {
             setDead();
         }
-        else if (! isAlive() && survivesTemperature(currentTemperature) && stepSinceDeath >= habitat.SEASON_CHANGE && habitat.isSpring())
+        // 2)
+        else if (! isNight)
         {
-            regrow();
-        }
-        else if (isAlive())
-        {
-
-        }
-        else
-        {
-            stepSinceDeath++;
+            // i)
+            if (! isAlive() && survivesTemperature(temperature) && isSpring) {
+                regrow();
+            }
+            // ii)
+            else if (isAlive()) {
+                reproduce(newPlants);
+                grow();
+            }
         }
 
     }
 
-    protected void reproduce(List<Species> newOfThisKind)
-    {}
+    /**
+     * Add a new plant in a free neighbouring location if the two
+     * following conditions are met:
+     * 1- The production probability meets the random number
+     * 2- There is a free adjacent location.
+     *
+     * @param newPlants A list to return the new plant
+     */
+    protected void reproduce(List<Species> newPlants)
+    {
+        if (rand.nextDouble() <= getReproductionProbability())
+        {
+            Field field = getField();
+            List<Location> free = field.getFreeAdjacentLocations(getLocation());
+
+            if (free.size() > 0) {
+                Location loc = free.remove(0);
+                Plant newPlant = new Plant(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), initialHealth);
+                newPlants.add(newPlant);
+            }
+        }
+    }
 
     /**
      * the plant dies because of the temperature or
@@ -81,22 +111,33 @@ public class Plant extends Species
     {
         if(getLocation() != null) {
             toggleIsAlive();
+            canRegrow = false; // set to false because if left as true, it could regrow the next step
             getField().clear(getLocation());
         }
     }
 
     /**
      * the dead plant is placed back in the field if
-     * its previous location is empty, otherwise do nothing.
+     * its previous location is empty and can regrow, otherwise do nothing.
      * If it grows, then it grows back to full health.
      */
     private void regrow()
     {
-        if(getField().getObjectAt(getLocation()) == null)   {
-            stepSinceDeath = 0;
+        if(getField().getObjectAt(getLocation()) == null && canRegrow)   {
             toggleIsAlive();
             getField().place(this, getLocation());
             currentHealth = initialHealth;
+        }
+    }
+
+    /**
+     * Increase the plant's health by one if the random
+     * number meets the growing probability
+     */
+    private void grow()
+    {
+        if (currentHealth < initialHealth && rand.nextDouble() <= GROWING_PROBABILITY) {
+            currentHealth++;
         }
     }
 
@@ -113,5 +154,17 @@ public class Plant extends Species
         if (currentHealth <= 0)    {
             setDead();
         }
+    }
+
+    /**
+     * if isSpring is true, then change it to false, vice versa.
+     *
+     * Also, set canRegrow as true because at least a season has passed
+     * since the plant died.
+     */
+    public void toggleIsSpring()
+    {
+        isSpring = ! isSpring;
+        canRegrow = true;
     }
 }

@@ -1,5 +1,6 @@
-//02.20
+//02.21
 import java.util.List;
+import java.util.Random;
 
 public abstract class Species
 {
@@ -19,6 +20,8 @@ public abstract class Species
     private final int nutritionalValue;
     // The likelihood of a specie to reproduce.
     private final double reproductionProbability;
+    // A shared random number generator to control breeding.
+    protected static final Random rand = Randomizer.getRandom();
 
     /**
      * Create a new specie at location in field.
@@ -48,7 +51,7 @@ public abstract class Species
      * whatever it wants/needs to do.
      * @param newSpecies A list to receive newly born animals.
      */
-    abstract public void act(List<Species> newSpecies);
+    abstract public void act(List<Species> newSpecies, boolean isNight, int temperature);
 
     abstract void reproduce(List<Species> newOfThisKind);
 

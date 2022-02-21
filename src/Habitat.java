@@ -14,7 +14,7 @@ public class Habitat
     // holds the habitat's seasons
     private List<Season> seasons;
     // the number of steps before the season changes
-    public static final int SEASON_CHANGE = 182;
+    private static final int SEASON_CHANGE = 182;
     // hold the current season
     private Season currentSeason;
     // keep track of the simulation steps.
@@ -52,14 +52,6 @@ public class Habitat
     public String getCurrentSeason()
     {
         return currentSeason.getName();
-    }
-
-    /**
-     * @return true if the current season is spring
-     */
-    public boolean isSpring()
-    {
-        return seasons.get(0).equals(currentSeason);
     }
 
     /**

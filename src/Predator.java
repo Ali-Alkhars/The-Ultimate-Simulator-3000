@@ -1,4 +1,4 @@
-//02.19
+//02.21
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ public class Predator extends Animal{
     // The predator's strength, if it is strong enough he can attack other predators
     private static int strength;
 
-    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, boolean isFemale, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge)
+    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, boolean isFemale, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge, boolean hibernates, boolean isNocturnal)
     {
-        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, isFemale, maxAge, breedingAge, maxLitterSize, randomAge);
+        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, isFemale, maxAge, breedingAge, maxLitterSize, randomAge, hibernates, isNocturnal);
 
         this.strength = strength;
     }
@@ -21,7 +21,7 @@ public class Predator extends Animal{
      * or die of old age.
      * @param newSpecies A list to return newly born foxes.
      */
-    public void act(List<Species> newSpecies)
+    public void act(List<Species> newSpecies, boolean isNight, int temperature)
     {
         incrementAge();
         incrementHunger();
@@ -32,16 +32,20 @@ public class Predator extends Animal{
         ArrayList<Animal> neighboringAnimals = super.getNeighboringAnimalsList(field, it);
         checkForAttack(neighboringAnimals);
 
-        if(isAlive()) {
+        if(isAlive())
+        {
             if (super.canReproduce(neighboringAnimals)){
                 reproduce(newSpecies);
             }
+
             // Move towards a source of food if found.
             Location newLocation = findFood(neighboringAnimals);
+
             if(newLocation == null) {
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
             }
+
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
@@ -106,18 +110,20 @@ public class Predator extends Animal{
         this.setDead();
     }
 
+    // Ali: why use super.numberOfBirths(); instead of numberOfBirths()?
     protected void reproduce(List<Species> newOfThisKind)
     {
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
-        int births = super.breed();
+        int births = super.numberOfBirths();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), getIsFemale(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false);
+            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), getIsFemale(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false, getHibernates(), getIsNocturnal());
             newOfThisKind.add(young);
         }
     }
 
+    // Ali: why is this public?
     public void incrementFoodLevel(int value) {
         foodLevel += value;
     }

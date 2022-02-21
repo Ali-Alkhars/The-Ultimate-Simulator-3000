@@ -22,6 +22,9 @@ public class Simulator
     private SimulationStep simStep;
     // A graphical view of the simulation.
     private SimulatorView view;
+    // keep track of the time in the simulation
+    private Time time;
+    // the habitat of the simulation
     private Habitat simulationHabitat;
     private boolean simulationIsOn;
 
@@ -30,9 +33,10 @@ public class Simulator
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator(Habitat simulationHabitat, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
+    public Simulator(Habitat simulationHabitat, Time time, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
     {
         this.simulationHabitat = simulationHabitat;
+        this.time = time;
         this.species = speciesInSimulation;
         this.field = field;
         this.simStep = simulationStepCounter;
@@ -79,7 +83,7 @@ public class Simulator
             // Let all rabbits act.
             for(Iterator<Species> it = species.iterator(); it.hasNext(); ) {
                 Species species = it.next();
-                species.act(newSpecies);
+                species.act(newSpecies, time.getIsNight(), simulationHabitat.getCurrentTemperature());
                 if(! species.isAlive()) {
                     it.remove();
                 }
