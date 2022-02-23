@@ -66,7 +66,7 @@ public class AnimalCSVReader extends CSVReader {
         if (!(extractedData.length == 12)) {
             System.out.println("Habitat issue, please restart.");
         }
-        if (extractedData[0] == TRUE_SYMBOL) {
+        if (extractedData[0].equals(TRUE_SYMBOL)) {
             isPredator = true;
         }
         name = extractedData[1];
@@ -78,11 +78,11 @@ public class AnimalCSVReader extends CSVReader {
         maxLitterSize = Integer.valueOf(extractedData[7]);
         nutritionalValue = Integer.valueOf(extractedData[8]);
         strength = Integer.valueOf(extractedData[9]);
-        if (extractedData[10] == TRUE_SYMBOL) {
+        if (extractedData[10].equals(TRUE_SYMBOL)) {
             hibernates = true;
             // By default, value is false
         }
-        if (extractedData[11] == TRUE_SYMBOL) {
+        if (extractedData[11],equals(TRUE_SYMBOL)) {
             isNocturnal = true;
             // By default, value is false
         }
