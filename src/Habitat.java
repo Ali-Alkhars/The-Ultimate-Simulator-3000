@@ -7,7 +7,7 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.17
+ * @version 2022.02.20
  */
 public class Habitat
 {

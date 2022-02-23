@@ -3,7 +3,7 @@
  * and specify if it is day or night
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.16
+ * @version 2022.02.23
  */
 public class Time
 {
@@ -59,7 +59,7 @@ public class Time
             tString += "Day \t";
         }
 
-        tString += "Time: " + getHourDisplay();
+        tString += "(" + getHourDisplay() + ")";
 
         return tString;
     }

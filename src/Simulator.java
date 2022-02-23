@@ -5,11 +5,12 @@ import java.util.Iterator;
 import java.awt.Color;
 
 /**
- * A simple predator-prey simulator, based on a rectangular field
- * containing rabbits and foxes.
+ * This is the main class of the simulation, as it connects all the other classes
+ * and runs the simulation. In general, the classes simulate a habitat in which
+ * there are preys who feed on plants, and predators who compete for the preys.
  * 
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.16
+ * @version 2022.02.23
  */
 public class Simulator
 {
@@ -22,6 +23,9 @@ public class Simulator
     private SimulationStep simStep;
     // A graphical view of the simulation.
     private SimulatorView view;
+    // keep track of the time in the simulation
+    private Time time;
+    // the habitat of the simulation
     private Habitat simulationHabitat;
     private boolean simulationIsOn;
 
@@ -30,9 +34,10 @@ public class Simulator
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator(Habitat simulationHabitat, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
+    public Simulator(Habitat simulationHabitat, Time time, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
     {
         this.simulationHabitat = simulationHabitat;
+        this.time = time;
         this.species = speciesInSimulation;
         this.field = field;
         this.simStep = simulationStepCounter;
@@ -66,29 +71,28 @@ public class Simulator
     
     /**
      * Run the simulation from its current state for a single step.
-     * Iterate over the whole field updating the state of each
-     * fox and rabbit.
+     * Iterate over the whole field updating the state of each specie.
      */
     public void simulateOneStep()
     {
         if (simulationIsOn) {
             simStep.incStep();
 
-            // Provide space for newborn animals.
+            // Provide space for newborn species.
             List<Species> newSpecies = new ArrayList<>();
-            // Let all rabbits act.
+            // Let all species act.
             for(Iterator<Species> it = species.iterator(); it.hasNext(); ) {
                 Species species = it.next();
-                species.act(newSpecies);
+                species.act(newSpecies, time.getIsNight(), simulationHabitat.getCurrentTemperature());
                 if(! species.isAlive()) {
                     it.remove();
                 }
             }
 
-            // Add the newly born foxes and rabbits to the main lists.
+            // Add the newly born species to the main lists.
             species.addAll(newSpecies);
 
-            view.showStatus(simStep.getCurrentStep(), field);
+            view.showStatus(simStep.getCurrentStep(), time.timeString(), simulationHabitat.getCurrentSeason(), simulationHabitat.getCurrentTemperature(), field);
         }
     }
         

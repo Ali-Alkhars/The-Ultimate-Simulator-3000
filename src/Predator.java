@@ -1,20 +1,8 @@
-<<<<<<< Updated upstream
-//02.11
-import java.util.Iterator;
-=======
->>>>>>> Stashed changes
 import java.util.List;
 import java.util.ArrayList;
 
 public class Predator extends Animal{
 
-<<<<<<< Updated upstream
-    // The predator's strength, if it is strong enough he can attack other predators
-    private static int strength;
-
-    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature,  boolean isFemale, int maxAge, int breedingAge, double breedingProbability, int maxLitterSize, int nutritionalValue, boolean randomAge) {
-        super(field, location, name, maximumTemperature, minimumTemperature,  isFemale, maxAge, breedingAge, breedingProbability, maxLitterSize, nutritionalValue, randomAge);
-=======
     // The predator's strength, if it is strong enough it can attack other predators
     private final int strength;
 
@@ -42,7 +30,6 @@ public class Predator extends Animal{
     {
         // call to the constructor of the Animal class
         super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, isFemale, maxAge, breedingAge, maxLitterSize, randomAge, hibernates, isNocturnal);
->>>>>>> Stashed changes
 
         this.strength = strength;
     }
@@ -54,35 +41,24 @@ public class Predator extends Animal{
      *
      * @param newSpecies (List<Species>) A list to receive newly born animals.
      */
-<<<<<<< Updated upstream
-    public void act(List<Species> newSpecies)
-=======
     protected void makeMove(List<Species> newSpecies)
->>>>>>> Stashed changes
     {
         ArrayList<Animal> neighboringAnimals = getNeighboringAnimalsList();
         checkForAttack(neighboringAnimals);
 
-<<<<<<< Updated upstream
-        if(isAlive()) {
-            if (super.canReproduce(neighboringAnimals)){
-=======
         if (isAlive()) {
             if (canReproduce(neighboringAnimals)){
->>>>>>> Stashed changes
                 reproduce(newSpecies);
             }
+
             // Move towards a source of food if found.
-<<<<<<< Updated upstream
-            Location newLocation = findFood(neighboringAnimals);
-=======
             Location newLocation = findFoodAndEat(neighboringAnimals);
 
->>>>>>> Stashed changes
             if(newLocation == null) {
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
             }
+
             // See if it was possible to move.
             if(newLocation != null) {
                 setLocation(newLocation);
@@ -166,44 +142,30 @@ public class Predator extends Animal{
         this.setDead();
     }
 
-<<<<<<< Updated upstream
-=======
     /**
      * Creates the appropriate number of predators of the same species. These new predators of course share the same features as their "parent"
      * except the sex which is randomized, their age and foodLevel are not randomized.
      *
      * @param  newOfThisKind (List<Species>) The list of species to which newborns must be added.
      */
->>>>>>> Stashed changes
     protected void reproduce(List<Species> newOfThisKind)
     {
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
-<<<<<<< Updated upstream
-        int births = super.breed();
-=======
         int births = numberOfBirths();
->>>>>>> Stashed changes
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getIsFemale(), getMaxAge(), getBreedingAge(), getBreedingProbability(), getMaxLitterSize(),getNutritionalValue(),false);
+            Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false, getHibernates(), getIsNocturnal());
             newOfThisKind.add(young);
         }
     }
 
-<<<<<<< Updated upstream
-    public void incrementFoodLevel(int value) {
-        foodLevel += value;
-    }
-
-=======
     /**
      * Returns the predator's strength, public so that other predators can consult the strength of a pontential horde this predator could
      * be a part of.
      *
      * @return (int) the predator's strength.
      */
->>>>>>> Stashed changes
     public int getStrength() {
         return strength;
     }

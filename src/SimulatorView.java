@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -11,8 +10,8 @@ import java.util.Map;
  * Colors for each type of species can be defined using the
  * setColor method.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29
+ * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
+ * @version 2022.02.23
  */
 public class SimulatorView extends JFrame
 {
@@ -24,7 +23,10 @@ public class SimulatorView extends JFrame
 
     private final String STEP_PREFIX = "Step: ";
     private final String POPULATION_PREFIX = "Population: ";
-    private JLabel stepLabel, population, infoLabel;
+    private final String TIME_PREFIX = "Time: ";
+    private final String TEMPERATURE_PREFIX = "Temperature: ";
+    private final String SEASON_PREFIX = "Season: ";
+    private JLabel stepLabel, population, infoLabel, timeLabel, temperatureLabel, seasonLabel;
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
@@ -42,20 +44,31 @@ public class SimulatorView extends JFrame
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
 
-        setTitle("Fox and Rabbit Simulation");
+        setTitle("The Wild Simulator 3000");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
+        timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
+        temperatureLabel = new JLabel(TEMPERATURE_PREFIX, JLabel.CENTER);
+        seasonLabel = new JLabel(SEASON_PREFIX, JLabel.CENTER);
         
         setLocation(100, 50);
         
         fieldView = new FieldView(height, width);
 
         Container contents = getContentPane();
+
+        // a FlowLayout Border layout with gaps between components
+        FlowLayout simInfo = new FlowLayout();
+        simInfo.setHgap(50);
         
-        JPanel infoPane = new JPanel(new BorderLayout());
-        infoPane.add(stepLabel, BorderLayout.WEST);
+        JPanel infoPane = new JPanel(simInfo);
         infoPane.add(infoLabel, BorderLayout.CENTER);
+        infoPane.add(stepLabel, BorderLayout.CENTER);
+        infoPane.add(timeLabel, BorderLayout.CENTER);
+        infoPane.add(seasonLabel, BorderLayout.CENTER);
+        infoPane.add(temperatureLabel, BorderLayout.CENTER);
+
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
@@ -64,13 +77,13 @@ public class SimulatorView extends JFrame
     }
     
     /**
-     * Define a color to be used for a given class of animal.
-     * @param animalClass The animal's Class object.
+     * Define a color to be used for a given class of specie.
+     * @param specieClass The specie's Class object.
      * @param color The color to be used for the given class.
      */
-    public void setColor(Class animalClass, Color color)
+    public void setColor(Class specieClass, Color color)
     {
-        colors.put(animalClass, color);
+        colors.put(specieClass, color);
     }
 
     /**
@@ -82,11 +95,11 @@ public class SimulatorView extends JFrame
     }
 
     /**
-     * @return The color to be used for a given class of animal.
+     * @return The color to be used for a given class of specie.
      */
-    private Color getColor(Class animalClass)
+    private Color getColor(Class specieClass)
     {
-        Color col = colors.get(animalClass);
+        Color col = colors.get(specieClass);
         if(col == null) {
             // no color defined for this class
             return UNKNOWN_COLOR;
@@ -97,27 +110,35 @@ public class SimulatorView extends JFrame
     }
 
     /**
+     *
      * Show the current status of the field.
+     *
      * @param step Which iteration step it is.
+     * @param time The current time in the simulation
+     * @param season The current season in the simulation
+     * @param temperature The current temperature in the simulation
      * @param field The field whose status is to be displayed.
      */
-    public void showStatus(int step, Field field)
+    public void showStatus(int step, String time, String season, int temperature, Field field)
     {
         if(!isVisible()) {
             setVisible(true);
         }
             
         stepLabel.setText(STEP_PREFIX + step);
+        timeLabel.setText(TIME_PREFIX + time);
+        seasonLabel.setText(SEASON_PREFIX + season);
+        temperatureLabel.setText(TEMPERATURE_PREFIX + temperature);
         stats.reset();
         
         fieldView.preparePaint();
 
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                Object animal = field.getObjectAt(row, col);
-                if(animal != null) {
-                    stats.incrementCount(animal.getClass());
-                    fieldView.drawMark(col, row, getColor(animal.getClass()));
+                Object specie = field.getObjectAt(row, col);
+                if(specie != null) {
+                    stats.incrementCount(specie.getClass());
+                    fieldView.drawMark(col, row, getColor(specie.getClass()));
                 }
                 else {
                     fieldView.drawMark(col, row, EMPTY_COLOR);
