@@ -43,7 +43,7 @@ public class HabitatCSVReader extends CSVReader {
     protected void populateFields(String[] extractedData)
     {
         extractedData = removeHabitatName(extractedData);
-        if (!(extractedData.length == 9)) {
+        if (extractedData.length != 9) {
             System.out.println("Habitat issue, please restart.");
         }
         for(int i =0; i < extractedData.length; i++) {
