@@ -1,42 +1,84 @@
+<<<<<<< Updated upstream
 //02.11
 import java.util.Iterator;
+=======
+>>>>>>> Stashed changes
 import java.util.List;
 import java.util.ArrayList;
 
 public class Predator extends Animal{
 
+<<<<<<< Updated upstream
     // The predator's strength, if it is strong enough he can attack other predators
     private static int strength;
 
     public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature,  boolean isFemale, int maxAge, int breedingAge, double breedingProbability, int maxLitterSize, int nutritionalValue, boolean randomAge) {
         super(field, location, name, maximumTemperature, minimumTemperature,  isFemale, maxAge, breedingAge, breedingProbability, maxLitterSize, nutritionalValue, randomAge);
+=======
+    // The predator's strength, if it is strong enough it can attack other predators
+    private final int strength;
+
+    /**
+     * Create a new predator with given specifications. A predator can be created with random age (or start at age 0) and/or
+     * with a random foodLevel (or start at XXXX)
+     *
+     * @param strength (int) the predator's strength
+     * @param field (Field) the field where the simulation takes place
+     * @param location (Location) the Location at which the predator should appear
+     * @param name (String) the predator's name (its species' name)
+     * @param maximumTemperature (int) the maximum temperature the predator can survive to
+     * @param minimumTemperature (int) the minimum temperature an predator can survive to
+     * @param nutritionalValue (int) the predator's nutritional value
+     * @param reproductionProbability (double) the probability that the predator reproduces at each step after a given minimum breeding age
+     * @param isFemale (boolean) if the predator is a female (if false, it's a male)
+     * @param maxAge (int) the predator's life expectancy
+     * @param breedingAge (int) the age at which predator can start to reproduce
+     * @param maxLitterSize (int) the maximum number of children the predator can have in one reproduction
+     * @param randomAge (boolean) whether or not predator should be created with a random age
+     * @param hibernates (boolean) whether or not predator is able to hibernate
+     * @param isNocturnal (boolean) whether or not predator is more active at night
+     */
+    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, boolean isFemale, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge, boolean hibernates, boolean isNocturnal)
+    {
+        // call to the constructor of the Animal class
+        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, isFemale, maxAge, breedingAge, maxLitterSize, randomAge, hibernates, isNocturnal);
+>>>>>>> Stashed changes
 
         this.strength = strength;
     }
 
     /**
-     * This is what the fox does most of the time: it hunts for
-     * rabbits. In the process, it might breed, die of hunger,
-     * or die of old age.
-     * @param newSpecies A list to return newly born foxes.
+     * A predator's movement. It first checks if it attacked by a horde of another species of predators. If it is the case, it dies and execution stops.
+     * If not, it first tries to reproduce, then to find a prey to eat in the neighboring cells, and finally to move to either the cell
+     * the prey he ate was occupying or another free adjacent cell. If no adjacent cell is available, it dies of overcrowding.
+     *
+     * @param newSpecies (List<Species>) A list to receive newly born animals.
      */
+<<<<<<< Updated upstream
     public void act(List<Species> newSpecies)
+=======
+    protected void makeMove(List<Species> newSpecies)
+>>>>>>> Stashed changes
     {
-        incrementAge();
-        incrementHunger();
-        Field field = getField();
-        List<Location> adjacent = field.adjacentLocations(getLocation());
-        Iterator<Location> it = adjacent.iterator();
-
-        ArrayList<Animal> neighboringAnimals = super.getNeighboringAnimalsList(field, it);
+        ArrayList<Animal> neighboringAnimals = getNeighboringAnimalsList();
         checkForAttack(neighboringAnimals);
 
+<<<<<<< Updated upstream
         if(isAlive()) {
             if (super.canReproduce(neighboringAnimals)){
+=======
+        if (isAlive()) {
+            if (canReproduce(neighboringAnimals)){
+>>>>>>> Stashed changes
                 reproduce(newSpecies);
             }
             // Move towards a source of food if found.
+<<<<<<< Updated upstream
             Location newLocation = findFood(neighboringAnimals);
+=======
+            Location newLocation = findFoodAndEat(neighboringAnimals);
+
+>>>>>>> Stashed changes
             if(newLocation == null) {
                 // No food found - try to move to a free location.
                 newLocation = getField().freeAdjacentLocation(getLocation());
@@ -52,7 +94,13 @@ public class Predator extends Animal{
         }
     }
 
-    private Location findFood(ArrayList<Animal> neighboringAnimals)
+    /**
+     * Tries to find a prey in one of the neighboring cell. If a prey is found, it is eaten and its location is returned.
+     *
+     * @param  neighboringAnimals (ArrayList<Animal>) A list of neighboring animals.
+     * @return (Location) the location of the eaten prey, null if no prey was found.
+     */
+    private Location findFoodAndEat(ArrayList<Animal> neighboringAnimals)
     {
         for (Animal animal : neighboringAnimals) {
             if(!(animal instanceof Predator)){
@@ -65,6 +113,12 @@ public class Predator extends Animal{
         return null;
     }
 
+    /**
+     * Check if predator if under attack from a horde of another species of predator. If a horde is attacking it and the horde's strength
+     * is greater than the predator's one, the horde members eat it.
+     *
+     * @param  neighboringAnimals (ArrayList<Animal>) A list of neighboring animals.
+     */
     private void checkForAttack(ArrayList<Animal> neighboringAnimals)
     {
         ArrayList<Predator> hordeMembers = new ArrayList<>();
@@ -96,8 +150,15 @@ public class Predator extends Animal{
         }
     }
 
+    /**
+     * Animal is under attack by a horde whose strength is greater than its own. It is eaten by the horde and dies. Its nutriotional value
+     * is therefore shared
+     *
+     * @param  hordeMembers (ArrayList<Predator>) List of the predators constituting the horde.
+     */
     private void attackedByHorde(ArrayList<Predator> hordeMembers)
     {
+        // Sharing predator's nutritional value amongst the various horde members.
         int foodLevelAddedToEachHordeMember = this.getNutritionalValue() / hordeMembers.size();
         for (Predator predator : hordeMembers) {
             predator.incrementFoodLevel(foodLevelAddedToEachHordeMember);
@@ -105,11 +166,24 @@ public class Predator extends Animal{
         this.setDead();
     }
 
+<<<<<<< Updated upstream
+=======
+    /**
+     * Creates the appropriate number of predators of the same species. These new predators of course share the same features as their "parent"
+     * except the sex which is randomized, their age and foodLevel are not randomized.
+     *
+     * @param  newOfThisKind (List<Species>) The list of species to which newborns must be added.
+     */
+>>>>>>> Stashed changes
     protected void reproduce(List<Species> newOfThisKind)
     {
         Field field = getField();
         List<Location> free = field.getFreeAdjacentLocations(getLocation());
+<<<<<<< Updated upstream
         int births = super.breed();
+=======
+        int births = numberOfBirths();
+>>>>>>> Stashed changes
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getIsFemale(), getMaxAge(), getBreedingAge(), getBreedingProbability(), getMaxLitterSize(),getNutritionalValue(),false);
@@ -117,10 +191,19 @@ public class Predator extends Animal{
         }
     }
 
+<<<<<<< Updated upstream
     public void incrementFoodLevel(int value) {
         foodLevel += value;
     }
 
+=======
+    /**
+     * Returns the predator's strength, public so that other predators can consult the strength of a pontential horde this predator could
+     * be a part of.
+     *
+     * @return (int) the predator's strength.
+     */
+>>>>>>> Stashed changes
     public int getStrength() {
         return strength;
     }
