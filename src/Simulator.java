@@ -8,7 +8,7 @@ import java.awt.Color;
  * This is the main class of the simulation, as it connects all the other classes
  * and runs the simulation. In general, the classes simulate a habitat in which
  * there are preys who feed on plants, and predators who compete for the preys.
- * 
+ *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
  * @version 2022.02.23
  */
@@ -23,17 +23,21 @@ public class Simulator
     private SimulationStep simStep;
     // A graphical view of the simulation.
     private SimulatorView view;
+    // keep track of the time in the simulation
+    private Time time;
+    // the habitat of the simulation
     private Habitat simulationHabitat;
     private boolean simulationIsOn;
 
     private static final int DEFAULT_DELAY = 0;
-    
+
     /**
      * Construct a simulation field with default size.
      */
-    public Simulator(Habitat simulationHabitat, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
+    public Simulator(Habitat simulationHabitat, Time time, List<Species> speciesInSimulation, Field field, SimulationStep simulationStepCounter, SimulatorView simulatorView)
     {
         this.simulationHabitat = simulationHabitat;
+        this.time = time;
         this.species = speciesInSimulation;
         this.field = field;
         this.simStep = simulationStepCounter;
@@ -41,7 +45,7 @@ public class Simulator
         this.simulationIsOn = true;
     }
 
-    
+
     /**
      * Run the simulation from its current state for a reasonably long period,
      * (4000 steps).
@@ -50,7 +54,7 @@ public class Simulator
     {
         simulate(4000); // Should we change this ?
     }
-    
+
     /**
      * Run the simulation from its current state for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
@@ -64,7 +68,7 @@ public class Simulator
             // delay(60);   // uncomment this to run more slowly
         }
     }
-    
+
     /**
      * Run the simulation from its current state for a single step.
      * Iterate over the whole field updating the state of each specie.
@@ -79,7 +83,7 @@ public class Simulator
             // Let all species act.
             for(Iterator<Species> it = species.iterator(); it.hasNext(); ) {
                 Species species = it.next();
-                species.act(newSpecies);
+                species.act(newSpecies, time.getIsNight(), simulationHabitat.getCurrentTemperature());
                 if(! species.isAlive()) {
                     it.remove();
                 }
@@ -91,7 +95,7 @@ public class Simulator
             view.showStatus(simStep.getCurrentStep(), time.timeString(), simulationHabitat.getCurrentSeason(), simulationHabitat.getCurrentTemperature(), field);
         }
     }
-        
+
     /**
      * Reset the simulation to a starting position.
      */
@@ -101,7 +105,7 @@ public class Simulator
         species.clear();
         simulationIsOn = false;
     }
-    
+
     /**
      * Pause for a given time.
      * @param millisec  The time to pause for, in milliseconds
