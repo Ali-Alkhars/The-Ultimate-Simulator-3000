@@ -22,10 +22,9 @@ public class AliTester
 
         for(int i= 0; i < 50; i++)
         {
-            time.checkDay();
             System.out.println("Step: " + sim.getCurrentStep() + "\t" + time.timeString()+ "\n");
             sim.incStep();
-            time.incHour();
+            time.timeStep();
         }
     }
 
@@ -45,10 +44,9 @@ public class AliTester
         for(int i=0; i < 729; i++)
         {
             System.out.println("Step: " + sim.getCurrentStep() + "\n" + time.timeString()+ "\nSeason: " + italy.getCurrentSeason() + "\nTemperature: " + italy.getCurrentTemperature() + "\n");
-            italy.habitatStep();
-            time.checkDay();
             sim.incStep();
-            time.incHour();
+            italy.habitatStep();
+            time.timeStep();
         }
     }
 }

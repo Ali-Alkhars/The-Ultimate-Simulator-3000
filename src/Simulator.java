@@ -10,7 +10,7 @@ import java.awt.Color;
  * there are preys who feed on plants, and predators who compete for the preys.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.23
+ * @version 2022.02.24
  */
 public class Simulator
 {
@@ -27,7 +27,7 @@ public class Simulator
     private Time time;
     // the habitat of the simulation
     private Habitat simulationHabitat;
-    private boolean simulationIsOn;
+    private boolean simulationIsOn; // Ali: is this used?
 
     private static final int DEFAULT_DELAY = 0;
 
@@ -77,6 +77,8 @@ public class Simulator
     {
         if (simulationIsOn) {
             simStep.incStep();
+            simulationHabitat.habitatStep();
+            time.timeStep();
 
             // Provide space for newborn species.
             List<Species> newSpecies = new ArrayList<>();

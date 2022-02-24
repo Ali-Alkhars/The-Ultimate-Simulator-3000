@@ -3,7 +3,7 @@
  * and specify if it is day or night
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.23
+ * @version 2022.02.24
  */
 public class Time
 {
@@ -65,16 +65,18 @@ public class Time
     }
 
     /**
-     * change the day status if 'CHANGE_STEPS' steps have passed
+     * change the day status if 'CHANGE_STEPS' steps have passed,
+     * and increment the hours
      */
-    public void checkDay()
+    public void timeStep()
     {
         int step = simStep.getCurrentStep();
 
-        if(step != 0 && (step+1) % DAY_CHANGE == 0) // step+1 because step starts with 0
-        {
+        if(step != 0 && (step+1) % DAY_CHANGE == 0) { // step+1 because step starts with 0
             toggleIsNight();
         }
+
+        incHour();
     }
 
     /**
@@ -88,7 +90,7 @@ public class Time
     /**
      * Increment the hours to go through the day evenly.
      */
-    public void incHour()
+    private void incHour()
     {
         currentHour = (currentHour + (24 / (DAY_CHANGE * 2))) % 24;
     }
@@ -97,7 +99,7 @@ public class Time
      * Create a string displaying time in 24-hour style
      * @return a String holding the current time
      */
-    public String getHourDisplay()
+    private String getHourDisplay()
     {
         if(currentHour < 10)
         {

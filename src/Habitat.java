@@ -7,7 +7,7 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.20
+ * @version 2022.02.24
  */
 public class Habitat
 {
@@ -81,7 +81,7 @@ public class Habitat
         }
 
         // 2) & 3)
-        if(step != 0 && (step+1) % SEASON_CHANGE == 0)
+        if(step != 0 && step % SEASON_CHANGE == 0)
         {
             changeSeason();
             climateChangeEffect();
