@@ -4,5 +4,6 @@ public class AntonTester {
         System.out.println("here");
         System.out.println("Edit has been made here");
         System.out.println("Big kisses");
+        Initializer init = new Initializer();
     }
 }
