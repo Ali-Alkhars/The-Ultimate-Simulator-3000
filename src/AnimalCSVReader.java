@@ -8,7 +8,7 @@
 public class AnimalCSVReader extends CSVReader {
 
     // Path to the file holding the animal related data.
-    private static final String FILE_NAME = "animals.txt";
+    private static final String FILE_NAME = "animals.csv";
     // String to be recognized as a boolean value of true.
     private static final String TRUE_SYMBOL = "true";
 
@@ -63,8 +63,8 @@ public class AnimalCSVReader extends CSVReader {
      */
     protected void populateFields(String[] extractedData)
     {
-        if (!(extractedData.length == 12)) {
-            System.out.println("Habitat issue, please restart.");
+        if (extractedData.length != 12) {
+            System.out.println("Habitat csv issue, please restart.");
         }
         if (extractedData[0].equals(TRUE_SYMBOL)) {
             isPredator = true;
@@ -82,7 +82,7 @@ public class AnimalCSVReader extends CSVReader {
             hibernates = true;
             // By default, value is false
         }
-        if (extractedData[11],equals(TRUE_SYMBOL)) {
+        if (extractedData[11].equals(TRUE_SYMBOL)) {
             isNocturnal = true;
             // By default, value is false
         }

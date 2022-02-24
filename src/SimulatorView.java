@@ -30,7 +30,7 @@ public class SimulatorView extends JFrame
     private FieldView fieldView;
     
     // A map for storing colors for participants in the simulation
-    private Map<Class, Color> colors;
+    private Map<String, Color> colors;
     // A statistics object computing and storing simulation information
     private FieldStats stats;
 
@@ -43,25 +43,28 @@ public class SimulatorView extends JFrame
     {
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
-
-        setTitle("The Wild Simulator 3000");
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
         temperatureLabel = new JLabel(TEMPERATURE_PREFIX, JLabel.CENTER);
         seasonLabel = new JLabel(SEASON_PREFIX, JLabel.CENTER);
-        
+
         setLocation(100, 50);
-        
+
         fieldView = new FieldView(height, width);
+    }
 
-        Container contents = getContentPane();
-
+    /**
+     * Assemble components in a JPanel that will then be returned to the SimulatorScene to be displayed in our application.
+     * @return (JPanel) The created panel.
+     */
+    public JPanel createAndShowGUI()
+    {
         // a FlowLayout Border layout with gaps between components
         FlowLayout simInfo = new FlowLayout();
         simInfo.setHgap(50);
-        
+
         JPanel infoPane = new JPanel(simInfo);
         infoPane.add(infoLabel, BorderLayout.CENTER);
         infoPane.add(stepLabel, BorderLayout.CENTER);
@@ -69,21 +72,22 @@ public class SimulatorView extends JFrame
         infoPane.add(seasonLabel, BorderLayout.CENTER);
         infoPane.add(temperatureLabel, BorderLayout.CENTER);
 
+        JPanel contents = new JPanel(new FlowLayout());
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
-        pack();
-        setVisible(true);
+        contents.setVisible(true);
+        return contents;
     }
-    
+
     /**
      * Define a color to be used for a given class of specie.
-     * @param specieClass The specie's Class object.
+     * @param speciesName The specie's name.
      * @param color The color to be used for the given class.
      */
-    public void setColor(Class specieClass, Color color)
+    public void setColor(String speciesName, Color color)
     {
-        colors.put(specieClass, color);
+        colors.put(speciesName, color);
     }
 
     /**
@@ -97,9 +101,9 @@ public class SimulatorView extends JFrame
     /**
      * @return The color to be used for a given class of specie.
      */
-    private Color getColor(Class specieClass)
+    private Color getColor(String speciesName)
     {
-        Color col = colors.get(specieClass);
+        Color col = colors.get(speciesName);
         if(col == null) {
             // no color defined for this class
             return UNKNOWN_COLOR;
@@ -137,8 +141,9 @@ public class SimulatorView extends JFrame
             for(int col = 0; col < field.getWidth(); col++) {
                 Object specie = field.getObjectAt(row, col);
                 if(specie != null) {
-                    stats.incrementCount(specie.getClass());
-                    fieldView.drawMark(col, row, getColor(specie.getClass()));
+                    Species speciesObjects = (Species) specie;
+                    stats.incrementCount(speciesObjects.getName());
+                    fieldView.drawMark(col, row, getColor(speciesObjects.getName()));
                 }
                 else {
                     fieldView.drawMark(col, row, EMPTY_COLOR);

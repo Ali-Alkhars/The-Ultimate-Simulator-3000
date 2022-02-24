@@ -52,7 +52,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(4000); // Should we change this ?
+        simulate(10000); // Should we change this ?
     }
 
     /**

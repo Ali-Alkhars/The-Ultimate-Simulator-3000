@@ -46,13 +46,13 @@ public abstract class CSVReader {
     {
         Path pathToFile = Paths.get(this.getFileName());
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+            // Skip first line as they are headers.
             String line = br.readLine();
-            while (line != null) {
+            while ((line=br.readLine()) != null) {
                 String[] attributes = line.split(",");
                 if (attributes[0].equals(nameOfElementToLookFor)) {
                     return attributes;
                 }
-                line = br.readLine();
             }
         } catch (Exception e) {
             System.out.println("Issue when parsing CSV");
@@ -89,11 +89,11 @@ public abstract class CSVReader {
         ArrayList<String> choicesList = new ArrayList<>();
         Path pathToFile = Paths.get(this.getFileName());
         try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+            // Skip first line as they are headers.
             String line = br.readLine();
-            while (line != null) {
+            while ((line=br.readLine()) != null) {
                 String[] attributes = line.split(",");
                 choicesList.add(attributes[0]);
-                line = br.readLine();
             }
         } catch (Exception e) {
             System.out.println("Issue when parsing CSV");
