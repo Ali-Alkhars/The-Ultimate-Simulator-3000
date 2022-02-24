@@ -4,15 +4,15 @@ import java.util.HashMap;
 /**
  * This class collects and provides some statistical data on the state 
  * of a field. It is flexible: it will create and maintain a counter 
- * for any class of object that is found within the field.
+ * for any name of species that is found in the field.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29
  */
 public class FieldStats
 {
-    // Counters for each type of entity (fox, rabbit, etc.) in the simulation.
-    private HashMap<Class, Counter> counters;
+    // Counters for each type of entity in the simulation.
+    private HashMap<String, Counter> counters;
     // Whether the counters are currently up to date.
     private boolean countsValid;
 
@@ -37,8 +37,8 @@ public class FieldStats
         if(!countsValid) {
             generateCounts(field);
         }
-        for(Class key : counters.keySet()) {
-            Counter info = counters.get(key);
+        for(String speciesName : counters.keySet()) {
+            Counter info = counters.get(speciesName);
             buffer.append(info.getName());
             buffer.append(": ");
             buffer.append(info.getCount());
@@ -54,24 +54,24 @@ public class FieldStats
     public void reset()
     {
         countsValid = false;
-        for(Class key : counters.keySet()) {
+        for(String key : counters.keySet()) {
             Counter count = counters.get(key);
             count.reset();
         }
     }
 
     /**
-     * Increment the count for one class of specie.
-     * @param specieClass The class of specie to increment.
+     * Increment the count for one specie.
+     * @param specieName (String) The name of specie to increment.
      */
-    public void incrementCount(Class specieClass)
+    public void incrementCount(String specieName)
     {
-        Counter count = counters.get(specieClass);
+        Counter count = counters.get(specieName);
         if(count == null) {
             // We do not have a counter for this specie yet.
             // Create one.
-            count = new Counter(specieClass.getName());
-            counters.put(specieClass, count);
+            count = new Counter(specieName);
+            counters.put(specieName, count);
         }
         count.increment();
     }
@@ -96,7 +96,7 @@ public class FieldStats
         if(!countsValid) {
             generateCounts(field);
         }
-        for(Class key : counters.keySet()) {
+        for(String key : counters.keySet()) {
             Counter info = counters.get(key);
             if(info.getCount() > 0) {
                 nonZero++;
@@ -119,7 +119,8 @@ public class FieldStats
             for(int col = 0; col < field.getWidth(); col++) {
                 Object specie = field.getObjectAt(row, col);
                 if(specie != null) {
-                    incrementCount(specie.getClass());
+                    Species speciesObject = (Species) specie;
+                    incrementCount(speciesObject.getName());
                 }
             }
         }

@@ -20,7 +20,7 @@ public class HabitatCSVReader extends CSVReader {
     private double plantConcentration;
 
     // Name of the CSV files containing data on fields.
-    private static final String FILE_NAME = "habitats.txt";
+    private static final String FILE_NAME = "habitats.csv";
 
     /**
      * Build a HabitatCSVReader and initialize its fields.

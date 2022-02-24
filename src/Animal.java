@@ -75,10 +75,11 @@ public class Animal extends Species
         // the initial food level is its nutritional value
         if (randomAge) {
             age = rand.nextInt(maxAge);
-            foodLevel = rand.nextInt(nutritionalValue); // no, plant's nutriotional value
+            // Default value is nutritionalValue to simulate the nutrient apport of the mother's milk/ other parental feeding.
+            foodLevel = rand.nextInt(nutritionalValue/2);
         } else {
             age = 0;
-            foodLevel = nutritionalValue; // why?
+            foodLevel = nutritionalValue/2;
         }
     }
 
@@ -382,26 +383,10 @@ public class Animal extends Species
     }
 
     /**
-     * @return (int) the number of steps that have passed since the animal was in hibernation
-     */
-    protected int getHiberSteps()
-    {
-        return hiberSteps;
-    }
-
-    /**
-     * @return true if the animal is currently hibernating
-     */
-    protected boolean getInHibernation()
-    {
-        return inHibernation;
-    }
-
-    /**
      * Increments the animal's food level by a given number (the nutritional value of the food he just ate). It is public because a predator's
      * food level can be incremented another predator in the case that it attacks it.
      *
-     * @params (int) the number to increment foodLevel by.
+     * @param value (int) the number to increment foodLevel by.
      */
     public void incrementFoodLevel(int value) {
         foodLevel += value;

@@ -63,6 +63,8 @@ public class GUIHandler extends Application {
         }).start();
         SimulatorScene simulatorSceneMaker = new SimulatorScene(this, simulationInitializer.getSimulatorView());
         simulatorSceneMaker.showView(classStage);
+        // Default behaviour is to start a simulation of 10,000 steps.
+        simulatorOnDisplay.runLongSimulation();
     }
 
     /**

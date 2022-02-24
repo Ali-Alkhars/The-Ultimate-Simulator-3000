@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,24 +14,32 @@ import java.util.Random;
 
 public class Initializer {
 
-    // Constants representing configuration information for the simulation.
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
+    // The default color for plant objects.
+    private static final Color DEFAULT_PLANT_COLOR = Color.decode("0x559E4A");
+    // Defult plant name, for now there is just one type of plant so its name is default, this can be changed as the rest of the code is extendable.
+    private static final String DEFAULT_PLANT_NAME = "plant";
     // The default value of if animals' ages must be randomized when thy are created.
     private static final boolean RANDOM_ANIMAL_AGE = true;
     // The names of available climate change scenarios.
     private static final ArrayList<String> CLIMATE_CHANGE_SCENARIO_NAMES = new ArrayList<>(Arrays.asList("none", "low", "medium", "high"));
-
-    // List of species to eveolve in the field.
+    // False of the simulation starts during the day, true if it starts during the night.
+    private static final boolean DEFAULT_START_TIME = false;
+    // The list of colors available for animal objects.
+    private ArrayList<Color> listOfColorsForAnimals;
+    // The index of the next color from the list used for an animal.
+    private int IdxOfColorToUseNext;
+    // List of species to evolve in the field.
     private List<Species> speciesToEvolveInSimulation;
     // To read habitat related data.
     private final HabitatCSVReader habitatReader;
     // To read animal related data.
     private final AnimalCSVReader animalReader;
-    // To retrieve data related to plants.
-    private final PlantData plantReader;
+    // To read plant related data.
+    private final PlantCSVReader plantReader;
     // The depth of the field created.
     private final int fieldDepth;
     // The width of the field created.
@@ -72,7 +81,10 @@ public class Initializer {
         fieldWidth = width;
         habitatReader = new HabitatCSVReader();
         animalReader = new AnimalCSVReader();
-        plantReader = new PlantData();
+        plantReader = new PlantCSVReader();
+        listOfColorsForAnimals = new ArrayList<>();
+        populateAnimalColors();
+        IdxOfColorToUseNext = 0;
 
         openGUI();
 
@@ -118,7 +130,8 @@ public class Initializer {
         }
         populateWithAnimals(animalsToCreate, field);
         populateWithPlants(field);
-        createdSimulator = new Simulator(simulationHabitat, speciesToEvolveInSimulation, field, simulatorStepCounter, view);
+        Time timeObject = new Time(simulatorStepCounter, DEFAULT_START_TIME);
+        createdSimulator = new Simulator(simulationHabitat, timeObject ,speciesToEvolveInSimulation, field, simulatorStepCounter, view);
         return createdSimulator; // why return ?
     }
 
@@ -164,7 +177,7 @@ public class Initializer {
             animalReader.extractDataFor(animalName);
             if (animalsToCreate.get(animalName) != 0) {
                 if (animalReader.isPredator()) {
-                    // Predator object should be created.
+                    // Predator object should be created, retrieving appropriate data.
                     int strength = animalReader.getStrength();
                     String name = animalReader.getName();
                     int maximumTemperature = animalReader.getMaximumTemperature();
@@ -178,13 +191,18 @@ public class Initializer {
                     boolean hibernates = animalReader.canHibernate();
                     boolean isNocturnal = animalReader.isNocturnal();
 
+                    // Creating the right number of Predator objects.
                     for (int i = 0; i < animalsToCreate.get(animalName); i++) {
                         freeLocationToPlaceAnimal = findAvailableLocation(field);
                         Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, isFemale, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
                         speciesToEvolveInSimulation.add(newPredator);
                     }
+
+                    // Setting the color for this species.
+                    view.setColor(name, listOfColorsForAnimals.get(IdxOfColorToUseNext));
+                    IdxOfColorToUseNext ++;
                 } else {
-                    // Animal object should be created.
+                    // Animal object should be created, retrieving appropriate data.
                     String name = animalReader.getName();
                     int maximumTemperature = animalReader.getMaximumTemperature();
                     int minimumTemperature = animalReader.getMinimumTemperature();
@@ -196,11 +214,17 @@ public class Initializer {
                     int nutritionalValue = animalReader.getNutritionalValue();
                     boolean hibernates = animalReader.canHibernate();
                     boolean isNocturnal = animalReader.isNocturnal();
+
+                    // Creating the right number of Animal objects.
                     for (int i = 0; i < animalsToCreate.get(animalName); i++) {
                         freeLocationToPlaceAnimal = findAvailableLocation(field);
                         Animal newAnimal = new Animal(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability,  isFemale, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
                         speciesToEvolveInSimulation.add(newAnimal);
                     }
+
+                    // Setting the color for this species.
+                    view.setColor(name, listOfColorsForAnimals.get(IdxOfColorToUseNext));
+                    IdxOfColorToUseNext ++;
                 }
             }
         }
@@ -216,11 +240,11 @@ public class Initializer {
     {
         ClimateChange chosenScenario;
         // inversé comme ca si ya un pb le default c de ne pas en avoir
-        if (scenarioName == CLIMATE_CHANGE_SCENARIO_NAMES.get(3)) {
+        if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(3))) {
             chosenScenario = new ChangeScenario4();
-        } else if (scenarioName == CLIMATE_CHANGE_SCENARIO_NAMES.get(2)) {
+        } else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(2))) {
             chosenScenario = new ChangeScenario3();
-        } else if (scenarioName == CLIMATE_CHANGE_SCENARIO_NAMES.get(1)) {
+        } else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(1))) {
             chosenScenario = new ChangeScenario2();
         } else{
             chosenScenario = new ChangeScenario1();
@@ -264,6 +288,7 @@ public class Initializer {
     private void populateWithPlants(Field field)
     {
         Location freeLocationToPlaceAnimal;
+        plantReader.extractDataFor(DEFAULT_PLANT_NAME);
         String name = plantReader.getName();
         int maximumTemperature = plantReader.getMaximumTemperature();
         int minimumTemperature = plantReader.getMinimumTemperature();
@@ -275,6 +300,7 @@ public class Initializer {
             Plant createdPlant = new Plant(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, initialHealth);
             speciesToEvolveInSimulation.add(createdPlant);
         }
+        view.setColor(name, DEFAULT_PLANT_COLOR);
     }
 
     /**
@@ -296,7 +322,7 @@ public class Initializer {
     {
         int totalNumber = 0;
         for (String animalName : animalsToCreate.keySet()) {
-            totalNumber += animalsToCreate.get(totalNumber);
+            totalNumber += animalsToCreate.get(animalName);
         }
         return totalNumber;
     }
@@ -308,5 +334,34 @@ public class Initializer {
     private boolean randomSex()
     {
         return rand.nextInt(2) == 1;
+    }
+
+    /**
+     * Populate the list of colors to use for animals with 20 colors. 20 animals can therefore be created, other
+     * colors to be added if we want to implement more animal choices.
+     */
+    private void populateAnimalColors()
+    {
+        listOfColorsForAnimals.add(Color.decode("0x85D4DC"));
+        listOfColorsForAnimals.add(Color.decode("0xDD0033"));
+        listOfColorsForAnimals.add(Color.decode("0x000099"));
+        listOfColorsForAnimals.add(Color.decode("0xDD22DD"));
+        listOfColorsForAnimals.add(Color.decode("0x007722"));
+        listOfColorsForAnimals.add(Color.decode("0x2222FF"));
+        listOfColorsForAnimals.add(Color.decode("0xFF6600"));
+        listOfColorsForAnimals.add(Color.decode("0xFF9988"));
+        listOfColorsForAnimals.add(Color.decode("0x44FF99"));
+        listOfColorsForAnimals.add(Color.decode("0xFFFF00"));
+        listOfColorsForAnimals.add(Color.decode("0xA85FB4"));
+        listOfColorsForAnimals.add(Color.decode("0xFFFFB0"));
+        listOfColorsForAnimals.add(Color.decode("0x7E70CA"));
+        listOfColorsForAnimals.add(Color.decode("0x42348B"));
+        listOfColorsForAnimals.add(Color.decode("0xE9B287"));
+        listOfColorsForAnimals.add(Color.decode("0x772D26"));
+        listOfColorsForAnimals.add(Color.decode("0xB66862"));
+        listOfColorsForAnimals.add(Color.decode("0x469990"));
+        listOfColorsForAnimals.add(Color.decode("0xC5FFFF"));
+        listOfColorsForAnimals.add(Color.decode("0xA8734A"));
+
     }
 }
