@@ -66,10 +66,10 @@ public class AnimalCSVReader extends CSVReader {
         if (extractedData.length != 12) {
             System.out.println("Habitat csv issue, please restart.");
         }
-        if (extractedData[0].equals(TRUE_SYMBOL)) {
+        name = extractedData[0];
+        if (extractedData[1].equals(TRUE_SYMBOL)) {
             isPredator = true;
         }
-        name = extractedData[1];
         maximumTemperature = Integer.valueOf(extractedData[2]);
         minimumTemperature = Integer.valueOf(extractedData[3]);
         maximumAge = Integer.valueOf(extractedData[4]);
