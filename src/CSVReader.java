@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +31,7 @@ public abstract class CSVReader {
         String[] extractedData = getDataFor(nameOfElementToLookFor);
         if (extractedData != null) {
             // Populate appropriate field wit the data read
+            for (String i : extractedData) {System.out.println("Extracted Data: "+i);}
             populateFields(extractedData);
         } else {
             System.out.println("ERROR: no data could be read for " + nameOfElementToLookFor);
@@ -44,8 +47,7 @@ public abstract class CSVReader {
      */
     private String[] getDataFor(String nameOfElementToLookFor)
     {
-        Path pathToFile = Paths.get(this.getFileName());
-        try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+        try(BufferedReader br = new BufferedReader(new FileReader(getFileName()))) {
             // Skip first line as they are headers.
             String line = br.readLine();
             while ((line=br.readLine()) != null) {
@@ -86,9 +88,18 @@ public abstract class CSVReader {
      */
     public ArrayList<String> getChoicesList()
     {
+        File file = new File(getFileName());
+        System.out.println("nous sommes la: " + file.getAbsoluteFile());
+        if (file.canRead()) {
+            System.out.println("Can be read");
+        } else {System.out.println("can't be read");}
+        if (file.exists()) {
+            System.out.println("exists");
+        }else {System.out.println("not exist");}
+
+
         ArrayList<String> choicesList = new ArrayList<>();
-        Path pathToFile = Paths.get(this.getFileName());
-        try(BufferedReader br = Files.newBufferedReader(pathToFile, StandardCharsets.US_ASCII)) {
+        try(BufferedReader br = new BufferedReader(new FileReader(getFileName()))) {
             // Skip first line as they are headers.
             String line = br.readLine();
             while ((line=br.readLine()) != null) {
@@ -96,6 +107,7 @@ public abstract class CSVReader {
                 choicesList.add(attributes[0]);
             }
         } catch (Exception e) {
+            e.printStackTrace();;
             System.out.println("Issue when parsing CSV");
             return null;
         }

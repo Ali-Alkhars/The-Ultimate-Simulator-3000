@@ -101,12 +101,7 @@ public class Initializer {
     {
         ArrayList<String> animalChoices = animalReader.getChoicesList();
         ArrayList<String> habitatChoices = habitatReader.getChoicesList();
-        GUIHandler g = new GUIHandler(animalChoices, habitatChoices, CLIMATE_CHANGE_SCENARIO_NAMES); // give fields
-        try {
-            g.start(GUIHandler.classStage);
-        } catch(Exception e) {
-            System.out.println("Error while launching GUI.");
-        }
+        GUIHandler g = new GUIHandler(this, animalChoices, habitatChoices, CLIMATE_CHANGE_SCENARIO_NAMES);
     }
 
     /**

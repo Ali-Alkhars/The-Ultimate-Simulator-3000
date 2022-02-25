@@ -9,7 +9,7 @@ import java.util.Map;
  * representing its contents. It uses a default background color.
  * Colors for each type of species can be defined using the
  * setColor method.
- * 
+ *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
  * @version 2022.02.23
  */
@@ -28,7 +28,7 @@ public class SimulatorView extends JFrame
     private final String SEASON_PREFIX = "Season: ";
     private JLabel stepLabel, population, infoLabel, timeLabel, temperatureLabel, seasonLabel;
     private FieldView fieldView;
-    
+
     // A map for storing colors for participants in the simulation
     private Map<String, Color> colors;
     // A statistics object computing and storing simulation information
@@ -59,9 +59,12 @@ public class SimulatorView extends JFrame
      * Assemble components in a JPanel that will then be returned to the SimulatorScene to be displayed in our application.
      * @return (JPanel) The created panel.
      */
-    public JPanel createAndShowGUI()
+    public JFrame createAndShowGUI()
     {
         // a FlowLayout Border layout with gaps between components
+        JFrame frame = new JFrame("Hello World Java Swing");
+        frame.setMinimumSize(new Dimension(800, 600));
+
         FlowLayout simInfo = new FlowLayout();
         simInfo.setHgap(50);
 
@@ -76,8 +79,9 @@ public class SimulatorView extends JFrame
         contents.add(infoPane, BorderLayout.NORTH);
         contents.add(fieldView, BorderLayout.CENTER);
         contents.add(population, BorderLayout.SOUTH);
-        contents.setVisible(true);
-        return contents;
+
+        frame.getContentPane().add(contents);
+        return frame;
     }
 
     /**
@@ -128,13 +132,13 @@ public class SimulatorView extends JFrame
         if(!isVisible()) {
             setVisible(true);
         }
-            
+
         stepLabel.setText(STEP_PREFIX + step);
         timeLabel.setText(TIME_PREFIX + time);
         seasonLabel.setText(SEASON_PREFIX + season);
         temperatureLabel.setText(TEMPERATURE_PREFIX + temperature);
         stats.reset();
-        
+
         fieldView.preparePaint();
 
         for(int row = 0; row < field.getDepth(); row++) {
@@ -164,13 +168,13 @@ public class SimulatorView extends JFrame
     {
         return stats.isViable(field);
     }
-    
+
     /**
-     * Provide a graphical view of a rectangular field. This is 
+     * Provide a graphical view of a rectangular field. This is
      * a nested class (a class defined inside a class) which
      * defines a custom component for the user interface. This
      * component displays the field.
-     * This is rather advanced GUI stuff - you can ignore this 
+     * This is rather advanced GUI stuff - you can ignore this
      * for your project if you like.
      */
     class FieldView extends JPanel
@@ -199,7 +203,7 @@ public class SimulatorView extends JFrame
         public Dimension getPreferredSize()
         {
             return new Dimension(gridWidth * GRID_VIEW_SCALING_FACTOR,
-                                 gridHeight * GRID_VIEW_SCALING_FACTOR);
+                    gridHeight * GRID_VIEW_SCALING_FACTOR);
         }
 
         /**
@@ -223,7 +227,7 @@ public class SimulatorView extends JFrame
                 }
             }
         }
-        
+
         /**
          * Paint on grid location on this field in a given color.
          */
