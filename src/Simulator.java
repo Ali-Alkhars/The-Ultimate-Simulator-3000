@@ -43,6 +43,8 @@ public class Simulator
         this.simStep = simulationStepCounter;
         this.view = simulatorView;
         this.simulationIsOn = true;
+
+        view.showStatus(simStep.getCurrentStep(), time.timeString(), simulationHabitat.getCurrentSeason(), simulationHabitat.getCurrentTemperature(), field);
     }
 
 

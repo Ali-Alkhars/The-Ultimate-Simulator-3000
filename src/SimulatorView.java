@@ -2,10 +2,11 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.awt.event.ActionListener;
 
 /**
  * A graphical view of the simulation grid.
- * The view displays a colored rectangle for each location 
+ * The view displays a colored rectangle for each location
  * representing its contents. It uses a default background color.
  * Colors for each type of species can be defined using the
  * setColor method.
@@ -34,13 +35,16 @@ public class SimulatorView extends JFrame
     // A statistics object computing and storing simulation information
     private FieldStats stats;
 
+    private GUIHandler handler;
+
     /**
      * Create a view of the given width and height.
      * @param height The simulation's height.
      * @param width  The simulation's width.
      */
-    public SimulatorView(int height, int width)
+    public SimulatorView(int height, int width, GUIHandler handler)
     {
+        this.handler = handler;
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
@@ -53,15 +57,7 @@ public class SimulatorView extends JFrame
         setLocation(100, 50);
 
         fieldView = new FieldView(height, width);
-    }
 
-    /**
-     * Assemble components in a JPanel that will then be returned to the SimulatorScene to be displayed in our application.
-     * @return (JPanel) The created panel.
-     */
-    public JFrame createAndShowGUI()
-    {
-        // a FlowLayout Border layout with gaps between components
         JFrame frame = new JFrame("Hello World Java Swing");
         frame.setMinimumSize(new Dimension(800, 600));
 
@@ -75,13 +71,32 @@ public class SimulatorView extends JFrame
         infoPane.add(seasonLabel, BorderLayout.CENTER);
         infoPane.add(temperatureLabel, BorderLayout.CENTER);
 
-        JPanel contents = new JPanel(new FlowLayout());
-        contents.add(infoPane, BorderLayout.NORTH);
-        contents.add(fieldView, BorderLayout.CENTER);
-        contents.add(population, BorderLayout.SOUTH);
+        JButton actionButton = new JButton("Launch long simulation");
 
-        frame.getContentPane().add(contents);
-        return frame;
+        ActionListener launchSim = e -> {
+            handler.launchLongSimulation();
+        };
+
+        actionButton.addActionListener(launchSim);
+
+        JPanel contents = new JPanel(new FlowLayout());
+        add(infoPane, BorderLayout.NORTH);
+        add(fieldView, BorderLayout.CENTER);
+        add(population, BorderLayout.SOUTH);
+        add(actionButton, BorderLayout.SOUTH);
+
+        pack();
+        setVisible(true);
+    }
+
+    /**
+     * Assemble components in a JPanel that will then be returned to the SimulatorScene to be displayed in our application.
+     * @return (JPanel) The created panel.
+     */
+    public void createAndShowGUI()
+    {
+        // a FlowLayout Border layout with gaps between components
+
     }
 
     /**

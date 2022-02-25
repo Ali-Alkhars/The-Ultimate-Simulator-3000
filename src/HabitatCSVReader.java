@@ -68,10 +68,10 @@ public class HabitatCSVReader extends CSVReader {
      */
     protected void resetParameters()
     {
-        winterTemperatures = null;
-        springTemperatures = null;
-        summerTemperatures = null;
-        autumnTemperatures = null;
+        winterTemperatures = new int[3];
+        springTemperatures = new int[3];
+        summerTemperatures = new int[3];
+        autumnTemperatures = new int[3];
         plantConcentration = 0;
 
     }

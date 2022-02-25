@@ -53,6 +53,8 @@ public class Initializer {
     // The Simulator object that will take care of running the simulation.
     private Simulator createdSimulator;
 
+    private GUIHandler handler;
+
     /**
      * Default constructor, calls the other with the default width and depth.
      */
@@ -102,6 +104,7 @@ public class Initializer {
         ArrayList<String> animalChoices = animalReader.getChoicesList();
         ArrayList<String> habitatChoices = habitatReader.getChoicesList();
         GUIHandler g = new GUIHandler(this, animalChoices, habitatChoices, CLIMATE_CHANGE_SCENARIO_NAMES);
+        handler = g;
     }
 
     /**
@@ -115,7 +118,7 @@ public class Initializer {
     {
         SimulationStep simulatorStepCounter = new SimulationStep();
         Field field = new Field(fieldDepth, fieldWidth);
-        view = new SimulatorView(fieldDepth, fieldWidth);
+        view = new SimulatorView(fieldDepth, fieldWidth, handler);
 
         ClimateChange chosenClimateChangeScenario = createChosenClimateChangeScenario(scenarioName);
         Habitat simulationHabitat = createHabitat(chosenHabitat, simulatorStepCounter, chosenClimateChangeScenario);

@@ -1,5 +1,3 @@
-
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JFrame;
@@ -40,15 +38,9 @@ public class GUIHandler {
 
     public void switchToSimulatorView(String chosenHabitat,HashMap<String, Integer> selectedAnimals,String chosenScenario)
     {
-        System.out.println("le truc choisi et recu: "+chosenHabitat);
-        for (String i : selectedAnimals.keySet()) {System.out.println(i + ": "+selectedAnimals.get(i));}
-        System.out.println("le truc choisi et recu: "+chosenScenario);
-        new Thread(() -> {
-            simulatorOnDisplay = simulationInitializer.initializeSimulation(chosenHabitat, selectedAnimals, chosenScenario);
-        }).start();
-        SimulatorView viewForSim = simulationInitializer.getSimulatorView();
+        simulatorOnDisplay = simulationInitializer.initializeSimulation(chosenHabitat, selectedAnimals, chosenScenario);
         currentFrame.setVisible(false);
-        showSimulatorView(viewForSim);
+        //simulatorOnDisplay.runLongSimulation();
     }
 
     public void switchToMenuView()
@@ -58,12 +50,8 @@ public class GUIHandler {
         showMenuView();
     }
 
-    private void showSimulatorView(SimulatorView viewForSim)
+    public void launchLongSimulation()
     {
-        JFrame simulatorFrame = viewForSim.createAndShowGUI();
-        simulatorFrame.pack();
-        simulatorFrame.setVisible(true);
-        currentFrame = simulatorFrame;
         simulatorOnDisplay.runLongSimulation();
     }
 
