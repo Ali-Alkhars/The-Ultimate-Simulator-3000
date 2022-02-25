@@ -1,4 +1,4 @@
-//02.21
+//02.25
 import java.util.List;
 import java.util.Random;
 
@@ -102,7 +102,7 @@ public abstract class Species
      */
     protected void setLocation(Location newLocation)
     {
-        if(!(field.getObjectAt(newLocation) instanceof Plant ||  location != null)) {
+        if(field.getObjectAt(newLocation)  != null) {
             field.clear(location);
         }
         location = newLocation;

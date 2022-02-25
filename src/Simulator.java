@@ -10,7 +10,7 @@ import java.awt.Color;
  * there are preys who feed on plants, and predators who compete for the preys.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.24
+ * @version 2022.02.25
  */
 public class Simulator
 {
@@ -54,7 +54,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(10000); // Should we change this ?
+        simulate(800); // Should we change this ?
     }
 
     /**

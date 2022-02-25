@@ -26,10 +26,10 @@ public class HabitatCSVReader extends CSVReader {
      * Build a HabitatCSVReader and initialize its fields.
      */
     public HabitatCSVReader() {
-        winterTemperatures = new int[]{0,0,0};
-        autumnTemperatures = new int[]{0,0,0};
-        springTemperatures = new int[]{0,0,0};
-        summerTemperatures = new int[]{0,0,0};
+        winterTemperatures = new int[2];
+        autumnTemperatures = new int[2];
+        springTemperatures = new int[2];
+        summerTemperatures = new int[2];
         plantConcentration = 0;
     }
 
@@ -44,22 +44,22 @@ public class HabitatCSVReader extends CSVReader {
     {
         extractedData = removeHabitatName(extractedData);
         for (String i : extractedData) {System.out.println("REmoved the nme of extrcted Data: "+i);}
-        if (extractedData.length != 13) {
+        if (extractedData.length != 9) {
             System.out.println("Habitat issue, please restart.");
         }
 
         for(int i = 0; i < extractedData.length; i++) {
-            if(i/3 == 0) {
+            if(i/2 == 0) {
                 System.out.println("la data choisie :" +Integer.parseInt(extractedData[i]));
-                winterTemperatures[i%3] = Integer.parseInt(extractedData[i]);
-            } else if (i/3 == 1) {
-                springTemperatures[i%3] = Integer.parseInt(extractedData[i]);
-            } else if (i/3 == 2) {
-                summerTemperatures[i%3] = Integer.parseInt(extractedData[i]);
-            } else if (i/3 == 3){
-                autumnTemperatures[i%3] = Integer.parseInt(extractedData[i]);
+                winterTemperatures[i%2] = Integer.parseInt(extractedData[i]);
+            } else if (i/2 == 1) {
+                springTemperatures[i%2] = Integer.parseInt(extractedData[i]);
+            } else if (i/2 == 2) {
+                summerTemperatures[i%2] = Integer.parseInt(extractedData[i]);
+            } else if (i/2 == 3){
+                autumnTemperatures[i%2] = Integer.parseInt(extractedData[i]);
             }
-            plantConcentration = Double.valueOf(extractedData[12]);
+            plantConcentration = Double.valueOf(extractedData[8]);
         }
     }
 
@@ -68,10 +68,10 @@ public class HabitatCSVReader extends CSVReader {
      */
     protected void resetParameters()
     {
-        winterTemperatures = new int[3];
-        springTemperatures = new int[3];
-        summerTemperatures = new int[3];
-        autumnTemperatures = new int[3];
+        winterTemperatures = new int[2];
+        springTemperatures = new int[2];
+        summerTemperatures = new int[2];
+        autumnTemperatures = new int[2];
         plantConcentration = 0;
 
     }

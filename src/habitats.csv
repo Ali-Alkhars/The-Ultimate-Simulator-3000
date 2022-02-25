@@ -1,3 +1,3 @@
-name,minWinterTemp,avgWinterTemp,maxWinterTemp,minSpringTemp,avgSprintTemp,maxSpringTemp,minSummerTemp,avgSummerTemp,maxSummerTemp,minAutumnTemp,avgAutumnTemp,maxAutumnTemp,plantConcentration
-savana,5,20,30,15,35,40,25,40,55,15,30,40,0.2
-forest,-10,5,15,10,20,25,20,25,30,15,20,25,0.6
+name,avgWinterTemp,winterTempChange,avgSprintTemp,sprintTempChange,avgSummerTemp,summerTempChange,avgAutumnTemp,autumnTempChange,plantConcentration
+savana,20,5,25,10,35,10,25,5,0.1
+savana,5,10,20,10,25,10,15,10,0.3

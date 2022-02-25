@@ -9,7 +9,7 @@ import java.util.Random;
  * Initializing the simulation. It first launches the UI, then builds the appropriate objects to run the simulation desired by the user.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.22
+ * @version 2022.02.25
  */
 
 public class Initializer {

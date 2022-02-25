@@ -6,7 +6,7 @@ import javax.swing.JFrame;
  * The GUIHandler handles the GUI by switching between scenes and coordinating their interactions with the Simulator.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.22
+ * @version 2022.02.25
  */
 public class GUIHandler {
 
@@ -29,7 +29,8 @@ public class GUIHandler {
     }
 
 
-    private void showMenuView() {
+    private void showMenuView()
+    {
         JFrame menuFrame = menuViewMaker.createAndShow();
         menuFrame.pack();
         menuFrame.setVisible(true);
@@ -52,7 +53,7 @@ public class GUIHandler {
 
     public void launchLongSimulation()
     {
-        simulatorOnDisplay.runLongSimulation();
+        new Thread(simulatorOnDisplay::runLongSimulation).start();
     }
 
     /**
