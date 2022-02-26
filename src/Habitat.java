@@ -7,7 +7,7 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.24
+ * @version 2022.02.26
  */
 public class Habitat
 {
@@ -21,6 +21,8 @@ public class Habitat
     private SimulationStep simStep;
     // hold a climate change scenario
     private ClimateChange changeScenario;
+    // true if the current season is Spring
+    private boolean isSpring;
     private Random random;
 
     /**
@@ -43,6 +45,7 @@ public class Habitat
         // Season initialisations
         initialiseSeasons(spring, summer, autumn, winter);
         currentSeason = seasons.get(0);   // the simulation always starts with spring
+        isSpring = true;
         climateChangeEffect(); // do the climate change effect on the first season
     }
 
@@ -60,6 +63,14 @@ public class Habitat
     public int getCurrentTemperature()
     {
         return currentSeason.getCurrentTemp().getTemperature();
+    }
+
+    /**
+     * @return true if the current season is spring, false otherwise.
+     */
+    public boolean getIsSpring()
+    {
+        return isSpring;
     }
 
     /**
@@ -84,6 +95,7 @@ public class Habitat
         if(step != 0 && step % SEASON_CHANGE == 0)
         {
             changeSeason();
+            checkIsSpring();
             climateChangeEffect();
         }
 
@@ -130,6 +142,14 @@ public class Habitat
         else {
             currentSeason = seasons.get(seasonIndx + 1);
         }
+    }
+
+    /**
+     * Make isSpring true or false depending on the current season.
+     */
+    private void checkIsSpring()
+    {
+        isSpring = currentSeason.getName().equals(seasons.get(0).getName());
     }
 
     /**

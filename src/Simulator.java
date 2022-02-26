@@ -10,7 +10,7 @@ import java.awt.Color;
  * there are preys who feed on plants, and predators who compete for the preys.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.25
+ * @version 2022.02.26
  */
 public class Simulator
 {
@@ -54,7 +54,7 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(800); // Should we change this ?
+        simulate(4000); // Should we change this ?
     }
 
     /**
@@ -67,7 +67,7 @@ public class Simulator
         for(int step = 1; step <= numSteps && view.isViable(field); step++) {
             delay(DEFAULT_DELAY);
             simulateOneStep();
-            // delay(60);   // uncomment this to run more slowly
+            // delay(200);   // uncomment this to run more slowly
         }
     }
 
@@ -81,14 +81,25 @@ public class Simulator
             simStep.incStep();
             simulationHabitat.habitatStep();
             time.timeStep();
+            boolean isSpring = simulationHabitat.getIsSpring(); // added here to reduce method calls
 
             // Provide space for newborn species.
             List<Species> newSpecies = new ArrayList<>();
             // Let all species act.
-            for(Iterator<Species> it = species.iterator(); it.hasNext(); ) {
-                Species species = it.next();
-                species.act(newSpecies, time.getIsNight(), simulationHabitat.getCurrentTemperature());
-                if(! species.isAlive()) {
+            for(Iterator<Species> it = species.iterator(); it.hasNext(); )
+            {
+                Species specie = it.next();
+                // Update the status of isSpring in the plants (done here to reduce coupling)
+                if (specie instanceof Plant)
+                {
+                    Plant tempPlant = (Plant) specie;
+                    if (tempPlant.getIsSpring() != isSpring) {
+                        tempPlant.toggleIsSpring();
+                    }
+                }
+
+                specie.act(newSpecies, time.getIsNight(), simulationHabitat.getCurrentTemperature());
+                if(! specie.isAlive()) {
                     it.remove();
                 }
             }

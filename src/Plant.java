@@ -5,7 +5,7 @@ import java.util.List;
  * that inherits class Species
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.21
+ * @version 2022.02.26
  */
 public class Plant extends Species
 {
@@ -18,6 +18,8 @@ public class Plant extends Species
     // true if the plant can regrow,
     // needs at least one season till it is true again
     private boolean canRegrow;
+    // true if plant appears dead due to temperature circumstances
+    private boolean deadDueTemperature;
     // the probability that the plant's health grows
     private static final double GROWING_PROBABILITY = 0.1;
 
@@ -38,8 +40,9 @@ public class Plant extends Species
         super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability);
         this.initialHealth = initialHealth;
         currentHealth = initialHealth;
-        isSpring = true; // true or not??
+        isSpring = true;
         canRegrow = true;
+        deadDueTemperature = false;
     }
 
     /**
@@ -57,7 +60,7 @@ public class Plant extends Species
     public void act(List<Species> newPlants, boolean isNight, int temperature)
     {
         // 1)
-        if (isAlive() && ! survivesTemperature(temperature))
+        if (! deadDueTemperature && ! survivesTemperature(temperature))
         {
             setDead();
         }
@@ -65,16 +68,15 @@ public class Plant extends Species
         else if (! isNight)
         {
             // i)
-            if (! isAlive() && survivesTemperature(temperature) && isSpring) {
+            if (deadDueTemperature && survivesTemperature(temperature) && isSpring) {
                 regrow();
             }
             // ii)
-            else if (isAlive()) {
+            else if (! deadDueTemperature) {
                 reproduce(newPlants);
                 grow();
             }
         }
-
     }
 
     /**
@@ -95,6 +97,7 @@ public class Plant extends Species
             if (free.size() > 0) {
                 Location loc = free.remove(0);
                 Plant newPlant = new Plant(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), initialHealth);
+                newPlant.setIsSpring(isSpring);
                 newPlants.add(newPlant);
             }
         }
@@ -110,7 +113,7 @@ public class Plant extends Species
     protected void setDead()
     {
         if(getLocation() != null) {
-            toggleIsAlive();
+            deadDueTemperature = true;
             canRegrow = false; // set to false because if left as true, it could regrow the next step
             getField().clear(getLocation());
         }
@@ -124,7 +127,7 @@ public class Plant extends Species
     private void regrow()
     {
         if(getField().getObjectAt(getLocation()) == null && canRegrow)   {
-            toggleIsAlive();
+            deadDueTemperature = false;
             getField().place(this, getLocation());
             currentHealth = initialHealth;
         }
@@ -152,7 +155,7 @@ public class Plant extends Species
         currentHealth--;
 
         if (currentHealth <= 0)    {
-            setDead();
+            super.setDead();
         }
     }
 
@@ -166,5 +169,23 @@ public class Plant extends Species
     {
         isSpring = ! isSpring;
         canRegrow = true;
+    }
+
+    /**
+     * @return true if the current season is spring, false otherwise.
+     */
+    public boolean getIsSpring()
+    {
+        return isSpring;
+    }
+
+    /**
+     * Set the isSpring value to the given parameter
+     *
+     * @param spring true if it is spring, false otherwise.
+     */
+    private void setIsSpring(boolean spring)
+    {
+        isSpring = spring;
     }
 }
