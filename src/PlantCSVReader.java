@@ -2,7 +2,7 @@
  * Setting and allowing other classes to retrieve data related to plants.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.22
+ * @version 2022.02.27
  */
 
 public class PlantCSVReader extends CSVReader
@@ -19,8 +19,8 @@ public class PlantCSVReader extends CSVReader
     private int nutritionalValue;
     // Probability to see plant reproduce.
     private double reproductionProbability;
-    // The plant's initial health.
-    private int initialHealth;
+    // The plant's maximum health.
+    private int maxHealth;
 
     public PlantCSVReader ()
     {
@@ -29,7 +29,7 @@ public class PlantCSVReader extends CSVReader
         minimumTemperature = 0;
         nutritionalValue = 0;
         reproductionProbability = 0;
-        initialHealth = 0;
+        maxHealth = 0;
     }
 
     /**
@@ -47,7 +47,7 @@ public class PlantCSVReader extends CSVReader
         minimumTemperature = Integer.valueOf(extractedData[2]);
         nutritionalValue = Integer.valueOf(extractedData[3]);
         reproductionProbability = Double.valueOf(extractedData[4]);
-        initialHealth = Integer.valueOf(extractedData[5]);
+        maxHealth = Integer.valueOf(extractedData[5]);
     }
 
     /**
@@ -60,7 +60,7 @@ public class PlantCSVReader extends CSVReader
         minimumTemperature = 0;
         nutritionalValue = 0;
         reproductionProbability = 0;
-        initialHealth =0;
+        maxHealth =0;
     }
 
     /**
@@ -106,9 +106,9 @@ public class PlantCSVReader extends CSVReader
     }
 
     /**
-     * @return (int) The plant's initial health.
+     * @return (int) The plant's maximum health.
      */
-    public int getInitialHealth() {
-        return initialHealth;
+    public int getMaxHealth() {
+        return maxHealth;
     }
 }

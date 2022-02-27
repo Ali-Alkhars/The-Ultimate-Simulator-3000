@@ -9,7 +9,7 @@ import java.util.Random;
  * Initializing the simulation. It first launches the UI, then builds the appropriate objects to run the simulation desired by the user.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.25
+ * @version 2022.02.27
  */
 
 public class Initializer {
@@ -292,10 +292,10 @@ public class Initializer {
         int minimumTemperature = plantReader.getMinimumTemperature();
         int nutritionalValue = plantReader.getNutritionalValue();
         double reproductionProbability = plantReader.getReproductionProbability();
-        int initialHealth = plantReader.getInitialHealth();
+        int maxHealth = plantReader.getMaxHealth();
         for (int i = 0; i< getNumberOfPlants(); i++) {
             freeLocationToPlaceAnimal = findAvailableLocation(field);
-            Plant createdPlant = new Plant(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, initialHealth);
+            Plant createdPlant = new Plant(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, maxHealth);
             speciesToEvolveInSimulation.add(createdPlant);
         }
         view.setColor(name, DEFAULT_PLANT_COLOR);

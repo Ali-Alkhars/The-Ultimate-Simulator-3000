@@ -27,24 +27,20 @@ public class FieldStats
         countsValid = true;
     }
 
+    public void checkCountIsValid(Field field)
+    {
+        if(!countsValid) {
+            generateCounts(field);
+        }
+    }
     /**
      * Get details of what is in the field.
      * @return A string describing what is in the field.
      */
-    public String getPopulationDetails(Field field)
+    public int getCount (String speciesName)
     {
-        StringBuffer buffer = new StringBuffer();
-        if(!countsValid) {
-            generateCounts(field);
-        }
-        for(String speciesName : counters.keySet()) {
-            Counter info = counters.get(speciesName);
-            buffer.append(info.getName());
-            buffer.append(": ");
-            buffer.append(info.getCount());
-            buffer.append(' ');
-        }
-        return buffer.toString();
+        Counter info = counters.get(speciesName);
+        return info.getCount();
     }
     
     /**

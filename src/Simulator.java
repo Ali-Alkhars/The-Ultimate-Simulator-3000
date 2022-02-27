@@ -10,7 +10,7 @@ import java.awt.Color;
  * there are preys who feed on plants, and predators who compete for the preys.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.26
+ * @version 2022.02.27
  */
 public class Simulator
 {
@@ -54,7 +54,12 @@ public class Simulator
      */
     public void runLongSimulation()
     {
-        simulate(4000); // Should we change this ?
+        simulate(2000);
+    }
+    
+    public void runHundredSteps()
+    {
+        simulate(100);
     }
 
     /**
@@ -81,7 +86,12 @@ public class Simulator
             simStep.incStep();
             simulationHabitat.habitatStep();
             time.timeStep();
-            boolean isSpring = simulationHabitat.getIsSpring(); // added here to reduce method calls
+
+            // the following variables are added here to reduce method calls:
+            boolean isSpring = simulationHabitat.getIsSpring();
+            boolean isNight = time.getIsNight();
+            int currentTemperature = simulationHabitat.getCurrentTemperature();
+            boolean yearPassed = simulationHabitat.yearPassed();
 
             // Provide space for newborn species.
             List<Species> newSpecies = new ArrayList<>();
@@ -98,7 +108,7 @@ public class Simulator
                     }
                 }
 
-                specie.act(newSpecies, time.getIsNight(), simulationHabitat.getCurrentTemperature());
+                specie.act(newSpecies, isNight, currentTemperature, yearPassed);
                 if(! specie.isAlive()) {
                     it.remove();
                 }
@@ -106,7 +116,7 @@ public class Simulator
 
             // Add the newly born species to the main lists.
             species.addAll(newSpecies);
-
+            System.out.println(species.size());
             view.showStatus(simStep.getCurrentStep(), time.timeString(), simulationHabitat.getCurrentSeason(), simulationHabitat.getCurrentTemperature(), field);
         }
     }

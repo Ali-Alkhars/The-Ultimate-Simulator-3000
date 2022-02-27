@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JFrame;
@@ -6,15 +8,17 @@ import javax.swing.JFrame;
  * The GUIHandler handles the GUI by switching between scenes and coordinating their interactions with the Simulator.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.25
+ * @version 2022.02.27
  */
 public class GUIHandler {
 
     private Initializer simulationInitializer;
     private Simulator simulatorOnDisplay;
     private JFrame currentFrame;
-    private MenuView menuViewMaker;
-
+    
+    private ArrayList<String> animalChoices;
+    private ArrayList<String> habitatChoices;
+    private ArrayList<String> scenarioChoices;
     /**
      * Build a GUIHandler with appropriate lists of choices for animals, habitats, and climate change scenarios.
      * @param animalChoices (ArrayList<String>) List of animal choices.
@@ -24,13 +28,15 @@ public class GUIHandler {
     public GUIHandler (Initializer initializer, ArrayList<String> animalChoices, ArrayList<String> habitatChoices, ArrayList<String> scenarioChoices)
     {
         simulationInitializer = initializer;
-        menuViewMaker = new MenuView(this, animalChoices, habitatChoices, scenarioChoices);
+        this.animalChoices = animalChoices;
+        this.habitatChoices = habitatChoices;
+        this.scenarioChoices = scenarioChoices;
         showMenuView();
     }
 
 
-    private void showMenuView()
-    {
+    private void showMenuView() {
+        MenuView menuViewMaker = new MenuView(this, animalChoices, habitatChoices, scenarioChoices);
         JFrame menuFrame = menuViewMaker.createAndShow();
         menuFrame.pack();
         menuFrame.setVisible(true);
@@ -41,7 +47,6 @@ public class GUIHandler {
     {
         simulatorOnDisplay = simulationInitializer.initializeSimulation(chosenHabitat, selectedAnimals, chosenScenario);
         currentFrame.setVisible(false);
-        //simulatorOnDisplay.runLongSimulation();
     }
 
     public void switchToMenuView()
@@ -50,10 +55,20 @@ public class GUIHandler {
         currentFrame.setVisible(false);
         showMenuView();
     }
-
+    
     public void launchLongSimulation()
     {
         new Thread(simulatorOnDisplay::runLongSimulation).start();
+    }
+    
+    public void runHundredSteps()
+    {
+        new Thread(simulatorOnDisplay::runHundredSteps).start();
+    }
+    
+    public void runOneStep()
+    {
+        simulatorOnDisplay.simulate(1);
     }
 
     /**

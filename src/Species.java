@@ -1,7 +1,14 @@
-//02.25
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This is an abstract class representing all the species of
+ * the simulation. It defines some characteristics and methods
+ * of the species.
+ *
+ * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741). (contains some code by David J. Barnes and Michael Kölling)
+ * @version 2022.02.26
+ */
 public abstract class Species
 {
     // Whether the species is alive or not.
@@ -51,7 +58,7 @@ public abstract class Species
      * whatever it wants/needs to do.
      * @param newSpecies A list to receive newly born animals.
      */
-    abstract public void act(List<Species> newSpecies, boolean isNight, int temperature);
+    abstract public void act(List<Species> newSpecies, boolean isNight, int temperature, boolean yearPassed);
 
     abstract void reproduce(List<Species> newOfThisKind);
 
@@ -102,7 +109,7 @@ public abstract class Species
      */
     protected void setLocation(Location newLocation)
     {
-        if(field.getObjectAt(newLocation)  != null) {
+        if(location  != null) {
             field.clear(location);
         }
         location = newLocation;

@@ -6,8 +6,8 @@ import java.util.Iterator;
  * A class representing shared characteristics of animals,
  * could be initialised for prey animals.
  *
- * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.21
+ * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566). (contains some code by David J. Barnes and Michael Kölling)
+ * @version 2022.02.27
  */
 
 public class Animal extends Species
@@ -27,7 +27,7 @@ public class Animal extends Species
     // true if the animal is active at night
     private final boolean isNocturnal;
     // the number of steps that should pass until an animal in hibernation moves
-    private static final int STAY_STEPS = 25;
+    private static final int STAY_STEPS = 10;
 
     // Fields prone to change during the animal's life
 
@@ -75,17 +75,17 @@ public class Animal extends Species
         // the initial food level is its nutritional value
         if (randomAge) {
             age = rand.nextInt(maxAge);
-            // Default value is nutritionalValue to simulate the nutrient apport of the mother's milk/ other parental feeding.
-            foodLevel = rand.nextInt(nutritionalValue/2);
+            // Default value is nutritionalValue to simulate the nutrient apart from the mother's milk/ other parental feeding.
+            foodLevel = rand.nextInt(nutritionalValue);
         } else {
             age = 0;
-            foodLevel = nutritionalValue/2;
+            foodLevel = nutritionalValue;
         }
     }
 
     /**
      * Imitate an animal's step by doing the following:
-     * 1) increment the animal's age.
+     * 1) increment the animal's age if a year has passed.
      * 2) if the animal is alive, then:
      *      i) check if the animal should hibernate.
      *      ii) if the animal can't withstand the current temperature, then it dies.
@@ -93,17 +93,20 @@ public class Animal extends Species
      *          a) if it passed STAY_STEPS steps without moving, then move and increment hunger.
      *          b) increment hiberSteps.
      *      iv) if the animal is not in hibernation, then:
-     *          a) if it is day, or it is night and the animal is nocturnal, then move.
-     *          b) increment hunger.
+     *          a) if it is night and the animal is nocturnal, then move.
+     *          b) if it is day, then all animals move and increment hunger.
      *
      * @param newSpecies (List<Species>) A list to receive newly born animals.
      * @param isNight (boolean) true if it is night in the simulation
      * @param temperature (int) the current temperature of the simulation
+     * @param yearPassed true if a year has passed in the simulation
      */
-    public void act(List<Species> newSpecies, boolean isNight, int temperature)
+    public void act(List<Species> newSpecies, boolean isNight, int temperature, boolean yearPassed)
     {
         // 1)
-        incrementAge();
+        if (yearPassed) {
+            incrementAge();
+        }
 
         // 2)
         if(isAlive())
@@ -131,11 +134,16 @@ public class Animal extends Species
             else
             {
                 // a)
-                if (!isNight || isNocturnal) {
+                if (isNight && isNocturnal) {
                     makeMove(newSpecies);
                 }
                 // b)
-                incrementHunger();
+                else if (! isNight) {
+                    makeMove(newSpecies);
+                }
+                if  (! isNight) {
+                    incrementHunger();
+                }
             }
         }
     }
@@ -281,12 +289,15 @@ public class Animal extends Species
     protected void reproduce(List<Species> speciesInSimulation)
     {
         Field field = getField();
-        List<Location> free = field.getFreeAdjacentLocations(getLocation());
-        int births = numberOfBirths();
-        for(int b = 0; b < births && free.size() > 0; b++) {
-            Location loc = free.remove(0);
-            Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), maxAge, breedingAge, maxLitterSize,false, hibernates, isNocturnal);
-            speciesInSimulation.add(young);
+        if (field != null)
+        {
+            List<Location> free = field.getFreeAdjacentLocations(getLocation());
+            int births = numberOfBirths();
+            for(int b = 0; b < births && free.size() > 0; b++) {
+                Location loc = free.remove(0);
+                Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), maxAge, breedingAge, maxLitterSize,false, hibernates, isNocturnal);
+                speciesInSimulation.add(young);
+            }
         }
     }
 

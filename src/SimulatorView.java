@@ -3,16 +3,18 @@ import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.awt.event.ActionListener;
+import javax.swing.border.LineBorder;
+import javax.swing.border.EmptyBorder;
 
 /**
  * A graphical view of the simulation grid.
- * The view displays a colored rectangle for each location
+ * The view displays a colored rectangle for each location 
  * representing its contents. It uses a default background color.
  * Colors for each type of species can be defined using the
  * setColor method.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.23
+ * @version 2022.02.27
  */
 public class SimulatorView extends JFrame
 {
@@ -23,18 +25,18 @@ public class SimulatorView extends JFrame
     private static final Color UNKNOWN_COLOR = Color.gray;
 
     private final String STEP_PREFIX = "Step: ";
-    private final String POPULATION_PREFIX = "Population: ";
     private final String TIME_PREFIX = "Time: ";
     private final String TEMPERATURE_PREFIX = "Temperature: ";
     private final String SEASON_PREFIX = "Season: ";
-    private JLabel stepLabel, population, infoLabel, timeLabel, temperatureLabel, seasonLabel;
+    private JLabel stepLabel, infoLabel, timeLabel, temperatureLabel, seasonLabel;
+    private JPanel population;
     private FieldView fieldView;
 
     // A map for storing colors for participants in the simulation
     private Map<String, Color> colors;
     // A statistics object computing and storing simulation information
     private FieldStats stats;
-
+    
     private GUIHandler handler;
 
     /**
@@ -49,16 +51,20 @@ public class SimulatorView extends JFrame
         colors = new LinkedHashMap<>();
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
-        population = new JLabel(POPULATION_PREFIX, JLabel.CENTER);
         timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
         temperatureLabel = new JLabel(TEMPERATURE_PREFIX, JLabel.CENTER);
         seasonLabel = new JLabel(SEASON_PREFIX, JLabel.CENTER);
-
+        
+        population = new JPanel();
+        // Grid with 5 columns and as many rows as necessary.
+        GridLayout gridLayout = new GridLayout(4,5);
+        population.setLayout(gridLayout);
+        
         setLocation(100, 50);
 
         fieldView = new FieldView(height, width);
-
-        JFrame frame = new JFrame("Hello World Java Swing");
+        
+        JFrame frame = new JFrame("Life Simulator 3000");
         frame.setMinimumSize(new Dimension(800, 600));
 
         FlowLayout simInfo = new FlowLayout();
@@ -71,32 +77,49 @@ public class SimulatorView extends JFrame
         infoPane.add(seasonLabel, BorderLayout.CENTER);
         infoPane.add(temperatureLabel, BorderLayout.CENTER);
 
-        JButton actionButton = new JButton("Launch long simulation");
-
-        ActionListener launchSim = e -> {
+        JButton launchLongSimButton = new JButton("Launch long simulation");
+        ActionListener launchLongSim = e -> {
             handler.launchLongSimulation();
         };
-
-        actionButton.addActionListener(launchSim);
-
-        JPanel contents = new JPanel(new FlowLayout());
+        launchLongSimButton.addActionListener(launchLongSim);
+        
+        JButton launchHundredStepsButton = new JButton("Run 100 steps");
+        ActionListener launchHundredSteps = e -> {
+            handler.runHundredSteps();
+        };
+        launchHundredStepsButton.addActionListener(launchHundredSteps);
+        
+        JButton launchOneStepButton  = new JButton("Run 1 step");
+        ActionListener launchOneStep = e -> {
+            handler.runOneStep();
+        };
+        launchOneStepButton.addActionListener(launchOneStep);
+        
+        JButton goBackMenuButton  = new JButton("Run a new simulation");
+        ActionListener goBackMenu = e -> {
+            setVisible(false);
+            handler.switchToMenuView();
+        };
+        goBackMenuButton.addActionListener(goBackMenu);
+        
+        JPanel buttons = new JPanel(new FlowLayout());
+        buttons.add(launchLongSimButton);
+        buttons.add(launchHundredStepsButton);
+        buttons.add(launchOneStepButton);
+        buttons.add(goBackMenuButton);
+        
+        Box bottomComponents = Box.createVerticalBox();
+        bottomComponents.add(population);
+        bottomComponents.add(buttons);
+        
+        JPanel centeredFieldView = new JPanel(new BorderLayout());
+        centeredFieldView.add(fieldView, BorderLayout.CENTER);
         add(infoPane, BorderLayout.NORTH);
         add(fieldView, BorderLayout.CENTER);
-        add(population, BorderLayout.SOUTH);
-        add(actionButton, BorderLayout.SOUTH);
+        add(bottomComponents, BorderLayout.SOUTH);
 
         pack();
         setVisible(true);
-    }
-
-    /**
-     * Assemble components in a JPanel that will then be returned to the SimulatorScene to be displayed in our application.
-     * @return (JPanel) The created panel.
-     */
-    public void createAndShowGUI()
-    {
-        // a FlowLayout Border layout with gaps between components
-
     }
 
     /**
@@ -170,9 +193,37 @@ public class SimulatorView extends JFrame
             }
         }
         stats.countFinished();
-
-        population.setText(POPULATION_PREFIX + stats.getPopulationDetails(field));
+        
         fieldView.repaint();
+        generatePopulationComponent(field);
+    }
+    
+    /**
+     *
+     * Generates a population component with the color, count, and name of each species present in the simulation.
+     * The technique to generate the small squares of a given color was found on https://zetcode.com/javaswing/basicswingcomponentsII/
+     * @param field (Field) The field whose population status has to be displayed.
+     */
+    private void generatePopulationComponent(Field field)
+    {
+        population.removeAll();
+        stats.checkCountIsValid(field);
+        for (String speciesName : colors.keySet()) {
+            int count = stats.getCount(speciesName);
+            
+            Box speciesDetails = Box.createHorizontalBox();
+            population.add(speciesDetails);
+            JPanel colorDisplay = new JPanel();
+            colorDisplay.setMaximumSize(new Dimension(10, 10));
+            colorDisplay.setBorder(LineBorder.createGrayLineBorder());
+            colorDisplay.setBackground(colors.get(speciesName));
+            // The pre-leading space should be improved as it is just a way to add a natural looking padding between the colored square and text. 
+            JLabel nameAndCount = new JLabel(" " + speciesName + ": " + count);
+            speciesDetails.add(colorDisplay);
+            speciesDetails.add(nameAndCount);
+
+            population.add(speciesDetails);
+        }
     }
 
     /**

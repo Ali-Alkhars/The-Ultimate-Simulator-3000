@@ -7,14 +7,14 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.26
+ * @version 2022.02.27
  */
 public class Habitat
 {
     // holds the habitat's seasons
     private List<Season> seasons;
     // the number of steps before the season changes
-    private static final int SEASON_CHANGE = 182;
+    private static final int SEASON_CHANGE = 50;
     // hold the current season
     private Season currentSeason;
     // keep track of the simulation steps.
@@ -74,6 +74,16 @@ public class Habitat
     }
 
     /**
+     * @return true if a year has passed in the simulation, false otherwise
+     */
+    public boolean yearPassed()
+    {
+        int step = simStep.getCurrentStep();
+        // step+1 because step starts with 0
+        return step != 0 && (step+1) % (SEASON_CHANGE * 4) == 0;
+    }
+
+    /**
      * should be called on every step of the simulation.
      *
      * 1) increase the climate change effect if a year has passed
@@ -86,7 +96,7 @@ public class Habitat
         int step = simStep.getCurrentStep();
 
         // 1)
-        if(step != 0 && (step+1) % (SEASON_CHANGE * 4) == 0) // step+1 because step starts with 0
+        if(yearPassed())
         {
             changeScenario.doClimateChange();
         }

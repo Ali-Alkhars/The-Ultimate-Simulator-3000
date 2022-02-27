@@ -5,12 +5,12 @@ import java.util.List;
  * that inherits class Species
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.26
+ * @version 2022.02.27
  */
 public class Plant extends Species
 {
-    // the plant's initial health
-    private final int initialHealth;
+    // the plant's maximum health
+    private  int maxHealth;
     // keep track of the plant's health
     private int currentHealth;
     // true if the current season is Spring
@@ -33,13 +33,13 @@ public class Plant extends Species
      * @param minimumTemperature the minimum temperature that the plant can withstand
      * @param nutritionalValue the nutritional value given to the specie that eats this plant
      * @param reproductionProbability the probability that this plant will reproduce
-     * @param initialHealth the plant's initial health
+     * @param maxHealth the plant's maximum health
      */
-    public Plant(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int initialHealth)
+    public Plant(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int maxHealth)
     {
         super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability);
-        this.initialHealth = initialHealth;
-        currentHealth = initialHealth;
+        this.maxHealth = maxHealth;
+        currentHealth = maxHealth;
         isSpring = true;
         canRegrow = true;
         deadDueTemperature = false;
@@ -51,13 +51,16 @@ public class Plant extends Species
      * 2) else if the time is day:
      *      i) if the plant is dead, and it's spring, and the temperature is suitable,
      *         then grow back
-     *      ii) else if the plant is alive, then reproduce and grow
+     *      ii) else if the plant is alive, then
+     *          a) increase max health by 1 if it lived for a year
+     *          b) reproduce and grow
      *
      * @param newPlants A list to return the new plant
      * @param isNight true if it is night in the simulation
      * @param temperature the current temperature of the simulation
+     * @param yearPassed true if a year has passed in the simulation
      */
-    public void act(List<Species> newPlants, boolean isNight, int temperature)
+    public void act(List<Species> newPlants, boolean isNight, int temperature, boolean yearPassed)
     {
         // 1)
         if (! deadDueTemperature && ! survivesTemperature(temperature))
@@ -73,6 +76,11 @@ public class Plant extends Species
             }
             // ii)
             else if (! deadDueTemperature) {
+                // a)
+                if (yearPassed) {
+                    maxHealth++;
+                }
+                // b)
                 reproduce(newPlants);
                 grow();
             }
@@ -92,13 +100,16 @@ public class Plant extends Species
         if (rand.nextDouble() <= getReproductionProbability())
         {
             Field field = getField();
-            List<Location> free = field.getFreeAdjacentLocations(getLocation());
+            if (field != null)
+            {
+                List<Location> free = field.getFreeAdjacentLocations(getLocation());
 
-            if (free.size() > 0) {
-                Location loc = free.remove(0);
-                Plant newPlant = new Plant(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), initialHealth);
-                newPlant.setIsSpring(isSpring);
-                newPlants.add(newPlant);
+                if (free.size() > 0) {
+                    Location loc = free.remove(0);
+                    Plant newPlant = new Plant(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), maxHealth);
+                    newPlant.setIsSpring(isSpring);
+                    newPlants.add(newPlant);
+                }
             }
         }
     }
@@ -129,7 +140,7 @@ public class Plant extends Species
         if(getField().getObjectAt(getLocation()) == null && canRegrow)   {
             deadDueTemperature = false;
             getField().place(this, getLocation());
-            currentHealth = initialHealth;
+            currentHealth = maxHealth;
         }
     }
 
@@ -139,7 +150,7 @@ public class Plant extends Species
      */
     private void grow()
     {
-        if (currentHealth < initialHealth && rand.nextDouble() <= GROWING_PROBABILITY) {
+        if (currentHealth < maxHealth && rand.nextDouble() <= GROWING_PROBABILITY) {
             currentHealth++;
         }
     }

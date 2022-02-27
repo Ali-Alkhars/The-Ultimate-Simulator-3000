@@ -1,2 +1,2 @@
-name,maximumTemperature,minimumTemperature,nutritionalValue,reproductionProbability,initialHealth
-plant,40,-5,9,0.01,5
+name,maximumTemperature,minimumTemperature,nutritionalValue,reproductionProbability,maxHealth
+plant,40,-5,9,0.005,2
