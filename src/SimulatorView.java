@@ -174,7 +174,7 @@ public class SimulatorView extends JFrame
         stepLabel.setText(STEP_PREFIX + step);
         timeLabel.setText(TIME_PREFIX + time);
         seasonLabel.setText(SEASON_PREFIX + season);
-        temperatureLabel.setText(TEMPERATURE_PREFIX + temperature);
+        temperatureLabel.setText(TEMPERATURE_PREFIX + temperature + " C");
         stats.reset();
 
         fieldView.preparePaint();

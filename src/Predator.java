@@ -18,7 +18,6 @@ public class Predator extends Animal{
      * @param minimumTemperature (int) the minimum temperature an predator can survive to
      * @param nutritionalValue (int) the predator's nutritional value
      * @param reproductionProbability (double) the probability that the predator reproduces at each step after a given minimum breeding age
-     * @param isFemale (boolean) if the predator is a female (if false, it's a male)
      * @param maxAge (int) the predator's life expectancy
      * @param breedingAge (int) the age at which predator can start to reproduce
      * @param maxLitterSize (int) the maximum number of children the predator can have in one reproduction
@@ -26,10 +25,10 @@ public class Predator extends Animal{
      * @param hibernates (boolean) whether or not predator is able to hibernate
      * @param isNocturnal (boolean) whether or not predator is more active at night
      */
-    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, boolean isFemale, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge, boolean hibernates, boolean isNocturnal)
+    public Predator (int strength, Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int maxAge, int breedingAge, int maxLitterSize,  boolean randomAge, boolean hibernates, boolean isNocturnal)
     {
         // call to the constructor of the Animal class
-        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, isFemale, maxAge, breedingAge, maxLitterSize, randomAge, hibernates, isNocturnal);
+        super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, maxAge, breedingAge, maxLitterSize, randomAge, hibernates, isNocturnal);
 
         this.strength = strength;
     }
@@ -157,7 +156,7 @@ public class Predator extends Animal{
             int births = numberOfBirths();
             for(int b = 0; b < births && free.size() > 0; b++) {
                 Location loc = free.remove(0);
-                Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false, getHibernates(), getIsNocturnal());
+                Predator young = new Predator(strength, field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), getMaxAge(), getBreedingAge(), getMaxLitterSize(),false, getHibernates(), getIsNocturnal());
                 newOfThisKind.add(young);
             }
         }

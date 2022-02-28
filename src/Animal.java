@@ -51,7 +51,6 @@ public class Animal extends Species
      * @param minimumTemperature (int) the minimum temperature an animal can survive to
      * @param nutritionalValue (int) the animal's nutritional value
      * @param reproductionProbability (double) the probability that the animal reproduces at each step after a given minimum breeding age
-     * @param isFemale (boolean) if the animal is a female (if false, it's a male)
      * @param maxAge (int) the animal's life expectancy
      * @param breedingAge (int) the age at which animal can start to reproduce
      * @param maxLitterSize (int) the maximum number of children the animal can have in one reproduction
@@ -59,14 +58,14 @@ public class Animal extends Species
      * @param hibernates (boolean) whether or not animal is able to hibernate
      * @param isNocturnal (boolean) whether or not animal is more active at night
      */
-    public Animal(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability,  boolean isFemale, int maxAge, int breedingAge, int maxLitterSize, boolean randomAge, boolean hibernates, boolean isNocturnal)
+    public Animal(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int maxAge, int breedingAge, int maxLitterSize, boolean randomAge, boolean hibernates, boolean isNocturnal)
     {
         super(field, location, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability);
 
         this.breedingAge = breedingAge;
         this.maxAge = maxAge;
         this.maxLitterSize = maxLitterSize;
-        this.isFemale = isFemale;
+        this.isFemale = randomSex();
         this.hibernates = hibernates;
         this.isNocturnal = isNocturnal;
         inHibernation = false;
@@ -270,7 +269,7 @@ public class Animal extends Species
         // task to reproduce is handed to women only so that the same reproduction does not happen twice
         if (this.isFemale) {
             for (Animal neighbor : neighboringAnimalsList) {
-                if (!(neighbor.isFemale) && neighbor.getName().equals(this.getName())) {
+                if (!neighbor.isFemale && neighbor.getName().equals(this.getName())) {
                     // The neighbor is a male of the same species
                     setLocation(neighbor.getLocation());
                     return true;
@@ -295,7 +294,7 @@ public class Animal extends Species
             int births = numberOfBirths();
             for(int b = 0; b < births && free.size() > 0; b++) {
                 Location loc = free.remove(0);
-                Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), randomSex(), maxAge, breedingAge, maxLitterSize,false, hibernates, isNocturnal);
+                Animal young = new Animal(field, loc, getName(), getMaximumTemperature(), getMinimumTemperature(), getNutritionalValue(), getReproductionProbability(), maxAge, breedingAge, maxLitterSize,false, hibernates, isNocturnal);
                 speciesInSimulation.add(young);
             }
         }
@@ -304,11 +303,11 @@ public class Animal extends Species
     /**
      * Returns a random boolean to randomize the sex of newborns.
      *
-     * @return (boolean) true (female) if the number is 1, false (male) if it is 0
+     * @return true if female, otherwise false (male)
      */
-    protected boolean randomSex()
+    private boolean randomSex()
     {
-        return rand.nextInt(2) == 1;
+        return Math.random() <= 0.5;
     }
 
     /**

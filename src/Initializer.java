@@ -120,7 +120,7 @@ public class Initializer {
         Field field = new Field(fieldDepth, fieldWidth);
         view = new SimulatorView(fieldDepth, fieldWidth, handler);
 
-        ClimateChange chosenClimateChangeScenario = createChosenClimateChangeScenario(scenarioName);
+        ClimateScenarios chosenClimateChangeScenario = createChosenClimateChangeScenario(scenarioName);
         Habitat simulationHabitat = createHabitat(chosenHabitat, simulatorStepCounter, chosenClimateChangeScenario);
         if (getNumberOfPlants() + getNumberOfAnimals(animalsToCreate) > calculateFieldArea()) {
             // throw alert, too many animals
@@ -143,13 +143,13 @@ public class Initializer {
     }
 
     /**
-     * Read data for the chosen habitat and create an habitat object appropriately.
+     * Read data for the chosen habitat and create a habitat object appropriately.
      * @param habitatName (String) The name of the chosen habitat.
      * @param simulatorStepCounter (SimulationStep) The created SimulationStep object for this simulation to be handed to the Habitat object.
-     * @param climateChangeScenario (ClimateChange) The created ClimateChange object to be handed to the Habitat object.
+     * @param climateChangeScenario (ClimateScenarios) The created ClimateScenarios enum to be handed to the Habitat object.
      * @return (Habitat) the created Habitat object.
      */
-    private Habitat createHabitat (String habitatName, SimulationStep simulatorStepCounter, ClimateChange climateChangeScenario)
+    private Habitat createHabitat (String habitatName, SimulationStep simulatorStepCounter, ClimateScenarios climateChangeScenario)
     {
         if (habitatName != null) {
             habitatReader.extractDataFor(habitatName);
@@ -184,7 +184,6 @@ public class Initializer {
                     int breedingAge = animalReader.getBreedingAge();
                     double breedingProbability = animalReader.getBreedingProbability();
                     int maxLitterSize = animalReader.getMaxLitterSize();
-                    boolean isFemale = randomSex();
                     int nutritionalValue = animalReader.getNutritionalValue();
                     boolean hibernates = animalReader.canHibernate();
                     boolean isNocturnal = animalReader.isNocturnal();
@@ -192,7 +191,7 @@ public class Initializer {
                     // Creating the right number of Predator objects.
                     for (int i = 0; i < animalsToCreate.get(animalName); i++) {
                         freeLocationToPlaceAnimal = findAvailableLocation(field);
-                        Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, isFemale, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
+                        Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
                         speciesToEvolveInSimulation.add(newPredator);
                     }
 
@@ -204,7 +203,6 @@ public class Initializer {
                     String name = animalReader.getName();
                     int maximumTemperature = animalReader.getMaximumTemperature();
                     int minimumTemperature = animalReader.getMinimumTemperature();
-                    boolean isFemale = randomSex();
                     int maxAge = animalReader.getMaximumAge();
                     int breedingAge = animalReader.getBreedingAge();
                     double breedingProbability = animalReader.getBreedingProbability();
@@ -216,7 +214,7 @@ public class Initializer {
                     // Creating the right number of Animal objects.
                     for (int i = 0; i < animalsToCreate.get(animalName); i++) {
                         freeLocationToPlaceAnimal = findAvailableLocation(field);
-                        Animal newAnimal = new Animal(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability,  isFemale, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
+                        Animal newAnimal = new Animal(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
                         speciesToEvolveInSimulation.add(newAnimal);
                     }
 
@@ -229,23 +227,23 @@ public class Initializer {
     }
 
     /**
-     * Create the chosen climate change scneario. Scenarios are pre-defined in their respective classes as their functions can be changed
-     * to better approximate the real scnearios projected by the GIEC.
+     * Create the chosen climate change scenario. Scenarios are pre-defined in the enum ClimateScenarios
+     * as their functions can be changed to better approximate the real scenarios projected by the GIEC.
      * @param scenarioName (String) The name of the scenario chosen by the user.
-     * @return (ClimateChange) The created ClimateChange scenario object.
+     * @return (ClimateScenarios) The created ClimateScenarios enum.
      */
-    private ClimateChange createChosenClimateChangeScenario(String scenarioName)
+    private ClimateScenarios createChosenClimateChangeScenario(String scenarioName)
     {
-        ClimateChange chosenScenario;
+        ClimateScenarios chosenScenario;
         // inversé comme ca si ya un pb le default c de ne pas en avoir
         if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(3))) {
-            chosenScenario = new ChangeScenario4();
+            chosenScenario = ClimateScenarios.SCENARIO4;
         } else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(2))) {
-            chosenScenario = new ChangeScenario3();
+            chosenScenario = ClimateScenarios.SCENARIO3;
         } else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(1))) {
-            chosenScenario = new ChangeScenario2();
+            chosenScenario = ClimateScenarios.SCENARIO2;
         } else{
-            chosenScenario = new ChangeScenario1();
+            chosenScenario = ClimateScenarios.SCENARIO1;
         }
         return chosenScenario;
     }
@@ -323,15 +321,6 @@ public class Initializer {
             totalNumber += animalsToCreate.get(animalName);
         }
         return totalNumber;
-    }
-
-    /**
-     * Returns a random boolean to randomize the sex of newborns.
-     * @return (boolean) true (female) if the number is 1, false (male) if it is 0
-     */
-    private boolean randomSex()
-    {
-        return rand.nextInt(2) == 1;
     }
 
     /**

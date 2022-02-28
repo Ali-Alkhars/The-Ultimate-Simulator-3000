@@ -20,7 +20,7 @@ public class Habitat
     // keep track of the simulation steps.
     private SimulationStep simStep;
     // hold a climate change scenario
-    private ClimateChange changeScenario;
+    private ClimateScenarios changeScenario;
     // true if the current season is Spring
     private boolean isSpring;
     private Random random;
@@ -36,7 +36,7 @@ public class Habitat
      * @param autumn an integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
      * @param winter an integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
      */
-    public Habitat(SimulationStep simStep, ClimateChange changeScenario, int[] spring, int[] summer, int[] autumn, int[] winter)
+    public Habitat(SimulationStep simStep, ClimateScenarios changeScenario, int[] spring, int[] summer, int[] autumn, int[] winter)
     {
         this.simStep = simStep;
         this.changeScenario = changeScenario;
