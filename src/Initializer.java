@@ -19,8 +19,8 @@ public class Initializer {
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 80;
     // The default color for plant objects.
-    private static final Color DEFAULT_PLANT_COLOR = Color.decode("0x559E4A");
-    // Defult plant name, for now there is just one type of plant so its name is default, this can be changed as the rest of the code is extendable.
+    private static final Color DEFAULT_PLANT_COLOR = Color.decode("0x006400");
+    // Default plant name, for now there is just one type of plant so its name is default, this can be changed as the rest of the code is extendable.
     private static final String DEFAULT_PLANT_NAME = "plant";
     // The default value of if animals' ages must be randomized when thy are created.
     private static final boolean RANDOM_ANIMAL_AGE = true;
@@ -330,31 +330,35 @@ public class Initializer {
     }
 
     /**
-     * Populate the list of colors to use for animals with 20 colors. 20 animals can therefore be created, other
-     * colors to be added if we want to implement more animal choices.
+     * Populate the list of colors to use for animals with 25 colors. 25 animals can therefore be created
+     * , other colors be added to implement more animal choices.
      */
     private void populateAnimalColors()
     {
-        listOfColorsForAnimals.add(Color.decode("0x85D4DC"));
-        listOfColorsForAnimals.add(Color.decode("0xDD0033"));
-        listOfColorsForAnimals.add(Color.decode("0x000099"));
-        listOfColorsForAnimals.add(Color.decode("0xDD22DD"));
-        listOfColorsForAnimals.add(Color.decode("0x007722"));
-        listOfColorsForAnimals.add(Color.decode("0x2222FF"));
-        listOfColorsForAnimals.add(Color.decode("0xFF6600"));
+        listOfColorsForAnimals.add(Color.decode("0x008B8B"));
+        listOfColorsForAnimals.add(Color.decode("0xADD8E6"));
+        listOfColorsForAnimals.add(Color.decode("0xBECF33"));
+        listOfColorsForAnimals.add(Color.decode("0x483D8B"));
+        listOfColorsForAnimals.add(Color.decode("0x7F007F"));
+        listOfColorsForAnimals.add(Color.decode("0xA020F0"));
+        listOfColorsForAnimals.add(Color.decode("0x7E70CA"));
         listOfColorsForAnimals.add(Color.decode("0xFF9988"));
+        listOfColorsForAnimals.add(Color.decode("0x00FFFF"));
         listOfColorsForAnimals.add(Color.decode("0x44FF99"));
         listOfColorsForAnimals.add(Color.decode("0xFFFF00"));
-        listOfColorsForAnimals.add(Color.decode("0xA85FB4"));
-        listOfColorsForAnimals.add(Color.decode("0xFFFFB0"));
-        listOfColorsForAnimals.add(Color.decode("0x7E70CA"));
-        listOfColorsForAnimals.add(Color.decode("0x42348B"));
-        listOfColorsForAnimals.add(Color.decode("0xE9B287"));
         listOfColorsForAnimals.add(Color.decode("0x772D26"));
-        listOfColorsForAnimals.add(Color.decode("0xB66862"));
-        listOfColorsForAnimals.add(Color.decode("0x469990"));
-        listOfColorsForAnimals.add(Color.decode("0xC5FFFF"));
-        listOfColorsForAnimals.add(Color.decode("0xA8734A"));
-
+        listOfColorsForAnimals.add(Color.decode("0xBD7791"));
+        listOfColorsForAnimals.add(Color.decode("0x808080"));
+        listOfColorsForAnimals.add(Color.decode("0xD5A9F5"));
+        listOfColorsForAnimals.add(Color.decode("0xFFB6C1"));
+        listOfColorsForAnimals.add(Color.decode("0xFF1493"));
+        listOfColorsForAnimals.add(Color.decode("0xFFE378"));
+        listOfColorsForAnimals.add(Color.decode("0xFFA500"));
+        listOfColorsForAnimals.add(Color.decode("0x00008B"));
+        listOfColorsForAnimals.add(Color.decode("0x007CFF"));
+        listOfColorsForAnimals.add(Color.decode("0x7F0000"));
+        listOfColorsForAnimals.add(Color.decode("0x808000"));
+        listOfColorsForAnimals.add(Color.decode("0x8FBC8F"));
+        listOfColorsForAnimals.add(Color.decode("0xFF0000"));
     }
 }
