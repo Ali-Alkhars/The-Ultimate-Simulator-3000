@@ -43,18 +43,8 @@ public class Thermometer
      *
      * @param inc (int) The amount of the increment.
      */
-    public void incTemperature(int inc)
+    public void incrementTemperature(int inc)
     {
         currentTemp += inc;
-    }
-
-    /**
-     * Decrement the current temperature by the given parameter.
-     *
-     * @param dec (int) The amount of the decrement.
-     */
-    public void decTemperature(int dec)
-    {
-        currentTemp -= dec;
     }
 }

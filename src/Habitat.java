@@ -171,11 +171,11 @@ public class Habitat
 
         // make sure that the temperature doesn't go beyond the temperature upper limit
         if (randomize == 0 && (getCurrentTemperature() + change) <= currentSeason.getUpperLimitTemp()) {
-            currentTemp.incTemperature(change);
+            currentTemp.incrementTemperature(change);
         }
         // make sure that the temperature doesn't go below the temperature lower limit
         else if(randomize == 1 && (getCurrentTemperature() - change) >= currentSeason.getLowerLimitTemp()) {
-            currentTemp.decTemperature(change);
+            currentTemp.incrementTemperature(change);
         }
     }
 
