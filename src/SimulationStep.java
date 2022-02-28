@@ -11,7 +11,8 @@ public class SimulationStep
 
     /**
      * Construct a SimulationStep object starting with the given step.
-     * @param initialStep the starting step number
+     *
+     * @param initialStep (int) The starting step number
      */
     public SimulationStep(int initialStep)
     {
@@ -27,7 +28,7 @@ public class SimulationStep
     }
 
     /**
-     * @return the current step
+     * @return (int) The current step.
      */
     public int getCurrentStep()
     {
@@ -35,7 +36,7 @@ public class SimulationStep
     }
 
     /**
-     * Increment the steps by one
+     * Increment the steps by one.
      */
     public void incStep()
     {
@@ -43,8 +44,9 @@ public class SimulationStep
     }
 
     /**
-     * Increment the steps by the given value
-     * @param num the amount to increment
+     * Increment the steps by the given value.
+     *
+     * @param num (int) the amount to increment
      */
     public void incStep(int num)
     {
@@ -52,7 +54,7 @@ public class SimulationStep
     }
 
     /**
-     * Reset the current step to 0
+     * Reset the current step to 0.
      */
     public void reset()
     {

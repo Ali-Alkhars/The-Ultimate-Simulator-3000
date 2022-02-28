@@ -7,7 +7,7 @@ import java.util.Random;
  * Keep track of its seasons and temperature
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 public class Habitat
 {
@@ -29,12 +29,12 @@ public class Habitat
      * Initialise the Habitat fields and fill the
      * seasons Hash map
      *
-     * @param simStep a SimulationStep object to keep track of the steps
-     * @param changeScenario a climate change scenario
-     * @param spring an integer array with two elements: [0]= spring aveTemperature, [1] = spring tempChange
-     * @param summer an integer array with two elements: [0]= summer aveTemperature, [1] = summer tempChange
-     * @param autumn an integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
-     * @param winter an integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
+     * @param simStep (SimulatorStep) A SimulationStep object to keep track of the steps
+     * @param changeScenario (ClimateScenarios) A climate change scenario
+     * @param spring (int[]) An integer array with two elements: [0]= spring aveTemperature, [1] = spring tempChange
+     * @param summer (int[]) An  integer array with two elements: [0]= summer aveTemperature, [1] = summer tempChange
+     * @param autumn (int[]) An  integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
+     * @param winter (int[]) An  integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
      */
     public Habitat(SimulationStep simStep, ClimateScenarios changeScenario, int[] spring, int[] summer, int[] autumn, int[] winter)
     {
@@ -50,7 +50,7 @@ public class Habitat
     }
 
     /**
-     * @return the current season as a String
+     * @return (String) The current season as a String
      */
     public String getCurrentSeason()
     {
@@ -58,7 +58,7 @@ public class Habitat
     }
 
     /**
-     * @return the current temperature of the current season as an int
+     * @return (int) The current temperature of the current season as an int
      */
     public int getCurrentTemperature()
     {
@@ -66,7 +66,7 @@ public class Habitat
     }
 
     /**
-     * @return true if the current season is spring, false otherwise.
+     * @return (boolean) true if the current season is spring, false otherwise.
      */
     public boolean getIsSpring()
     {
@@ -74,7 +74,7 @@ public class Habitat
     }
 
     /**
-     * @return true if a year has passed in the simulation, false otherwise
+     * @return (boolean) true if a year has passed in the simulation, false otherwise
      */
     public boolean yearPassed()
     {
@@ -84,12 +84,12 @@ public class Habitat
     }
 
     /**
-     * should be called on every step of the simulation.
+     * Method to be called on every step of the simulation for habitat conditions to be updated.
      *
-     * 1) increase the climate change effect if a year has passed
-     * 2) change the season if 'SEASON_CHANGE' steps have passed.
-     * 3) do the climate change effect on the new season
-     * 4) change the temperature each step
+     * 1) Increase the climate change effect if a year has passed
+     * 2) Change the season if 'SEASON_CHANGE' steps have passed.
+     * 3) Do the climate change effect on the new season
+     * 4) Change the temperature each step
      */
     public void habitatStep()
     {
@@ -114,14 +114,13 @@ public class Habitat
     }
 
     /**
-     * Create and initialise the appropriate Season objects with
-     * the given values. Add them to the seasons List with the
+     * Create and initialise the appropriate Season objects with the given values. Add them to the seasons List with the
      * order: spring, summer, autumn, winter.
      *
-     * @param springValues an integer array with two elements: [0]= spring aveTemperature, [1] = spring tempChange
-     * @param summerValues an integer array with two elements: [0]= summer aveTemperature, [1] = summer tempChange
-     * @param autumnValues an integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
-     * @param winterValues an integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
+     * @param springValues (int[]) An integer array with two elements: [0]= spring aveTemperature, [1] = spring tempChange
+     * @param summerValues (int[]) An integer array with two elements: [0]= summer aveTemperature, [1] = summer tempChange
+     * @param autumnValues (int[]) An integer array with two elements: [0]= autumn aveTemperature, [1] = autumn tempChange
+     * @param winterValues (int[]) An integer array with two elements: [0]= winter aveTemperature, [1] = winter tempChange
      */
     private void initialiseSeasons(int[] springValues, int[] summerValues, int[] autumnValues, int[] winterValues)
     {
@@ -139,8 +138,7 @@ public class Habitat
     }
 
     /**
-     * Change the current season according to the
-     * predefined order of seasons
+     * Change the current season according to the predefined order of seasons
      */
     private void changeSeason()
     {
@@ -163,8 +161,7 @@ public class Habitat
     }
 
     /**
-     * change the current season's temperature randomly according
-     * to the season's tempChange field
+     * Change the current season's temperature randomly according to the season's tempChange field
      */
     private void randomizeTemperature()
     {
@@ -183,8 +180,7 @@ public class Habitat
     }
 
     /**
-     * increase the season's average temperature by the
-     * climate change scenario's concreteChange
+     * Increase the season's average temperature by the climate change scenario's concreteChange
      */
     private void climateChangeEffect()
     {

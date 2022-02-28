@@ -15,8 +15,8 @@ public enum ClimateScenarios
     /**
      * Create an appropriate Climate Scenario
      *
-     * @param concreteChange hold the actual temperature change value
-     * @param changePercentage the change percentage that is added to the concreteChange each year
+     * @param concreteChange (int) hold the actual temperature change value
+     * @param changePercentage (double) the change percentage that is added to the concreteChange each year
      */
     ClimateScenarios(int concreteChange, double changePercentage)
     {
@@ -25,7 +25,7 @@ public enum ClimateScenarios
     }
     
     /**
-     * @return the concreteChange as a rounded int
+     * @return (int) the concreteChange as a rounded int
      */
     public int getClimateChangeEffect()
     {
@@ -33,7 +33,7 @@ public enum ClimateScenarios
     }
 
     /**
-     * increase the concreteChange by the changePercentage
+     * Increases the concreteChange by the changePercentage.
      */
     public void doClimateChange()
     {

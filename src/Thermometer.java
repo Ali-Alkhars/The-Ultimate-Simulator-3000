@@ -12,7 +12,8 @@ public class Thermometer
 
     /**
      * Construct a Thermometer object with the given temperature.
-     * @param initialTemp the initial temperature
+     *
+     * @param initialTemp (int) The initial temperature.
      */
     public Thermometer(int initialTemp)
     {
@@ -20,7 +21,7 @@ public class Thermometer
     }
 
     /**
-     * @return the current temperature
+     * @return (int) The current temperature.
      */
     public int getTemperature()
     {
@@ -28,8 +29,9 @@ public class Thermometer
     }
 
     /**
-     * set the temperature to the given parameter
-     * @param temp the new temperature value
+     * Set the temperature to the given parameter.
+     *
+     * @param temp (int) The new temperature value.
      */
     public void setTemperature(int temp)
     {
@@ -37,8 +39,9 @@ public class Thermometer
     }
 
     /**
-     * increment the current temperature by the given parameter
-     * @param inc the amount of the increment
+     * Increment the current temperature by the given parameter.
+     *
+     * @param inc (int) The amount of the increment.
      */
     public void incTemperature(int inc)
     {
@@ -46,8 +49,9 @@ public class Thermometer
     }
 
     /**
-     * decrement the current temperature by the given parameter
-     * @param dec the amount of the decrement
+     * Decrement the current temperature by the given parameter.
+     *
+     * @param dec (int) The amount of the decrement.
      */
     public void decTemperature(int dec)
     {

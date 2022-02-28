@@ -68,17 +68,15 @@ public class Animal extends Species
         this.isFemale = randomSex();
         this.hibernates = hibernates;
         this.isNocturnal = isNocturnal;
+        // Default value is nutritionalValue to simulate the nutriment apport from the mother's milk/ other parental feeding.
+        this.foodLevel = rand.nextInt(nutritionalValue);
         inHibernation = false;
         hiberSteps = 0;
 
-        // the initial food level is its nutritional value
         if (randomAge) {
             age = rand.nextInt(maxAge);
-            // Default value is nutritionalValue to simulate the nutrient apart from the mother's milk/ other parental feeding.
-            foodLevel = rand.nextInt(nutritionalValue);
         } else {
             age = 0;
-            foodLevel = nutritionalValue;
         }
     }
 

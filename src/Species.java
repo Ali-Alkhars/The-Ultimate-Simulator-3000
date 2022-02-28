@@ -11,6 +11,8 @@ import java.util.Random;
  */
 public abstract class Species
 {
+    // The probability for an individual to die if exposed to too high or too cold temperatures. Can be adjusted for simulation realism purposes.
+    private static final double DYING_OF_COLD_OR_HEAT_PROBABILITY = 0.8;
     // Whether the species is alive or not.
     private boolean alive;
     // The animal's field.
@@ -27,19 +29,17 @@ public abstract class Species
     private final int nutritionalValue;
     // The likelihood of a specie to reproduce.
     private final double reproductionProbability;
-    // A shared random number generator to control breeding.
-    protected static final Random rand = Randomizer.getRandom();
 
     /**
      * Create a new specie at location in field.
      *
-     * @param field The field currently occupied.
-     * @param location The location within the field.
-     * @param name the name of the specie
-     * @param maximumTemperature the maximum temperature that the specie can withstand
-     * @param minimumTemperature the minimum temperature that the specie can withstand
-     * @param nutritionalValue the nutritional value given to the specie that eats this specie
-     * @param reproductionProbability the probability that this specie will reproduce
+     * @param field (Field) The field currently occupied.
+     * @param location (Location) The location within the field.
+     * @param name (String) The name of the specie
+     * @param maximumTemperature (int) The maximum temperature that the specie can withstand
+     * @param minimumTemperature (int) The minimum temperature that the specie can withstand
+     * @param nutritionalValue (int) The nutritional value given to the specie that eats this specie
+     * @param reproductionProbability (double) The probability that this specie will reproduce
      */
     public Species(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability)
     {
@@ -54,9 +54,11 @@ public abstract class Species
     }
 
     /**
-     * Make this animal act - that is: make it do
-     * whatever it wants/needs to do.
-     * @param newSpecies A list to receive newly born animals.
+     * Make this animal act - that is: make it do whatever it wants/needs to do.
+     *
+     * @param newSpecies (List<Species>) A list to receive newly born animals.
+     * @param isNight (boolean) If it is currently night.
+     * @param yearPassed (boolean) If a year is passing on this step (next step is the first of a nw year).
      */
     abstract public void act(List<Species> newSpecies, boolean isNight, int temperature, boolean yearPassed);
 
@@ -64,7 +66,8 @@ public abstract class Species
 
     /**
      * Check whether the animal is alive or not.
-     * @return true if the animal is still alive.
+     *
+     * @return (boolean) true if the animal is still alive.
      */
     protected boolean isAlive()
     {
@@ -72,7 +75,7 @@ public abstract class Species
     }
 
     /**
-     * if alive is true change to false, vice versa.
+     * If alive is true change to false, vice versa.
      */
     protected void toggleIsAlive()
     {
@@ -81,8 +84,7 @@ public abstract class Species
 
 
     /**
-     * Indicate that the animal is no longer alive.
-     * It is removed from the field.
+     * Indicate that the animal is no longer alive. It is removed from the field.
      */
     protected void setDead()
     {
@@ -96,7 +98,8 @@ public abstract class Species
 
     /**
      * Return the animal's location.
-     * @return The animal's location.
+     *
+     * @return (Location)The animal's location.
      */
     protected Location getLocation()
     {
@@ -105,7 +108,8 @@ public abstract class Species
 
     /**
      * Place the animal at the new location in the given field.
-     * @param newLocation The animal's new location.
+     *
+     * @param newLocation (Location) The animal's new location.
      */
     protected void setLocation(Location newLocation)
     {
@@ -117,42 +121,61 @@ public abstract class Species
     }
 
     /**
-     * @return The animal's field.
+     * @return (Field) The animal's field.
      */
     protected Field getField()
     {
         return field;
     }
 
+    /**
+     * Check if animal can survive the current temperature. If temperature is too low or too high, animal has a high probability of dying
+     * (probability defined as a class constant to allow easy adjusting).
+     *
+     * @return (Field) The animal's field.
+     */
     protected boolean survivesTemperature(int temperature)
     {
-        return (temperature <= maximumTemperature && temperature >= minimumTemperature);
+        if (temperature <= maximumTemperature && temperature >= minimumTemperature) {
+            return Math.random() <= DYING_OF_COLD_OR_HEAT_PROBABILITY;
+        }
+        return false;
     }
 
     /**
-     * @return The specie's name
+     * @return (String) The specie's name.
      */
     protected String getName()
     {
         return name;
     }
 
+    /**
+     * @return (int) The maximum temperature specie can survive to.
+     */
     protected int getMaximumTemperature()
     {
         return maximumTemperature;
     }
+
+    /**
+     * @return (int) The minimum temperature specie can survive to.
+     */
     protected int getMinimumTemperature()
     {
         return minimumTemperature;
     }
 
+    /**
+     * @return (int) The specie's nutritional value.
+     */
     protected int getNutritionalValue()
     {
         return nutritionalValue;
     }
 
     /**
-     * @return reproductionProbability
+     * @return (double) The specie's reproduction probability.
      */
     protected double getReproductionProbability()
     {

@@ -26,6 +26,7 @@ public class Randomizer
 
     /**
      * Provide a random generator.
+     *
      * @return A random object.
      */
     public static Random getRandom()
@@ -39,9 +40,7 @@ public class Randomizer
     }
     
     /**
-     * Reset the randomization.
-     * This will have no effect if randomization is not through
-     * a shared Random generator.
+     * Reset the randomization. This will have no effect if randomization is not through a shared Random generator.
      */
     public static void reset()
     {

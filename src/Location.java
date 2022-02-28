@@ -12,6 +12,7 @@ public class Location
 
     /**
      * Represent a row and column.
+     *
      * @param row The row.
      * @param col The column.
      */
@@ -36,7 +37,8 @@ public class Location
     }
     
     /**
-     * Return a string of the form row,column
+     * Return a string of the form row,column.
+     *
      * @return A string representation of the location.
      */
     public String toString()
@@ -45,9 +47,9 @@ public class Location
     }
     
     /**
-     * Use the top 16 bits for the row value and the bottom for
-     * the column. Except for very big grids, this should give a
+     * Use the top 16 bits for the row value and the bottom for the column. Except for very big grids, this should give a
      * unique hash code for each (row, col) pair.
+     *
      * @return A hashcode for the location.
      */
     public int hashCode()

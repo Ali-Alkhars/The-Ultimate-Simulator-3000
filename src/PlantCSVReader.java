@@ -22,6 +22,9 @@ public class PlantCSVReader extends CSVReader
     // The plant's maximum health.
     private int maxHealth;
 
+    /**
+     * Build an PlantCSVReader and initializes field.
+     */
     public PlantCSVReader ()
     {
         name = null;
@@ -35,6 +38,7 @@ public class PlantCSVReader extends CSVReader
     /**
      * Populated fields with the data read from the files. This method overrides a method of the CSVReader parent class
      * and is therefore called after reading the data.
+     *
      * @param extractedData (String[]) The data read.
      */
     protected void populateFields(String[] extractedData)

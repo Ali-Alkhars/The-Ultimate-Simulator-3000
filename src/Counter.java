@@ -1,13 +1,11 @@
 import java.awt.Color;
 
 /**
- * Provide a counter for a participant in the simulation.
- * This includes an identifying string and a count of how
- * many participants of this type currently exist within 
- * the simulation.
+ * Provide a counter for a participant in the simulation. This includes an identifying string and a count of how
+ * many participants of this type currently exist within the simulation.
  * 
- * @author David J. Barnes and Michael Kölling
- * @version 2016.02.29
+ * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741).
+ * @version 2022.02.28
  */
 public class Counter
 {
@@ -17,8 +15,9 @@ public class Counter
     private int count;
 
     /**
-     * Provide a name for one of the simulation types.
-     * @param name  A name, e.g. "Fox".
+     * Provide a name for one of the animals taking part in the simulation.
+     *
+     * @param name (String) A name, e.g. "Fox".
      */
     public Counter(String name)
     {
@@ -27,7 +26,7 @@ public class Counter
     }
     
     /**
-     * @return The short description of this type.
+     * @return (String) The short description of this type.
      */
     public String getName()
     {
@@ -35,7 +34,7 @@ public class Counter
     }
 
     /**
-     * @return The current count for this type.
+     * @return (int) The current count for this type.
      */
     public int getCount()
     {

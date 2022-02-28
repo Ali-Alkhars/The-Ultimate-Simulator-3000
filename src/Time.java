@@ -17,9 +17,10 @@ public class Time
     private static final int DAY_CHANGE = 1;
 
     /**
-     * Construct a Time object with the given parameters
-     * @param simStep the object of SimulationStep to use for keeping track of the steps
-     * @param startNight true if first iteration is night, false if day
+     * Construct a Time object with the given parameters.
+     *
+     * @param simStep (SimulationStep) The object of SimulationStep to use for keeping track of the steps.
+     * @param startNight (boolean) true if first iteration is night, false if day.
      */
     public Time(SimulationStep simStep, boolean startNight)
     {
@@ -35,7 +36,7 @@ public class Time
     }
 
     /**
-     * @return true if night, false otherwise
+     * @return (boolean) true if night, false otherwise.
      */
     public boolean getIsNight()
     {
@@ -43,10 +44,9 @@ public class Time
     }
 
     /**
-     * Create a String indicating night or day
-     * and the specific hour
+     * Create a String indicating night or day and the specific hour.
      *
-     * @return a String with the time's full information
+     * @return (String) A String with the time's full information.
      */
     public String timeString()
     {
@@ -65,8 +65,7 @@ public class Time
     }
 
     /**
-     * change the day status if 'CHANGE_STEPS' steps have passed,
-     * and increment the hours
+     * Change the day status if 'CHANGE_STEPS' steps have passed, and increment the hours.
      */
     public void timeStep()
     {
@@ -80,7 +79,7 @@ public class Time
     }
 
     /**
-     * Change the current status of the time
+     * Change the current status of the time.
      */
     private void toggleIsNight()
     {
@@ -96,8 +95,9 @@ public class Time
     }
 
     /**
-     * Create a string displaying time in 24-hour style
-     * @return a String holding the current time
+     * Create a string displaying time in 24-hour style.
+     *
+     * @return (String)a String holding the current time.
      */
     private String getHourDisplay()
     {

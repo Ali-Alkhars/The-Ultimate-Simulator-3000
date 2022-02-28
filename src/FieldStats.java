@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.util.HashMap;
 
 /**
@@ -7,7 +6,7 @@ import java.util.HashMap;
  * for any name of species that is found in the field.
  * 
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.24
+ * @version 2022.02.28
  */
 public class FieldStats
 {
@@ -27,6 +26,11 @@ public class FieldStats
         countsValid = true;
     }
 
+    /**
+     * Check if species count is valid.
+     *
+     * @param field (Field) The simulation's field.
+     */
     public void checkCountIsValid(Field field)
     {
         if(!countsValid) {
@@ -35,7 +39,8 @@ public class FieldStats
     }
     /**
      * Get details of what is in the field.
-     * @return A string describing what is in the field.
+     *
+     * @return (String) A string describing what is in the field.
      */
     public int getCount (String speciesName)
     {
@@ -44,8 +49,7 @@ public class FieldStats
     }
     
     /**
-     * Invalidate the current set of statistics; reset all 
-     * counts to zero.
+     * Invalidate the current set of statistics; reset all counts to zero.
      */
     public void reset()
     {
@@ -58,6 +62,7 @@ public class FieldStats
 
     /**
      * Increment the count for one specie.
+     *
      * @param specieName (String) The name of specie to increment.
      */
     public void incrementCount(String specieName)
@@ -81,9 +86,9 @@ public class FieldStats
     }
 
     /**
-     * Determine whether the simulation is still viable.
-     * I.e., should it continue to run.
-     * @return true If there is more than one species alive.
+     * Determine whether the simulation is still viable. I.e., should it continue to run.
+     *
+     * @return (boolean) true If there is more than one species alive.
      */
     public boolean isViable(Field field)
     {
@@ -98,15 +103,13 @@ public class FieldStats
                 nonZero++;
             }
         }
-        return nonZero > 1;
+        return nonZero >= 1;
     }
     
     /**
-     * Generate counts of the number of species.
-     * These are not kept up to date as species
-     * are placed in the field, but only when a request
+     * Generate counts of the number of species. These are not kept up to date as species are placed in the field, but only when a request
      * is made for the information.
-     * @param field The field to generate the stats for.
+     * @param field (Field) The field to generate the stats for.
      */
     private void generateCounts(Field field)
     {

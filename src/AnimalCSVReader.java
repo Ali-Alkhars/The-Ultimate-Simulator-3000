@@ -1,8 +1,8 @@
 /**
  * Specific behaviours relating to reading data relative to animals.
  *
- * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.22
+ * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741).
+ * @version 2022.02.28
  */
 
 public class AnimalCSVReader extends CSVReader {
@@ -59,6 +59,7 @@ public class AnimalCSVReader extends CSVReader {
     /**
      * Populated fields with the data read from the files. This method overrides a method of the CSVReader parent class
      * and is therefore called after reading the data.
+     *
      * @param extractedData (String[]) The data read.
      */
     protected void populateFields(String[] extractedData)
@@ -89,7 +90,7 @@ public class AnimalCSVReader extends CSVReader {
     }
 
     /**
-     * Set all parameters back to initial values before reading data for another animal.
+     * Set all parameters back to their initial values before reading data for another animal.
      */
     protected void resetParameters()
     {

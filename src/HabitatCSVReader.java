@@ -34,10 +34,11 @@ public class HabitatCSVReader extends CSVReader {
     }
 
     /**
-     * Populate the fields with the data exctracted from the CSV file. Fields are used to store data of the right type to be easily fetched
+     * Populate the fields with the data extracted from the .csv file. Fields are used to store data of the right type to be easily fetched
      * by the Initializer when trying to get information about a specific habitat.
-     * Habitat name from the data is removed to facilitate reading, the first 12 elements are in groups of 3 relating to each season
-     * (min, avg, and max temperatures), the 13th element is the plant concentration in that habitat.
+     * Habitat name from the data is removed to facilitate reading, the first 12 elements are in groups of 2 relating to each season
+     * (average temperature, and maximum change to temperature ), the 13th element is the plant concentration in that habitat.
+     *
      * @param extractedData (String[]) the data from the CSV file relative to a specific habitat.
      */
     protected void populateFields(String[] extractedData)
@@ -50,7 +51,6 @@ public class HabitatCSVReader extends CSVReader {
 
         for(int i = 0; i < extractedData.length; i++) {
             if(i/2 == 0) {
-                System.out.println("la data choisie :" +Integer.parseInt(extractedData[i]));
                 winterTemperatures[i%2] = Integer.parseInt(extractedData[i]);
             } else if (i/2 == 1) {
                 springTemperatures[i%2] = Integer.parseInt(extractedData[i]);
@@ -77,9 +77,11 @@ public class HabitatCSVReader extends CSVReader {
     }
 
     /**
-     * Returns the list of extracted data without the habitat's name (as this informaiton is known by the Initializer and will therefore not be asked).
-     * The name is the first element of the attributes list.
+     * Returns the list of extracted data without the habitat's name (as this informaiton is known by the Initializer and will therefore
+     * not be asked). The name is the first element of the attributes list.
+     *
      * @param attributes (String[]) the data from the CSV file relative to a specific habitat.
+     * @return (String[]) The data without the habitat's name.
      */
     private String[] removeHabitatName(String[] attributes)
     {

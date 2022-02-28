@@ -18,55 +18,66 @@ import javax.swing.border.EmptyBorder;
  */
 public class SimulatorView extends JFrame
 {
-    // Colors used for empty locations.
+    // Color used for empty locations.
     private static final Color EMPTY_COLOR = Color.white;
-
     // Color used for objects that have no defined color.
     private static final Color UNKNOWN_COLOR = Color.gray;
-
+    // Prefix preceding the step count.
     private final String STEP_PREFIX = "Step: ";
+    // Prefix preceding the current time display.
     private final String TIME_PREFIX = "Time: ";
+    // Prefix preceding the current temperature display.
     private final String TEMPERATURE_PREFIX = "Temperature: ";
+    // Prefix preceding the current season display.
     private final String SEASON_PREFIX = "Season: ";
+    // JLabels for all the previously mentionned information displays.
     private JLabel stepLabel, infoLabel, timeLabel, temperatureLabel, seasonLabel;
+    // Container to show population data.
     private JPanel population;
+    // The grid view showing the state of the field at each step.
     private FieldView fieldView;
 
     // A map for storing colors for participants in the simulation
     private Map<String, Color> colors;
     // A statistics object computing and storing simulation information
     private FieldStats stats;
-    
+    // The GUIHandler governing the simulation's GUI.
     private GUIHandler handler;
 
     /**
-     * Create a view of the given width and height.
-     * @param height The simulation's height.
-     * @param width  The simulation's width.
+     * Constructor has two roles:
+     *      1) Initializing the fields.
+     *      2) Building the view.
+     *
+     * @param height (int) The simulation's height.
+     * @param width (int) The simulation's width.
      */
     public SimulatorView(int height, int width, GUIHandler handler)
     {
+        // INITIALIZES FIELDS
         this.handler = handler;
         stats = new FieldStats();
         colors = new LinkedHashMap<>();
+
+        // Various information labels initialization.
         stepLabel = new JLabel(STEP_PREFIX, JLabel.CENTER);
         infoLabel = new JLabel("  ", JLabel.CENTER);
         timeLabel = new JLabel(TIME_PREFIX, JLabel.CENTER);
         temperatureLabel = new JLabel(TEMPERATURE_PREFIX, JLabel.CENTER);
         seasonLabel = new JLabel(SEASON_PREFIX, JLabel.CENTER);
-        
+
+        // Population display initialization.
         population = new JPanel();
-        // Grid with 5 columns and as many rows as necessary.
         GridLayout gridLayout = new GridLayout(4,5);
         population.setLayout(gridLayout);
-        
-        setLocation(100, 50);
 
         fieldView = new FieldView(height, width);
-        
+
+        // BUILDS THE VIEW
         JFrame frame = new JFrame("Life Simulator 3000");
         frame.setMinimumSize(new Dimension(800, 600));
 
+        // Information display on habitat conditions and step counter.
         FlowLayout simInfo = new FlowLayout();
         simInfo.setHgap(50);
 
@@ -77,6 +88,7 @@ public class SimulatorView extends JFrame
         infoPane.add(seasonLabel, BorderLayout.CENTER);
         infoPane.add(temperatureLabel, BorderLayout.CENTER);
 
+        // Various buttons for user to interact with the simulation.
         JButton launchLongSimButton = new JButton("Launch long simulation");
         ActionListener launchLongSim = e -> {
             handler.launchLongSimulation();
@@ -101,7 +113,8 @@ public class SimulatorView extends JFrame
             handler.switchToMenuView();
         };
         goBackMenuButton.addActionListener(goBackMenu);
-        
+
+        // Bringing the UI together.
         JPanel buttons = new JPanel(new FlowLayout());
         buttons.add(launchLongSimButton);
         buttons.add(launchHundredStepsButton);
@@ -124,8 +137,9 @@ public class SimulatorView extends JFrame
 
     /**
      * Define a color to be used for a given class of specie.
-     * @param speciesName The specie's name.
-     * @param color The color to be used for the given class.
+     *
+     * @param speciesName (String) The specie's name.
+     * @param color (Color) The color to be used for the given class.
      */
     public void setColor(String speciesName, Color color)
     {
@@ -141,7 +155,7 @@ public class SimulatorView extends JFrame
     }
 
     /**
-     * @return The color to be used for a given class of specie.
+     * @return (Color) The color to be used for a given class of specie.
      */
     private Color getColor(String speciesName)
     {
@@ -156,14 +170,13 @@ public class SimulatorView extends JFrame
     }
 
     /**
-     *
      * Show the current status of the field.
      *
-     * @param step Which iteration step it is.
-     * @param time The current time in the simulation
-     * @param season The current season in the simulation
-     * @param temperature The current temperature in the simulation
-     * @param field The field whose status is to be displayed.
+     * @param step (int) Which iteration step it is.
+     * @param time (String) The current time in the simulation
+     * @param season (String) The current season in the simulation
+     * @param temperature (int) The current temperature in the simulation
+     * @param field (Field) The field whose status is to be displayed.
      */
     public void showStatus(int step, String time, String season, int temperature, Field field)
     {
@@ -199,9 +212,9 @@ public class SimulatorView extends JFrame
     }
     
     /**
-     *
      * Generates a population component with the color, count, and name of each species present in the simulation.
-     * The technique to generate the small squares of a given color was found on https://zetcode.com/javaswing/basicswingcomponentsII/
+     * The technique to generate small square of a given color was found on https://zetcode.com/javaswing/basicswingcomponentsII/
+     *
      * @param field (Field) The field whose population status has to be displayed.
      */
     private void generatePopulationComponent(Field field)
@@ -228,7 +241,8 @@ public class SimulatorView extends JFrame
 
     /**
      * Determine whether the simulation should continue to run.
-     * @return true If there is more than one species alive.
+     *
+     * @return (boolean) true If there is more than one species alive.
      */
     public boolean isViable(Field field)
     {
@@ -236,12 +250,9 @@ public class SimulatorView extends JFrame
     }
 
     /**
-     * Provide a graphical view of a rectangular field. This is
-     * a nested class (a class defined inside a class) which
-     * defines a custom component for the user interface. This
-     * component displays the field.
-     * This is rather advanced GUI stuff - you can ignore this
-     * for your project if you like.
+     * Provide a graphical view of a rectangular field. This is a nested class (a class defined inside a class) which defines a
+     * custom component for the user interface. This component displays the field.
+     * This is rather advanced GUI stuff - you can ignore this for your project if you like.
      */
     class FieldView extends JPanel
     {
@@ -273,8 +284,7 @@ public class SimulatorView extends JFrame
         }
 
         /**
-         * Prepare for a new round of painting. Since the component
-         * may be resized, compute the scaling factor again.
+         * Prepare for a new round of painting. Since the component may be resized, compute the scaling factor again.
          */
         public void preparePaint()
         {
@@ -304,8 +314,7 @@ public class SimulatorView extends JFrame
         }
 
         /**
-         * The field view component needs to be redisplayed. Copy the
-         * internal image to screen.
+         * The field view component needs to be redisplayed. Copy the internal image to screen.
          */
         public void paintComponent(Graphics g)
         {

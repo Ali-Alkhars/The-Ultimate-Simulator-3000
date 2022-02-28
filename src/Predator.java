@@ -7,8 +7,7 @@ public class Predator extends Animal{
     private final int strength;
 
     /**
-     * Create a new predator with given specifications. A predator can be created with random age (or start at age 0) and/or
-     * with a random foodLevel (or start at XXXX)
+     * Create a new predator with given specifications.
      *
      * @param strength (int) the predator's strength
      * @param field (Field) the field where the simulation takes place
@@ -34,9 +33,10 @@ public class Predator extends Animal{
     }
 
     /**
-     * A predator's movement. It first checks if it attacked by a horde of another species of predators. If it is the case, it dies and execution stops.
-     * If not, it first tries to reproduce, then to find a prey to eat in the neighboring cells, and finally to move to either the cell
-     * the prey he ate was occupying or another free adjacent cell. If no adjacent cell is available, it dies of overcrowding.
+     * A predator's movement. It first checks if it attacked by a horde of another species of predators. If it is the case,
+     * it dies and execution stops. If not, it first tries to reproduce, then to find a prey to eat in the neighboring cells,
+     * and finally to move to either the cell the prey he ate was occupying or another free adjacent cell. If no adjacent cell
+     * is available, it dies of overcrowding.
      *
      * @param newSpecies (List<Species>) A list to receive newly born animals.
      */
@@ -126,10 +126,10 @@ public class Predator extends Animal{
     }
 
     /**
-     * Animal is under attack by a horde whose strength is greater than its own. It is eaten by the horde and dies. Its nutriotional value
+     * Animal is under attack by a horde whose strength is greater than its own. It is eaten by the horde and dies. Its nutritional value
      * is therefore shared
      *
-     * @param  hordeMembers (ArrayList<Predator>) List of the predators constituting the horde.
+     * @param hordeMembers (ArrayList<Predator>) List of the predators constituting the horde.
      */
     private void attackedByHorde(ArrayList<Predator> hordeMembers)
     {
@@ -142,10 +142,10 @@ public class Predator extends Animal{
     }
 
     /**
-     * Creates the appropriate number of predators of the same species. These new predators of course share the same features as their "parent"
-     * except the sex which is randomized, their age and foodLevel are not randomized.
+     * Creates the appropriate number of predators of the same species due to reproduction. These new predators of course share the same
+     * features as their "parent" except the sex which is randomized, their age and foodLevel are not randomized.
      *
-     * @param  newOfThisKind (List<Species>) The list of species to which newborns must be added.
+     * @param newOfThisKind (List<Species>) The list of species to which newborns must be added.
      */
     protected void reproduce(List<Species> newOfThisKind)
     {

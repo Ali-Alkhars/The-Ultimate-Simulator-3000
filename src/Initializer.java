@@ -52,7 +52,7 @@ public class Initializer {
     private double habitatPlantConcentration;
     // The Simulator object that will take care of running the simulation.
     private Simulator createdSimulator;
-
+    // The GUIHandler handling the GUI.
     private GUIHandler handler;
 
     /**
@@ -85,19 +85,16 @@ public class Initializer {
         animalReader = new AnimalCSVReader();
         plantReader = new PlantCSVReader();
         listOfColorsForAnimals = new ArrayList<>();
+
         populateAnimalColors();
         IdxOfColorToUseNext = 0;
 
         openGUI();
-
-        // define colors attribution
     }
 
     /**
      * Opens the GUI with the list of available animals and habitats extracted from the files as well as the list of available climate change
      * scenarios.
-     * Note: the method to launch the class was found on https://stackoverflow.com/questions/25873769/launch-javafx-application-from-another-class
-     * on 02/23/2022 thanks to Dr. Raphael's help.
      */
     private void openGUI()
     {
@@ -108,11 +105,13 @@ public class Initializer {
     }
 
     /**
-     * Create and return a simulator with the animals, habitat, and climate change scenario asked by the user as well as all
-     * other necessary objects for the simulation to run.
+     * Create and a simulator with the animals, habitat, and climate change scenario asked by the user as well as all
+     * other necessary objects for the simulation to run. The created Simulator is returned.
+     *
      * @param chosenHabitat (String) The name of the habitat chosen by the user.
      * @param animalsToCreate (HashMap<String, Integer>) Keys are the animals' names and values are the number of each animal we need to create.
      * @param scenarioName (String) The name of the climate change scenario to implement in the simulation.
+     * @return (Simulator) The created simulator.
      */
     public Simulator initializeSimulation(String chosenHabitat, HashMap<String, Integer> animalsToCreate, String scenarioName)
     {
@@ -135,6 +134,7 @@ public class Initializer {
 
     /**
      * Return the created SimulatorView.
+     *
      * @return (SimulatorView) The created SimulatorView object.
      */
     public SimulatorView getSimulatorView()
@@ -144,6 +144,7 @@ public class Initializer {
 
     /**
      * Read data for the chosen habitat and create a habitat object appropriately.
+     *
      * @param habitatName (String) The name of the chosen habitat.
      * @param simulatorStepCounter (SimulationStep) The created SimulationStep object for this simulation to be handed to the Habitat object.
      * @param climateChangeScenario (ClimateScenarios) The created ClimateScenarios enum to be handed to the Habitat object.
@@ -165,6 +166,7 @@ public class Initializer {
     /**
      * Populate the simulation with the chosen animals. First reading the data relating to each animal and then creating and adding to the
      * list of species the right number of each animal.
+     *
      * @param animalsToCreate (HashMap<String, Integer>) The names and number of chosen animals.
      * @param field (Field) The field in which the animals will evolve.
      */
@@ -229,6 +231,7 @@ public class Initializer {
     /**
      * Create the chosen climate change scenario. Scenarios are pre-defined in the enum ClimateScenarios
      * as their functions can be changed to better approximate the real scenarios projected by the GIEC.
+     *
      * @param scenarioName (String) The name of the scenario chosen by the user.
      * @return (ClimateScenarios) The created ClimateScenarios enum.
      */
@@ -251,6 +254,7 @@ public class Initializer {
     /**
      * Find an available location for an object to be created in the simulation field. The simulation is chosen aat random and is changed if
      * the randomly selected cell already contains an object.
+     *
      * @param field (Field) The simulation's field.
      * @return (Location) the available location found.
      */
@@ -264,12 +268,11 @@ public class Initializer {
         }
         Location freeLocation = new Location(randomDepth, randomWidth);
         return freeLocation;
-
-        // if time out, too many animals in the wrong habitat alert.
     }
 
     /**
      * Calculate the area of the field to know the number of plants that should be created.
+     *
      * @return (int) The field's area.
      */
     private int calculateFieldArea()
@@ -279,6 +282,7 @@ public class Initializer {
 
     /**
      * Populate the simulation with the appropriate number of plants.
+     *
      * @param field (Field) The simulation's field.
      */
     private void populateWithPlants(Field field)
@@ -301,6 +305,7 @@ public class Initializer {
 
     /**
      * Calculate the total number of plants to be created.
+     *
      * @return (int) the number of plants.
      */
     private int getNumberOfPlants()
@@ -312,6 +317,7 @@ public class Initializer {
 
     /**
      * Calculate the total number of animals to be created.
+     *
      * @return (int) the number of animals.
      */
     private int getNumberOfAnimals(HashMap<String, Integer> animalsToCreate)

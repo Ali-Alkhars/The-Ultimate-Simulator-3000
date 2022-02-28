@@ -5,35 +5,34 @@ import java.util.List;
  * that inherits class Species
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 public class Plant extends Species
 {
-    // the plant's maximum health
-    private  int maxHealth;
-    // keep track of the plant's health
+    // The plant's maximum health
+    private int maxHealth;
+    // The probability that the plant's health grows
+    private static final double GROWING_PROBABILITY = 0.1;
+    // Keep track of the plant's health
     private int currentHealth;
     // true if the current season is Spring
     private boolean isSpring;
-    // true if the plant can regrow,
-    // needs at least one season till it is true again
+    // true if the plant can regrow, needs at least one season till it is true again
     private boolean canRegrow;
     // true if plant appears dead due to temperature circumstances
     private boolean deadDueTemperature;
-    // the probability that the plant's health grows
-    private static final double GROWING_PROBABILITY = 0.1;
 
     /**
      * Create an instance of Plant
      *
-     * @param field The field currently occupied.
-     * @param location The location within the field.
-     * @param name the name of the plant
-     * @param maximumTemperature the maximum temperature that the plant can withstand
-     * @param minimumTemperature the minimum temperature that the plant can withstand
-     * @param nutritionalValue the nutritional value given to the specie that eats this plant
-     * @param reproductionProbability the probability that this plant will reproduce
-     * @param maxHealth the plant's maximum health
+     * @param field (Field) The field currently occupied.
+     * @param location (Location) The location within the field.
+     * @param name (String) The name of the plant
+     * @param maximumTemperature (int) The maximum temperature that the plant can withstand
+     * @param minimumTemperature (int) The minimum temperature that the plant can withstand
+     * @param nutritionalValue (int) The nutritional value given to the specie that eats this plant
+     * @param reproductionProbability (double) The probability that this plant will reproduce
+     * @param maxHealth (int) The plant's maximum health
      */
     public Plant(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int maxHealth)
     {
@@ -55,10 +54,10 @@ public class Plant extends Species
      *          a) increase max health by 1 if it lived for a year
      *          b) reproduce and grow
      *
-     * @param newPlants A list to return the new plant
-     * @param isNight true if it is night in the simulation
-     * @param temperature the current temperature of the simulation
-     * @param yearPassed true if a year has passed in the simulation
+     * @param newPlants (List<Species>) A list to return the new plants created.
+     * @param isNight (boolean) true if it is night in the simulation
+     * @param temperature (int) The current temperature of the simulation
+     * @param yearPassed (boolean) True if a year has passed in the simulation
      */
     public void act(List<Species> newPlants, boolean isNight, int temperature, boolean yearPassed)
     {
@@ -93,7 +92,7 @@ public class Plant extends Species
      * 1- The production probability meets the random number
      * 2- There is a free adjacent location.
      *
-     * @param newPlants A list to return the new plant
+     * @param newPlants (list<Species>)A list to return the new plant
      */
     protected void reproduce(List<Species> newPlants)
     {
@@ -115,11 +114,8 @@ public class Plant extends Species
     }
 
     /**
-     * the plant dies because of the temperature or
-     * because it was eaten.
-     *
-     * its location in the field is cleared, but it
-     * still remembers its field and location
+     * The plant dies because of the temperature or because it was eaten.
+     * Its location in the field is cleared, but it still remembers its field and location
      */
     protected void setDead()
     {
@@ -131,8 +127,7 @@ public class Plant extends Species
     }
 
     /**
-     * the dead plant is placed back in the field if
-     * its previous location is empty and can regrow, otherwise do nothing.
+     * The dead plant is placed back in the field if its previous location is empty and can regrow, otherwise do nothing.
      * If it grows, then it grows back to full health.
      */
     private void regrow()
@@ -145,8 +140,7 @@ public class Plant extends Species
     }
 
     /**
-     * Increase the plant's health by one if the random
-     * number meets the growing probability
+     * Increase the plant's health by one if the random number meets the growing probability
      */
     private void grow()
     {
@@ -157,9 +151,7 @@ public class Plant extends Species
 
     /**
      * The effect of getting eaten by an animal.
-     *
-     * Decrement currentHealth by one, and set dead if
-     * the current health is less than 1.
+     * Decrement currentHealth by one, and set dead if the current health is less than 1.
      */
     public void isEaten()
     {
@@ -171,10 +163,8 @@ public class Plant extends Species
     }
 
     /**
-     * if isSpring is true, then change it to false, vice versa.
-     *
-     * Also, set canRegrow as true because at least a season has passed
-     * since the plant died.
+     * If isSpring is true, then change it to false, vice versa.
+     *Also, set canRegrow as true because at least a season has passed since the plant died.
      */
     public void toggleIsSpring()
     {
@@ -183,7 +173,7 @@ public class Plant extends Species
     }
 
     /**
-     * @return true if the current season is spring, false otherwise.
+     * @return (boolean) true if the current season is spring, false otherwise.
      */
     public boolean getIsSpring()
     {
@@ -193,7 +183,7 @@ public class Plant extends Species
     /**
      * Set the isSpring value to the given parameter
      *
-     * @param spring true if it is spring, false otherwise.
+     * @param spring (boolean) true if it is spring, false otherwise.
      */
     private void setIsSpring(boolean spring)
     {

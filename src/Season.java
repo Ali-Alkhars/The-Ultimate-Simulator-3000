@@ -16,9 +16,9 @@ public class  Season
     /**
      * Initialise the Season object
      *
-     * @param name the name of the season
-     * @param aveTemperature the average temperature of this season
-     * @param tempChange the amount that the season's temperature can go up or down from the average temperature
+     * @param name (String) the name of the season
+     * @param aveTemperature (int) the average temperature of this season
+     * @param tempChange (int) the amount that the season's temperature can go up or down from the average temperature
      */
     public Season(String name, int aveTemperature, int tempChange)
     {
@@ -30,7 +30,7 @@ public class  Season
     }
 
     /**
-     * @return the name of the season
+     * @return (String) the name of the season
      */
     public String getName()
     {
@@ -38,7 +38,7 @@ public class  Season
     }
 
     /**
-     * @return aveTemperature
+     * @return (int) average Temperature
      */
     public int getAveTemperature()
     {
@@ -47,7 +47,8 @@ public class  Season
 
     /**
      * Increment the season's average temperature by the given parameter
-     * @param inc the increment
+     *
+     * @param inc (int) the increment
      */
     public void incAveTemperature(int inc)
     {
@@ -55,7 +56,7 @@ public class  Season
     }
 
     /**
-     * @return tempChange
+     * @return (int) The temperature change.
      */
     public int getTempChange()
     {
@@ -63,7 +64,7 @@ public class  Season
     }
 
     /**
-     * @return the upper limit temperature that the season could reach
+     * @return (int) The upper limit temperature that the season could reach
      */
     public int getUpperLimitTemp()
     {
@@ -71,7 +72,7 @@ public class  Season
     }
 
     /**
-     * @return the lower limit temperature that the season could drop to
+     * @return (int) The lower limit temperature that the season could drop to
      */
     public int getLowerLimitTemp()
     {
@@ -79,7 +80,7 @@ public class  Season
     }
 
     /**
-     * @return a reference to the Thermometer object of this season
+     * @return (Thermometer) A reference to the Thermometer object of this season
      */
     public Thermometer getCurrentTemp()
     {

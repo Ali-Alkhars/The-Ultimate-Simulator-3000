@@ -14,7 +14,7 @@ import java.awt.Color;
  */
 public class Simulator
 {
-
+    private static final int LONG_SIMULATION_STEP_COUNT = 2000;
     // List of species in the field.
     private List<Species> species;
     // The current state of the field.
@@ -49,12 +49,11 @@ public class Simulator
 
 
     /**
-     * Run the simulation from its current state for a reasonably long period,
-     * (4000 steps).
+     * Run the simulation from its current state for a reasonably long period set as a class constant.
      */
     public void runLongSimulation()
     {
-        simulate(2000);
+        simulate(LONG_SIMULATION_STEP_COUNT);
     }
     
     public void runHundredSteps()
@@ -65,7 +64,8 @@ public class Simulator
     /**
      * Run the simulation from its current state for the given number of steps.
      * Stop before the given number of steps if it ceases to be viable.
-     * @param numSteps The number of steps to run for.
+     *
+     * @param numSteps (int) The number of steps to run for.
      */
     public void simulate(int numSteps)
     {
@@ -133,7 +133,7 @@ public class Simulator
 
     /**
      * Pause for a given time.
-     * @param millisec  The time to pause for, in milliseconds
+     * @param millisec (int) The time to pause for, in milliseconds
      */
     private void delay(int millisec)
     {
