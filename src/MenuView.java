@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Builds and handles the view of the GUI in which user can choose the habitat, animals, and climate change scenario to be implemented in
- * his/her simulation.
+ * Builds and handles the view of the GUI in which user can choose the habitat, animals,
+ * and climate change scenario to be implemented in their simulation.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.28
+ * @version 2022.03.01
  */
 public class MenuView
 {
@@ -34,9 +34,7 @@ public class MenuView
         habitatList = habitatChoices;
         animalList = animalChoices;
         climateChangeScenarioList = scenarioChoices;
-
         this.handler = handler;
-
         animalNumberReceivers = new ArrayList<>();
         selectedAnimals = new HashMap<>();
     }
@@ -102,7 +100,9 @@ public class MenuView
     }
 
     /**
-     * Create a JComboBox out of a list. This allows other classes to display the JComboBox and let users make their choices that way.
+     * Create a JComboBox out of a list. This allows other classes to display
+     * the JComboBox and let users make their choices that way.
+     *
      * @param list (ArrayList<String>) The list to be displayed.
      * @return (JComboBox) The created JComboBox.
      */
@@ -117,7 +117,7 @@ public class MenuView
 
 
     /**
-     * Create the part of the GUI that allows user to choose a habitat for his/her simulation.
+     * Create the part of the GUI that allows users to choose a habitat for their simulation.
      * @param habitatListDisplay (JComboBox) The JComboBox allowing user to make his/her choice.
      * @return (Box) The part of the GUI that was created.
      */
@@ -132,7 +132,9 @@ public class MenuView
     }
 
     /**
-     * Create the part of the GUI that allows user to choose a climate change scenario for his/her simulation.
+     * Create the part of the GUI that allows users to choose a
+     * climate change scenario for their simulation.
+     *
      * @param scenarioListDisplay (JComboBox) The JComboBox allowing user to make his/her choice.
      * @return (Box) The part of the GUI that was created.
      */
@@ -157,7 +159,7 @@ public class MenuView
 
         // Labels to guide animals choice.
         JLabel animalChoicePrompt = new JLabel("Please choose the animals you want to see evolve in this habitat:");
-        JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding more than 300 of each animal you choose)");
+        JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding 300 of each animal you choose)");
         animalChoicePrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         animalChoiceExplanationPrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         // Technique to set the italic font: https://java2everyone.blogspot.com/2008/12/set-jlabel-text-italic.html?m=0
@@ -182,7 +184,7 @@ public class MenuView
     }
 
     /**
-     * Create a display to allow user to choose the number of each animal they want.
+     * Create a display to allow users to choose the number of each animal they want.
      * @return (JPanel) The created display.
      */
     private JPanel createAnimalListDisplay()
@@ -210,15 +212,18 @@ public class MenuView
     }
 
     /**
-     * Retrieves all inputs in the correct form using helper methods defined in this class and launches the simulation.
+     * Retrieves all inputs in the correct form using helper methods
+     * defined in this class and launches the simulation.
      *
      * @param habitatChoiceDisplay (JComboBox) The ComboBox used by the user to select a habitat.
      * @param animalNumberReceivers (ArrayList<JTextField>) The list of TextFields used by the user to input numbers of each animal to create.
      * @param climateChangeScenarioChoiceDisplay (ComboBox) The ComboBox used by the user to select a climate change scenario.
      */
-    private void getInputsAndLaunchSimulation(JComboBox habitatChoiceDisplay, ArrayList<JTextField> animalNumberReceivers, JComboBox climateChangeScenarioChoiceDisplay) {
+    private void getInputsAndLaunchSimulation(JComboBox habitatChoiceDisplay, ArrayList<JTextField> animalNumberReceivers, JComboBox climateChangeScenarioChoiceDisplay)
+    {
         String chosenHabitat = getHabitatInput(habitatChoiceDisplay);
-        if (chosenHabitat != null) {
+        if (chosenHabitat != null)
+        {
             ArrayList<Integer> numbersInputted = getNumericValuesOfUserInputs(animalNumberReceivers);
             if (numbersInputted != null) {
                 boolean generationSuccessful = generateAnimalDictionary(numbersInputted);
@@ -228,19 +233,20 @@ public class MenuView
                 }
             }
         }
-
     }
 
     /**
      * Return a list of Integers from the Strings inputted by the user in the various TextFields.
      * Source for try/catch construct to catch non-numerical values: https://stackabuse.com/java-check-if-string-is-a-number/
+     *
      * @param inputsList (ArrayList<JTextField>) The list of TextFields object in which the user inputted data.
      * @return (ArrayList<Integer>) The list of integers inputted by the user.
      */
     private ArrayList<Integer> getNumericValuesOfUserInputs (ArrayList<JTextField> inputsList)
     {
         ArrayList<Integer> inputtedNumbers = new ArrayList<>();
-        for (JTextField inputReceiver : inputsList) {
+        for (JTextField inputReceiver : inputsList)
+        {
             String inputValue = inputReceiver.getText();
             try {
                 int numericValue = Integer.parseInt(inputValue);
@@ -262,18 +268,21 @@ public class MenuView
     }
 
     /**
-     * Generates a HashMap associating the name of each animal with the number of this animal that must be created.
-     * This method heavily relies on the fact that animal names are stored in the animalList in the same order that they were on screen.
+     * Generates a HashMap associating the name of each animal with the number
+     * of this animal that must be created. This method heavily relies on the fact
+     * that animal names are stored in the animalList in the same order that they were on screen.
      *
      * @param numberOfEachAnimals (ArrayList<Integer>) The String object to test.
      */
     private boolean generateAnimalDictionary(ArrayList<Integer> numberOfEachAnimals)
     {
-        if (numberOfEachAnimals.size() == animalList.size()) {
+        if (numberOfEachAnimals.size() == animalList.size())
+        {
             for (int i=0; i<numberOfEachAnimals.size(); i++) {
                 selectedAnimals.put(animalList.get(i), numberOfEachAnimals.get(i));
             }
-        } else {
+        }
+        else {
             return false;
         }
         return true;
@@ -323,4 +332,3 @@ public class MenuView
         handler.switchToSimulatorView(chosenHabitat,selectedAnimals,chosenScenario);
     }
 }
-

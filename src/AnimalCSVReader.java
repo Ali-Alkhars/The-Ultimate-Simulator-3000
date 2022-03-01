@@ -6,14 +6,13 @@
  * @version 2022.02.28
  */
 
-public class AnimalCSVReader extends CSVReader {
-
+public class AnimalCSVReader extends CSVReader
+{
     // Path to the file holding the animal related data.
     private static final String FILE_NAME = "animals.csv";
     // String to be recognized as a boolean value of true.
     private static final String TRUE_SYMBOL = "true";
-
-    // If animal is a predator.
+    // tru if the animal is a predator.
     private boolean isPredator;
     // Animal's name.
     private String name;
@@ -39,7 +38,7 @@ public class AnimalCSVReader extends CSVReader {
     private boolean isNocturnal;
 
     /**
-     * Build an AnimalCSVReader and initializes field.
+     * Builds an AnimalCSVReader and initializes field.
      */
     public AnimalCSVReader() {
         isPredator = false;
@@ -58,8 +57,8 @@ public class AnimalCSVReader extends CSVReader {
     }
 
     /**
-     * Populated fields with the data read from the files. This method overrides a method of the CSVReader parent class
-     * and is therefore called after reading the data.
+     * Populated fields with the data read from the files. This method overrides
+     * a method of the CSVReader parent class and is therefore called after reading the data.
      *
      * @param extractedData (String[]) The data read.
      */
@@ -197,7 +196,8 @@ public class AnimalCSVReader extends CSVReader {
     /**
      * @return (boolean) Whether or not animal is nocturnal.
      */
-    public boolean isNocturnal() {
+    public boolean isNocturnal()
+    {
         return isNocturnal;
     }
 }

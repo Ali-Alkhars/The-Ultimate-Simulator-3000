@@ -1,6 +1,6 @@
 /**
- * An enum that specifies the values and actions
- * of the different climate change scenarios
+ * An enum that specifies the values and actions of the different
+ * climate change scenarios to approximate the real scenarios projected by the GIEC
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
  * @version 2022.02.28

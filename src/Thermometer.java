@@ -1,14 +1,13 @@
 /**
- * A generic class that represents the temperature level
+ * A generic class that holds and manipulates the temperature level.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.16
+ * @version 2022.03.01
  */
 public class Thermometer
 {
     // the current temperature
     private int currentTemp;
-
 
     /**
      * Construct a Thermometer object with the given temperature.

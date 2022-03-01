@@ -1,8 +1,8 @@
 import java.util.List;
 
 /**
- * A class representing plants in the simulation
- * that inherits class Species
+ * A class representing plants in the simulation. It extends
+ * the abstract class Species
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
  * @version 2022.02.28

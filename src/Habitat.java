@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * Represent a habitat of the simulation.
- * Keep track of its seasons and temperature
+ * Keep track of its seasons and temperature.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
  * @version 2022.02.28

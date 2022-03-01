@@ -9,12 +9,11 @@ import java.util.Random;
  * Initializing the simulation. It first launches the UI, then builds the appropriate
  * objects to run the simulation desired by the user.
  *
- * This is the class that should be called to run the simulation.
+ * IMPORTANT: This is the class that should be called to run the simulation.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
  * @version 2022.03.01
  */
-
 public class Initializer
 {
     // The default width for the grid.
@@ -71,8 +70,8 @@ public class Initializer
     }
 
     /**
-     * Opens the GUI with the list of available animals and habitats extracted from the files as well as the list of available climate change
-     * scenarios.
+     * Opens the GUI with the list of available animals and habitats extracted
+     * from the files as well as the list of available climate change scenarios.
      */
     private void openGUI()
     {
@@ -82,8 +81,9 @@ public class Initializer
     }
 
     /**
-     * Create and a simulator with the animals, habitat, and climate change scenario asked by the user as well as all
-     * other necessary objects for the simulation to run. The created Simulator is returned.
+     * Create a simulator with the animals, habitat, and climate change
+     * scenario asked by the user as well as all other necessary objects
+     * for the simulation to run. The created Simulator is returned.
      *
      * @param chosenHabitat (String) The name of the habitat chosen by the user.
      * @param animalsToCreate (HashMap<String, Integer>) Keys are the animals' names and values are the number of each animal we need to create.
@@ -131,8 +131,9 @@ public class Initializer
     }
 
     /**
-     * Populate the simulation with the chosen animals. First reading the data relating to each animal and then creating and adding to the
-     * list of species the right number of each animal.
+     * Populate the simulation with the chosen animals.
+     * First reading the data relating to each animal,
+     * then creating and adding to the list of species the right number of each animal.
      *
      * @param animalsToCreate (HashMap<String, Integer>) The names and number of chosen animals.
      * @param field (Field) The field in which the animals will evolve.
@@ -212,8 +213,9 @@ public class Initializer
     }
 
     /**
-     * Find an available location for an object to be created in the simulation field. The simulation is chosen at random and is changed if
-     * the randomly selected cell already contains an object.
+     * Find an available location for an object to be created in the simulation field.
+     * The simulation is chosen at random and is changed if the randomly selected cell
+     * already contains an object.
      *
      * @param field (Field) The simulation's field.
      * @return (Location) the available location found.
@@ -236,7 +238,7 @@ public class Initializer
      */
     private int calculateFieldArea()
     {
-        return DEFAULT_WIDTH*DEFAULT_DEPTH;
+        return DEFAULT_WIDTH * DEFAULT_DEPTH;
     }
 
     /**
