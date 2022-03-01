@@ -1,18 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Builds and handles the view of the GUI in which user can choose the habitat, animals, and climate change scenario to be implemented in
- * his/her simulation.
- *
- * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.28
- */
-public class MenuView
-{
+
+
+public class MenuView {
+
     private GUIHandler handler;
     private ArrayList<String> habitatList;
     private ArrayList<String> animalList;
@@ -20,79 +16,137 @@ public class MenuView
     private ArrayList<JTextField> animalNumberReceivers;
     private HashMap<String, Integer> selectedAnimals;
 
-    /**
-     * Initializes all fields with the appropriate list of animal, habitat and climate change scneario choices as well as the GUIHandler
-     * currently governing the GUI.
-     *
-     * @param handler (GUIHandler) the GUIHandler currenly handling the GUI.
-     * @param animalChoices (ArrayList<String>) The list of animal choices.
-     * @param habitatChoices (ArrayList<String>) The list of habitat choices.
-     * @param scenarioChoices (ArrayList<String>) The list of climate change scenario choices.
-     */
+
     public MenuView (GUIHandler handler, ArrayList<String> animalChoices, ArrayList<String> habitatChoices, ArrayList<String> scenarioChoices)
     {
         habitatList = habitatChoices;
         animalList = animalChoices;
         climateChangeScenarioList = scenarioChoices;
-        
+
         this.handler = handler;
-        
+
         animalNumberReceivers = new ArrayList<>();
         selectedAnimals = new HashMap<>();
     }
 
-    /**
-     * Creates the actual menu view UI.
-     *
-     * @return (JFrame) The created menu view UI.
-     */
-    public JFrame createAndShow()
-    {
-        // Create frame and set title and minimal size.
-        JFrame frame = new JFrame("Ultimate Simulator 3000");
-        frame.setMinimumSize(new Dimension(600,450));
+    public JFrame createAndShow() {
+        JFrame frame = new JFrame("Hello World Java Swing");
+        frame.setMinimumSize(new Dimension(800, 600));
 
         JPanel mainContainer = new JPanel(new BorderLayout());
         mainContainer.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 
-        // Welcome label with specific font.
-        JLabel welcomeLabel = new JLabel("Welcome to the Ultimate Simulator 3000");
+<<<<<<< Updated upstream
+        JLabel welcomeLabel = new JLabel("Welcome to Ali and Anton's [Project Name]");
         welcomeLabel.setFont(new Font("Dialog", Font.BOLD, 27));
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        
-        // HABITAT CHOICE SECTION
 
-        Box habitatChoiceComponent = Box.createHorizontalBox();
-        JLabel habitatChoicePrompt = new JLabel("Choose a habitat for your simulation:");
+        // HABITAT CHOICE
+        Box habitatChoiceComponent = Box.createVerticalBox();
+        habitatChoiceComponent.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
 
+        JLabel habitatChoicePrompt = new JLabel("Please choose a habitat for your simulation:");
+        habitatChoiceComponent.add(habitatChoicePrompt);
         JComboBox habitatListDisplay = new JComboBox();
+
         for (String habitatName : habitatList) {
             habitatListDisplay.addItem(habitatName);
         }
-        
+
+        habitatChoiceComponent.add(habitatListDisplay);
+
+        // ANIMAL CHOICE
+        Box animalChoiceComponent = Box.createVerticalBox();
+        animalChoiceComponent.setBorder(BorderFactory.createEmptyBorder(20,0,0,0));
+
+=======
+        JLabel welcomeLabel = createWelcomeLabel("Welcome to the Ultimate Simulator 3000");
+        // HABITAT CHOICE SECTION
+        JComboBox habitatListDisplay = createListDisplayFromList(habitatList);
+        Box habitatChoiceComponent = createHabitatChoiceComponent(habitatListDisplay);
+        // CLIMATE CHANGE SCENARIO CHANGE SECTION
+        JComboBox scenarioListDisplay = createListDisplayFromList(climateChangeScenarioList);
+        Box scenarioChoiceComponent = createScenarioChoiceComponent(scenarioListDisplay);
+        // ANIMAL CHOICE SECTION
+        JPanel animalChoiceComponent = createAnimalChoiceComponent();
+
+        // SIMULATE BUTTON
+        JButton actionButton = new JButton("Simulate");
+        ActionListener launchSim = e -> {
+            getInputsAndLaunchSimulation(habitatListDisplay, animalNumberReceivers, scenarioListDisplay);
+        };
+        actionButton.addActionListener(launchSim);
+
+        // PUTTING THE UI TOGETHER
+        Box choiceComponents = Box.createVerticalBox();
+        choiceComponents.setBorder(BorderFactory.createEmptyBorder(30,0,10,0));
+        choiceComponents.add(habitatChoiceComponent);
+        choiceComponents.add(scenarioChoiceComponent);
+        choiceComponents.add(animalChoiceComponent);
+
+        mainContainer.add(welcomeLabel, BorderLayout.NORTH);
+        mainContainer.add(choiceComponents, BorderLayout.CENTER);
+        mainContainer.add(actionButton, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(mainContainer);
+        return frame;
+    }
+
+    private JLabel createWelcomeLabel(String welcomeText)
+    {
+        JLabel welcomeLabel = new JLabel(welcomeText);
+        welcomeLabel.setFont(new Font("Dialog", Font.BOLD, 27));
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        return welcomeLabel;
+    }
+
+    private Box createHabitatChoiceComponent(JComboBox habitatListDisplay)
+    {
+        Box habitatChoiceComponent = Box.createHorizontalBox();
+        JLabel habitatChoicePrompt = new JLabel("Choose a habitat for your simulation:");
         habitatChoiceComponent.add(habitatChoicePrompt);
         habitatChoiceComponent.add(habitatListDisplay);
-        
-        // CLIMATE CHANGE SCENARIO CHOICE SECTION
 
-        Box scenarioChoiceComponent = Box.createHorizontalBox();
-        
-        JLabel scenarioChoicePrompt = new JLabel("Choose a climate change scenario:");
-        JComboBox scenarioListDisplay = new JComboBox();
-        for (String scenarioName : climateChangeScenarioList) {
-            scenarioListDisplay.addItem(scenarioName);
+        return habitatChoiceComponent;
+    }
+
+    private JComboBox createListDisplayFromList (ArrayList<String> list)
+    {
+        JComboBox listDisplay = new JComboBox();
+        for (String element : list) {
+            listDisplay.addItem(element);
         }
-        
+        return listDisplay;
+    }
+
+    private Box createScenarioChoiceComponent(JComboBox scenarioListDisplay)
+    {
+        Box scenarioChoiceComponent = Box.createHorizontalBox();
+        JLabel scenarioChoicePrompt = new JLabel("Choose a climate change scenario:");
         scenarioChoiceComponent.add(scenarioChoicePrompt);
         scenarioChoiceComponent.add(scenarioListDisplay);
-        
-        // ANIMAL CHOICE COMPONENT SECTION
 
+        return scenarioChoiceComponent;
+    }
+
+    private JPanel createAnimalChoiceComponent()
+    {
         JPanel animalChoiceComponent = new JPanel();
         animalChoiceComponent.setLayout(new BorderLayout());
+>>>>>>> Stashed changes
 
-        // Labels to guide animals choice.
         JLabel animalChoicePrompt = new JLabel("Please choose the animals you want to see evolve in this habitat:");
+<<<<<<< Updated upstream
+        animalChoiceComponent.add(animalChoicePrompt);
+        JPanel animalListDisplay = new JPanel(new FlowLayout(FlowLayout.CENTER, 10,10));
+        animalChoiceComponent.setBorder(BorderFactory.createEmptyBorder(5,0,0,20));
+
+
+        for (String animalName: animalList) {
+            Box animalComponent = Box.createHorizontalBox();
+            JLabel animalNameDisplay = new JLabel(animalName);
+=======
         JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding more than 300 of each animal you choose)");
         animalChoicePrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         animalChoiceExplanationPrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -109,16 +163,28 @@ public class MenuView
         animalPrompts.add(animalChoiceExplanationPrompt);
         animalPrompts.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // GridLayout to add the animal choices
+        JPanel animalListDisplay = createAnimalListDisplay();
+
+        animalChoiceComponent.add(animalPrompts, BorderLayout.CENTER);
+        animalChoiceComponent.add(animalListDisplay, BorderLayout.PAGE_END);
+
+        return animalChoiceComponent;
+    }
+
+    private JPanel createAnimalListDisplay()
+    {
         GridLayout animalListDisplayLayout = new GridLayout(5,5);
         animalListDisplayLayout.setHgap(10);
         animalListDisplayLayout.setVgap(7);
+
         JPanel animalListDisplay = new JPanel(animalListDisplayLayout);
+
         for (String animalName : animalList) {
             Box animalComponent = Box.createHorizontalBox();
-                    // technique to capitalize first letter : https://stackoverflow.com/questions/3904579/how-to-capitalize-the-first-letter-of-a-string-in-java
+            // technique to capitalize first letter : https://stackoverflow.com/questions/3904579/how-to-capitalize-the-first-letter-of-a-string-in-java
             String capitalizedAnimalName = animalName.substring(0, 1).toUpperCase() + animalName.substring(1);
             JLabel animalNameDisplay = new JLabel(capitalizedAnimalName);
+>>>>>>> Stashed changes
             animalComponent.add(animalNameDisplay);
             JTextField animalNumber = new JTextField();
             animalNumber.setText("0");
@@ -126,11 +192,22 @@ public class MenuView
             animalComponent.add(animalNumber);
             animalListDisplay.add(animalComponent);
         }
+        animalChoiceComponent.add(animalListDisplay);
 
-        animalChoiceComponent.add(animalPrompts, BorderLayout.CENTER);
-        animalChoiceComponent.add(animalListDisplay, BorderLayout.PAGE_END);
-        
-        // SIMULATE BUTTON
+        // SCENARIO CHOICE
+        Box scenarioChoiceComponent = Box.createVerticalBox();
+
+        JLabel scenarioChoicePrompt = new JLabel("Please choose a climate change scenario for your simulation:");
+        habitatChoiceComponent.add(scenarioChoicePrompt);
+        JComboBox scenarioListDisplay = new JComboBox();
+
+        for (String scenarioName : climateChangeScenarioList) {
+            scenarioListDisplay.addItem(scenarioName);
+        }
+
+        habitatChoiceComponent.add(scenarioListDisplay);
+
+<<<<<<< Updated upstream
         JButton actionButton = new JButton("Simulate");
 
         ActionListener launchSim = e -> {
@@ -139,19 +216,21 @@ public class MenuView
 
         actionButton.addActionListener(launchSim);
 
-        // PUTTING THE UI TOGETHER
         Box choiceComponents = Box.createVerticalBox();
-        choiceComponents.setBorder(BorderFactory.createEmptyBorder(30,0,10,0));
         choiceComponents.add(habitatChoiceComponent);
-        choiceComponents.add(scenarioChoiceComponent);
         choiceComponents.add(animalChoiceComponent);
-        
+        choiceComponents.add(scenarioChoiceComponent);
+
         mainContainer.add(welcomeLabel, BorderLayout.NORTH);
-        mainContainer.add(choiceComponents, BorderLayout.CENTER);
         mainContainer.add(actionButton, BorderLayout.SOUTH);
+        mainContainer.add(choiceComponents, BorderLayout.CENTER);
 
         frame.getContentPane().add(mainContainer);
         return frame;
+    }
+
+=======
+        return animalListDisplay;
     }
 
     /**
@@ -161,12 +240,10 @@ public class MenuView
      * @param animalNumberReceivers (ArrayList<JTextField>) The list of TextFields used by the user to input numbers of each animal to create.
      * @param climateChangeScenarioChoiceDisplay (ComboBox) The ComboBox used by the user to select a climate change scenario.
      */
-
     private void getInputsAndLaunchSimulation(JComboBox habitatChoiceDisplay, ArrayList<JTextField> animalNumberReceivers, JComboBox climateChangeScenarioChoiceDisplay) {
         String chosenHabitat = getHabitatInput(habitatChoiceDisplay);
         if (chosenHabitat != null) {
             ArrayList<Integer> numbersInputted = getNumericValuesOfUserInputs(animalNumberReceivers);
-            System.out.println("Ici" + numbersInputted.size());
             if (numbersInputted != null) {
                 boolean generationSuccessful = generateAnimalDictionary(numbersInputted);
                 if (generationSuccessful) {
@@ -180,73 +257,74 @@ public class MenuView
 
     /**
      * Return a list of Integers from the Strings inputted by the user in the various TextFields.
-     *
+     * Source for try/catch construct to catch non-numerical values: https://stackabuse.com/java-check-if-string-is-a-number/
      * @param inputsList (ArrayList<JTextField>) The list of TextFields object in which the user inputted data.
      * @return (ArrayList<Integer>) The list of integers inputted by the user.
      */
-
+>>>>>>> Stashed changes
     private ArrayList<Integer> getNumericValuesOfUserInputs (ArrayList<JTextField> inputsList)
     {
-        ArrayList<Integer> inputtedNumbers = new ArrayList<>();
+        ArrayList<Integer> inputedNumbers = new ArrayList<>();
         for (JTextField inputReceiver : inputsList) {
             String inputValue = inputReceiver.getText();
+<<<<<<< Updated upstream
             if (textIsANumber(inputValue)) {
-                inputtedNumbers.add(Integer.valueOf(inputValue));
+                inputedNumbers.add(Integer.valueOf(inputValue));
             } else {
-                throwErrorMessage("One of the values inputted is not a number.");
+                throwErrorMessage("One of the values inputed is not a number.");
                 return null;
             }
         }
-        System.out.println(inputtedNumbers.size());
+        System.out.println(inputedNumbers.size());
+        return inputedNumbers;
+=======
+            try {
+                int numericValue = Integer.parseInt(inputValue);
+                inputtedNumbers.add(numericValue);
+            } catch (NumberFormatException e) {
+                throwErrorMessage("One of the values inputted is not a number or on cell was left blank, please try again.");
+            }
+        }
         return inputtedNumbers;
+>>>>>>> Stashed changes
     }
 
-    /**
-     * Helper methods for other classes to print error messages if needed.
-     *
-     * @param message (String) The error message.
-     */
     private void throwErrorMessage(String message) {
         System.out.println(message);
     }
 
-    /**
-     * Check if a given String represents an int.
-     * Source: technique found on XXXXXXXXX
-     *
-     * @param textToTest (String) The String object to test.
-     */
+<<<<<<< Updated upstream
     private boolean textIsANumber(String textToTest) {
-        return textToTest.matches("[0-9]*");
+        if (textToTest.matches("[0-9]*")) {
+            return true;
+        }
+        return false;
     }
 
+=======
     /**
      * Generates a HashMap associating the name of each animal with the number of this animal that must be created.
      * This method heavily relies on the fact that animal names are stored in the animalList in the same order that they were on screen.
      *
      * @param numberOfEachAnimals (ArrayList<Integer>) The String object to test.
      */
-
+>>>>>>> Stashed changes
     private boolean generateAnimalDictionary(ArrayList<Integer> numberOfEachAnimals)
     {
         if (numberOfEachAnimals.size() == animalList.size()) {
             for (int i=0; i<numberOfEachAnimals.size(); i++) {
-                System.out.println("la boucle est à" + i);
                 selectedAnimals.put(animalList.get(i), numberOfEachAnimals.get(i));
             }
         } else {
-            throwErrorMessage("Please check that all animal numbers were inputted correctly and try again.");
+<<<<<<< Updated upstream
+            throwErrorMessage("Please check that all animal numbers were inputed correctly and try again.");
             // empty map
+=======
+>>>>>>> Stashed changes
             return false;
         }
         return true;
     }
-
-    /**
-     * Reads the name of the chosen Habitat.
-     *
-     * @param habitatChoiceDisplay (JComboBox) The ComboBox used by the user to select a habitat.
-     */
 
     private String getHabitatInput(JComboBox habitatChoiceDisplay)
     {
@@ -258,15 +336,9 @@ public class MenuView
         return chosenHabitat;
     }
 
-    /**
-     * Reads the name of the chosen climate change scenario.
-     *
-     * @param scenarioChoiceDisplay (JComboBox) The ComboBox used by the user to select a climate change scenario.
-     */
-
-    private String getScenarioInput(JComboBox scenarioChoiceDisplay)
+    private String getScenarioInput(JComboBox scenarioCoiceDisplay)
     {
-        String chosenHabitat = (String) scenarioChoiceDisplay.getSelectedItem();
+        String chosenHabitat = (String) scenarioCoiceDisplay.getSelectedItem();
         if (chosenHabitat == null) {
             throwErrorMessage("You must choose a climate change scenario.");
             return null;
@@ -274,16 +346,24 @@ public class MenuView
         return chosenHabitat;
     }
 
-    /**
-     * Calls the GUIHandler to launch the simulation and switch screen.
-     *
-     * @param chosenHabitat (String) The name of the habitat chosen by the user.
-     * @param chosenScenario (String) The name of the climate change scenario chosen by the user.
-     */
+    private void getInputsAndLaunchSimulation(JComboBox habitatChoiceDisplay, ArrayList<JTextField> animalNumberReceivers, JComboBox climateChangeScenarioChoiceDisplay) {
+        String chosenHabitat = getHabitatInput(habitatChoiceDisplay);
+        if (chosenHabitat != null) {
+            ArrayList<Integer> numbersInputed = getNumericValuesOfUserInputs(animalNumberReceivers);
+            System.out.println("Ici" + numbersInputed.size());
+            if (numbersInputed != null) {
+                boolean generationSuccessful = generateAnimalDictionary(numbersInputed);
+                if (generationSuccessful) {
+                    String chosenSimulation = getScenarioInput(climateChangeScenarioChoiceDisplay);
+                    launchSimulation(chosenHabitat, chosenSimulation);
+                }
+            }
+        }
+
+    }
 
     private void launchSimulation(String chosenHabitat, String chosenScenario)
     {
         handler.switchToSimulatorView(chosenHabitat,selectedAnimals,chosenScenario);
     }
 }
-
