@@ -158,7 +158,7 @@ public class MenuView
     
     private JPanel createAnimalListDisplay()
     {
-        GridLayout animalListDisplayLayout = new GridLayout(5,5);
+        GridLayout animalListDisplayLayout = new GridLayout(0,5);
         animalListDisplayLayout.setHgap(10);
         animalListDisplayLayout.setVgap(7);
         
