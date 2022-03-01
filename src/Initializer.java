@@ -43,10 +43,6 @@ public class Initializer
     private final AnimalCSVReader animalReader;
     // To read plant related data.
     private final PlantCSVReader plantReader;
-    // The depth of the field created.
-    private final int fieldDepth;
-    // The width of the field created.
-    private final int fieldWidth;
     // A Random object to handle random behaviours throughout the class.
     private static final Random rand = Randomizer.getRandom();
     // A graphical view of the simulation.
@@ -56,31 +52,13 @@ public class Initializer
     // The GUIHandler handling the GUI.
     private GUIHandler handler;
 
-    /**
-     * Default constructor, calls the other with the default width and depth.
-     */
-    public Initializer()
-    {
-        this(DEFAULT_DEPTH, DEFAULT_WIDTH);
-    }
 
     /**
      * Builds an Initializer object and initializes its field.
-     * @param depth Depth of the field. Must be greater than zero.
-     * @param width Width of the field. Must be greater than zero.
      */
-    public Initializer(int depth, int width)
+    public Initializer()
     {
-        if(width <= 0 || depth <= 0) {
-            System.out.println("The dimensions must be greater than zero.");
-            System.out.println("Using default values.");
-            depth = DEFAULT_DEPTH;
-            width = DEFAULT_WIDTH;
-        }
-
         speciesToEvolveInSimulation = new ArrayList<>();
-        fieldDepth = depth;
-        fieldWidth = width;
         habitatReader = new HabitatCSVReader();
         animalReader = new AnimalCSVReader();
         plantReader = new PlantCSVReader();
@@ -115,8 +93,8 @@ public class Initializer
     public Simulator initializeSimulation(String chosenHabitat, HashMap<String, Integer> animalsToCreate, String scenarioName)
     {
         SimulationStep simulatorStepCounter = new SimulationStep();
-        Field field = new Field(fieldDepth, fieldWidth);
-        view = new SimulatorView(fieldDepth, fieldWidth, handler);
+        Field field = new Field(DEFAULT_DEPTH, DEFAULT_WIDTH);
+        view = new SimulatorView(DEFAULT_DEPTH, DEFAULT_WIDTH, handler);
 
         ClimateScenarios chosenClimateChangeScenario = createChosenClimateChangeScenario(scenarioName);
         Habitat simulationHabitat = createHabitat(chosenHabitat, simulatorStepCounter, chosenClimateChangeScenario);
@@ -160,6 +138,7 @@ public class Initializer
      * @param field (Field) The field in which the animals will evolve.
      */
     private void populateWithAnimals(HashMap<String, Integer> animalsToCreate, Field field) {
+        IdxOfColorToUseNext=0;
         Location freeLocationToPlaceAnimal;
 
         for(String animalName : animalsToCreate.keySet()) {
@@ -240,11 +219,11 @@ public class Initializer
      */
     private Location findAvailableLocation(Field field)
     {
-        int randomWidth = rand.nextInt(fieldWidth);
-        int randomDepth = rand.nextInt(fieldDepth);
+        int randomWidth = rand.nextInt(DEFAULT_WIDTH);
+        int randomDepth = rand.nextInt(DEFAULT_DEPTH);
         while (field.getObjectAt(randomDepth,randomWidth) != null) {
-            randomWidth = rand.nextInt(fieldWidth);
-            randomDepth = rand.nextInt(fieldDepth);
+            randomWidth = rand.nextInt(DEFAULT_WIDTH);
+            randomDepth = rand.nextInt(DEFAULT_DEPTH);
         }
         return new Location(randomDepth, randomWidth);
     }
@@ -256,7 +235,7 @@ public class Initializer
      */
     private int calculateFieldArea()
     {
-        return fieldWidth*fieldDepth;
+        return DEFAULT_WIDTH*DEFAULT_DEPTH;
     }
 
     /**

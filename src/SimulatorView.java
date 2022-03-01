@@ -67,7 +67,7 @@ public class SimulatorView extends JFrame
 
         // Population display initialization.
         population = new JPanel();
-        GridLayout gridLayout = new GridLayout(4,5);
+        GridLayout gridLayout = new GridLayout(5,5);
         population.setLayout(gridLayout);
 
         fieldView = new FieldView(height, width);

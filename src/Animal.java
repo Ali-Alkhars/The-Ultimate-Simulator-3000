@@ -69,7 +69,7 @@ public class Animal extends Species
         this.hibernates = hibernates;
         this.isNocturnal = isNocturnal;
         // Default value is nutritionalValue to simulate the nutriment apart from the mother's milk/ other parental feeding.
-        this.foodLevel = rand.nextInt(nutritionalValue);
+        this.foodLevel = randomFoodLevel();
         inHibernation = false;
         hiberSteps = 0;
 
@@ -85,10 +85,10 @@ public class Animal extends Species
      * 1) increment the animal's age if a year has passed.
      * 2) if the animal is alive, then:
      *      i) check if the animal should hibernate.
-     *      ii) if the animal can't withstand the current temperature, then it dies.
-     *      iii) if the animal is in hibernation, then:
+     *      ii) if the animal is in hibernation, then:
      *          a) if it passed STAY_STEPS steps without moving, then move and increment hunger.
      *          b) increment hiberSteps.
+     *      iii) if the animal can't withstand the current temperature, then it dies.
      *      iv) if the animal is not in hibernation, then:
      *          a) if it is night and the animal is nocturnal, then move.
      *          b) if it is day, then all animals move and increment hunger.
@@ -111,13 +111,9 @@ public class Animal extends Species
             // i)
             checkHibernation(temperature);
 
+            
             // ii)
-            if (! survivesTemperature(temperature))
-            {
-                setDead();
-            }
-            // iii)
-            else if (inHibernation)
+            if (inHibernation)
             {
                 // a)
                 if (hiberSteps % STAY_STEPS == 0)   {
@@ -127,9 +123,15 @@ public class Animal extends Species
                 // b)
                 incrementHiberSteps();
             }
+            // iii)
+            else if (! survivesTemperature(temperature))
+            {
+                setDead();
+            }
             // iv)
             else
             {
+                
                 // a)
                 if (isNight && isNocturnal) {
                     makeMove(newSpecies);
@@ -160,7 +162,9 @@ public class Animal extends Species
         }
 
         // Eats if it is possible
-        findFoodAndEat();
+        if (isNotFull()) {
+            findFoodAndEat();
+        }
 
         // Find a free location in adjacent cells
         Location newLocation = getField().freeAdjacentLocation(getLocation());
@@ -223,7 +227,15 @@ public class Animal extends Species
             setDead();
         }
     }
-
+    
+    /**
+     * @return (boolean) true if the animal is not full and therefore can eat and false if it is full.
+     */
+    protected boolean isNotFull()
+    {
+        return foodLevel < getNutritionalValue()*1.5;
+    }
+    
     /**
      * Increment hiberSteps by 1
      */
@@ -311,6 +323,17 @@ public class Animal extends Species
     private boolean randomSex()
     {
         return Math.random() <= 0.5;
+    }
+    
+    /**
+     * Return a random foodLevel more than the animal's nutritional value divided by half.
+     *
+     * @return (int) the foodLevel.
+     */
+    private int randomFoodLevel()
+    {
+        int lowBound = getNutritionalValue()/2;
+        return rand.nextInt(lowBound) + lowBound;
     }
 
     /**

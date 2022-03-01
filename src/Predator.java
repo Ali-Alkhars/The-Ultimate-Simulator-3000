@@ -62,7 +62,10 @@ public class Predator extends Animal
             }
 
             // Move towards a source of food if found.
-            Location newLocation = findFoodAndEat(neighboringAnimals);
+            Location newLocation = null;
+            if (isNotFull()) {
+                newLocation = findFoodAndEat(neighboringAnimals);
+            } 
 
             if(newLocation == null) {
                 // No food found - try to move to a free location.
@@ -114,6 +117,8 @@ public class Predator extends Animal
 
                 Predator neighboringPredator = (Predator)neighboringAnimals.get(i);
                 String nameOfInvestigatedHorde = neighboringPredator.getName();
+                
+                if (!this.getName().equals(nameOfInvestigatedHorde)) {
                 int totalHordeStrength =  neighboringPredator.getStrength();
 
                 hordeMembers.add(neighboringPredator);
@@ -129,6 +134,7 @@ public class Predator extends Animal
                     break;
                 } else {
                     hordeMembers.clear();
+                }
                 }
             }
         }
