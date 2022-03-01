@@ -41,8 +41,8 @@ public class Animal extends Species
     private int age;
 
     /**
-     * Create a new animal with given specifications. An animal can be created with random age (or start at age 0) and/or
-     * with a random foodLevel (or start at XXXX)
+     * Create a new animal with given specifications. An animal can be created with random age (or start at age 0) and
+     * with a random foodLevel.
      *
      * @param field (Field) the field where the simulation takes place
      * @param location (Location) the Location at which the animal should appear
@@ -110,7 +110,6 @@ public class Animal extends Species
         {
             // i)
             checkHibernation(temperature);
-
             
             // ii)
             if (inHibernation)
@@ -131,7 +130,6 @@ public class Animal extends Species
             // iv)
             else
             {
-                
                 // a)
                 if (isNight && isNocturnal) {
                     makeMove(newSpecies);

@@ -112,29 +112,31 @@ public class Predator extends Animal
     {
         ArrayList<Predator> hordeMembers = new ArrayList<>();
 
-        for (int i =0; i < neighboringAnimals.size(); i++) {
+        for (int i =0; i < neighboringAnimals.size(); i++)
+        {
             if (neighboringAnimals.get(i) instanceof Predator) {
 
                 Predator neighboringPredator = (Predator)neighboringAnimals.get(i);
                 String nameOfInvestigatedHorde = neighboringPredator.getName();
                 
-                if (!this.getName().equals(nameOfInvestigatedHorde)) {
-                int totalHordeStrength =  neighboringPredator.getStrength();
+                if(! this.getName().equals(nameOfInvestigatedHorde))
+                {
+                    int totalHordeStrength =  neighboringPredator.getStrength();
 
-                hordeMembers.add(neighboringPredator);
-                for (int j =0; j < neighboringAnimals.size(); j++) {
-                    if (nameOfInvestigatedHorde.equals(neighboringAnimals.get(j).getName())) {
-                        Predator predatorObject = (Predator)neighboringAnimals.get(i);
-                        totalHordeStrength += predatorObject.getStrength();
-                        hordeMembers.add(predatorObject);
+                    hordeMembers.add(neighboringPredator);
+                    for (int j =0; j < neighboringAnimals.size(); j++) {
+                        if (nameOfInvestigatedHorde.equals(neighboringAnimals.get(j).getName())) {
+                            Predator predatorObject = (Predator)neighboringAnimals.get(i);
+                            totalHordeStrength += predatorObject.getStrength();
+                            hordeMembers.add(predatorObject);
+                        }
                     }
-                }
-                if (totalHordeStrength > strength) {
-                    attackedByHorde(hordeMembers);
-                    break;
-                } else {
-                    hordeMembers.clear();
-                }
+                    if (totalHordeStrength > strength) {
+                        attackedByHorde(hordeMembers);
+                        break;
+                    } else {
+                        hordeMembers.clear();
+                    }
                 }
             }
         }

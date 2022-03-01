@@ -34,7 +34,7 @@ public class Initializer
     // The list of colors available for animal objects.
     private ArrayList<Color> listOfColorsForAnimals;
     // The index of the next color from the list used for an animal.
-    private int IdxOfColorToUseNext;
+    private int idxOfColorToUseNext;
     // List of species to evolve in the field.
     private List<Species> speciesToEvolveInSimulation;
     // To read habitat related data.
@@ -65,7 +65,7 @@ public class Initializer
         listOfColorsForAnimals = new ArrayList<>();
 
         populateAnimalColors();
-        IdxOfColorToUseNext = 0;
+        idxOfColorToUseNext = 0;
 
         openGUI();
     }
@@ -137,8 +137,9 @@ public class Initializer
      * @param animalsToCreate (HashMap<String, Integer>) The names and number of chosen animals.
      * @param field (Field) The field in which the animals will evolve.
      */
-    private void populateWithAnimals(HashMap<String, Integer> animalsToCreate, Field field) {
-        IdxOfColorToUseNext=0;
+    private void populateWithAnimals(HashMap<String, Integer> animalsToCreate, Field field)
+    {
+        idxOfColorToUseNext = 0;
         Location freeLocationToPlaceAnimal;
 
         for(String animalName : animalsToCreate.keySet()) {
@@ -179,8 +180,8 @@ public class Initializer
                 }
 
                 // Setting the color for this species.
-                view.setColor(name, listOfColorsForAnimals.get(IdxOfColorToUseNext));
-                IdxOfColorToUseNext ++;
+                view.setColor(name, listOfColorsForAnimals.get(idxOfColorToUseNext));
+                idxOfColorToUseNext ++;
             }
         }
     }
@@ -292,30 +293,30 @@ public class Initializer
      */
     private void populateAnimalColors()
     {
-        listOfColorsForAnimals.add(Color.decode("0x008B8B"));
-        listOfColorsForAnimals.add(Color.decode("0xADD8E6"));
+        listOfColorsForAnimals.add(Color.decode("0xFF1493"));
+        listOfColorsForAnimals.add(Color.decode("0xFFA500"));
+        listOfColorsForAnimals.add(Color.decode("0x007CFF"));
+        listOfColorsForAnimals.add(Color.decode("0x44FF99"));
+        listOfColorsForAnimals.add(Color.decode("0x7F0000"));
+        listOfColorsForAnimals.add(Color.decode("0x00FFFF"));
         listOfColorsForAnimals.add(Color.decode("0xBECF33"));
         listOfColorsForAnimals.add(Color.decode("0x483D8B"));
         listOfColorsForAnimals.add(Color.decode("0x7F007F"));
         listOfColorsForAnimals.add(Color.decode("0xA020F0"));
         listOfColorsForAnimals.add(Color.decode("0x7E70CA"));
         listOfColorsForAnimals.add(Color.decode("0xFF9988"));
-        listOfColorsForAnimals.add(Color.decode("0x00FFFF"));
-        listOfColorsForAnimals.add(Color.decode("0x44FF99"));
         listOfColorsForAnimals.add(Color.decode("0xFFFF00"));
         listOfColorsForAnimals.add(Color.decode("0x772D26"));
         listOfColorsForAnimals.add(Color.decode("0xBD7791"));
         listOfColorsForAnimals.add(Color.decode("0x808080"));
         listOfColorsForAnimals.add(Color.decode("0xD5A9F5"));
         listOfColorsForAnimals.add(Color.decode("0xFFB6C1"));
-        listOfColorsForAnimals.add(Color.decode("0xFF1493"));
         listOfColorsForAnimals.add(Color.decode("0xFFE378"));
-        listOfColorsForAnimals.add(Color.decode("0xFFA500"));
         listOfColorsForAnimals.add(Color.decode("0x00008B"));
-        listOfColorsForAnimals.add(Color.decode("0x007CFF"));
-        listOfColorsForAnimals.add(Color.decode("0x7F0000"));
         listOfColorsForAnimals.add(Color.decode("0x808000"));
         listOfColorsForAnimals.add(Color.decode("0x8FBC8F"));
         listOfColorsForAnimals.add(Color.decode("0xFF0000"));
+        listOfColorsForAnimals.add(Color.decode("0x008B8B"));
+        listOfColorsForAnimals.add(Color.decode("0xADD8E6"));
     }
 }
