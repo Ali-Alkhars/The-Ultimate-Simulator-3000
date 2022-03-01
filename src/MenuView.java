@@ -42,7 +42,7 @@ public class MenuView
     }
 
     /**
-     * Creates the actual menu view UI.
+     * Create and return the menu view UI.
      *
      * @return (JFrame) The created menu view UI.
      */
@@ -86,7 +86,12 @@ public class MenuView
         frame.getContentPane().add(mainContainer);
         return frame;
     }
-    
+
+    /**
+     * Create a welcome label with a given text. Welcome label is characterized by its large bold font.
+     * @param welcomeText (String) The text to be displayed.
+     * @return (JLabel) The JLabel created.
+     */
     private JLabel createWelcomeLabel(String welcomeText)
     {
         JLabel welcomeLabel = new JLabel(welcomeText);
@@ -95,7 +100,27 @@ public class MenuView
         
         return welcomeLabel;
     }
-    
+
+    /**
+     * Create a JComboBox out of a list. This allows other classes to display the JComboBox and let users make their choices that way.
+     * @param list (ArrayList<String>) The list to be displayed.
+     * @return (JComboBox) The created JComboBox.
+     */
+    private JComboBox createListDisplayFromList (ArrayList<String> list)
+    {
+        JComboBox listDisplay = new JComboBox();
+        for (String element : list) {
+            listDisplay.addItem(element);
+        }
+        return listDisplay;
+    }
+
+
+    /**
+     * Create the part of the GUI that allows user to choose a habitat for his/her simulation.
+     * @param habitatListDisplay (JComboBox) The JComboBox allowing user to make his/her choice.
+     * @return (Box) The part of the GUI that was created.
+     */
     private Box createHabitatChoiceComponent(JComboBox habitatListDisplay)
     {
         Box habitatChoiceComponent = Box.createHorizontalBox();
@@ -105,16 +130,12 @@ public class MenuView
         
         return habitatChoiceComponent;
     }
-    
-    private JComboBox createListDisplayFromList (ArrayList<String> list)
-    {
-        JComboBox listDisplay = new JComboBox();
-        for (String element : list) {
-            listDisplay.addItem(element);
-        }
-        return listDisplay;
-    }
-    
+
+    /**
+     * Create the part of the GUI that allows user to choose a climate change scenario for his/her simulation.
+     * @param scenarioListDisplay (JComboBox) The JComboBox allowing user to make his/her choice.
+     * @return (Box) The part of the GUI that was created.
+     */
     private Box createScenarioChoiceComponent(JComboBox scenarioListDisplay)
     {
         Box scenarioChoiceComponent = Box.createHorizontalBox();
@@ -124,7 +145,11 @@ public class MenuView
         
         return scenarioChoiceComponent;
     }
-    
+
+    /**
+     * Create the component to guide users through their choice of animals and allow them to make such choice.
+     * @return (JPanel) The created UI component.
+     */
     private JPanel createAnimalChoiceComponent()
     {
         JPanel animalChoiceComponent = new JPanel();
@@ -155,15 +180,19 @@ public class MenuView
         
         return animalChoiceComponent;
     }
-    
+
+    /**
+     * Create a display to allow user to choose the number of each animal they want.
+     * @return (JPanel) The created display.
+     */
     private JPanel createAnimalListDisplay()
     {
         GridLayout animalListDisplayLayout = new GridLayout(0,5);
         animalListDisplayLayout.setHgap(10);
         animalListDisplayLayout.setVgap(7);
-        
+
         JPanel animalListDisplay = new JPanel(animalListDisplayLayout);
-        
+
         for (String animalName : animalList) {
             Box animalComponent = Box.createHorizontalBox();
             // technique to capitalize first letter : https://stackoverflow.com/questions/3904579/how-to-capitalize-the-first-letter-of-a-string-in-java
@@ -176,7 +205,7 @@ public class MenuView
             animalComponent.add(animalNumber);
             animalListDisplay.add(animalComponent);
         }
-        
+
         return animalListDisplay;
     }
 
