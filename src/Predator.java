@@ -1,8 +1,19 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class Predator extends Animal{
-
+/**
+ * A class representing the characteristics of a predator.
+ * They are different from other animals because they eat any other
+ * animal or predator whose strength is weaker.
+ *
+ * A horde of weaker predators can kill and eat a stronger predator.
+ *
+ *
+ * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566). (contains some code by David J. Barnes and Michael Kölling)
+ * @version 2022.03.01
+ */
+public class Predator extends Animal
+{
     // The predator's strength, if it is strong enough it can attack other predators
     private final int strength;
 
@@ -119,9 +130,7 @@ public class Predator extends Animal{
                 } else {
                     hordeMembers.clear();
                 }
-
             }
-
         }
     }
 

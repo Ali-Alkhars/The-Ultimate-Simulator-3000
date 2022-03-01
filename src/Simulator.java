@@ -25,7 +25,7 @@ public class Simulator
     private Time time;
     // the habitat of the simulation
     private Habitat simulationHabitat;
-    private boolean simulationIsOn; // Ali: is this used?
+    private boolean simulationIsOn;
 
     private static final int DEFAULT_DELAY = 0;
 
@@ -114,7 +114,6 @@ public class Simulator
 
             // Add the newly born species to the main lists.
             species.addAll(newSpecies);
-            System.out.println(species.size());
             view.showStatus(simStep.getCurrentStep(), time.timeString(), simulationHabitat.getCurrentSeason(), simulationHabitat.getCurrentTemperature(), field);
         }
     }

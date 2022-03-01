@@ -12,7 +12,7 @@ import java.util.Random;
  * This is the class that should be called to run the simulation.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.28
+ * @version 2022.03.01
  */
 
 public class Initializer
@@ -48,13 +48,11 @@ public class Initializer
     // The width of the field created.
     private final int fieldWidth;
     // A Random object to handle random behaviours throughout the class.
-    private final Random rand;
+    private static final Random rand = Randomizer.getRandom();
     // A graphical view of the simulation.
     private SimulatorView view;
     // The plant concentration in the habitat created by the user.
     private double habitatPlantConcentration;
-    // The Simulator object that will take care of running the simulation.
-    private Simulator createdSimulator;
     // The GUIHandler handling the GUI.
     private GUIHandler handler;
 
@@ -80,7 +78,6 @@ public class Initializer
             width = DEFAULT_WIDTH;
         }
 
-        rand = new Random();
         speciesToEvolveInSimulation = new ArrayList<>();
         fieldDepth = depth;
         fieldWidth = width;
@@ -130,18 +127,7 @@ public class Initializer
         populateWithAnimals(animalsToCreate, field);
         populateWithPlants(field);
         Time timeObject = new Time(simulatorStepCounter, DEFAULT_START_TIME);
-        createdSimulator = new Simulator(simulationHabitat, timeObject ,speciesToEvolveInSimulation, field, simulatorStepCounter, view);
-        return createdSimulator; // Ali: why return ?
-    }
-
-    /**
-     * Return the created SimulatorView.
-     *
-     * @return (SimulatorView) The created SimulatorView object.
-     */
-    public SimulatorView getSimulatorView()
-    {
-        return view;
+        return new Simulator(simulationHabitat, timeObject ,speciesToEvolveInSimulation, field, simulatorStepCounter, view);
     }
 
     /**
@@ -246,7 +232,7 @@ public class Initializer
     }
 
     /**
-     * Find an available location for an object to be created in the simulation field. The simulation is chosen aat random and is changed if
+     * Find an available location for an object to be created in the simulation field. The simulation is chosen at random and is changed if
      * the randomly selected cell already contains an object.
      *
      * @param field (Field) The simulation's field.

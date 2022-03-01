@@ -45,7 +45,6 @@ public class HabitatCSVReader extends CSVReader {
     protected void populateFields(String[] extractedData)
     {
         extractedData = removeHabitatName(extractedData);
-        for (String i : extractedData) {System.out.println("Removed the name of extracted Data: "+i);}
         if (extractedData.length != 9) {
             System.out.println("Habitat issue, please restart.");
         }

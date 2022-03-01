@@ -54,9 +54,9 @@ public class Animal extends Species
      * @param maxAge (int) the animal's life expectancy
      * @param breedingAge (int) the age at which animal can start to reproduce
      * @param maxLitterSize (int) the maximum number of children the animal can have in one reproduction
-     * @param randomAge (boolean) whether or not animal should be created with a random age
-     * @param hibernates (boolean) whether or not animal is able to hibernate
-     * @param isNocturnal (boolean) whether or not animal is more active at night
+     * @param randomAge (boolean) whether an animal should be created with a random age
+     * @param hibernates (boolean) whether an animal is able to hibernate
+     * @param isNocturnal (boolean) whether an animal is more active at night
      */
     public Animal(Field field, Location location, String name, int maximumTemperature, int minimumTemperature, int nutritionalValue, double reproductionProbability, int maxAge, int breedingAge, int maxLitterSize, boolean randomAge, boolean hibernates, boolean isNocturnal)
     {
@@ -69,7 +69,7 @@ public class Animal extends Species
         this.hibernates = hibernates;
         this.isNocturnal = isNocturnal;
         // Default value is nutritionalValue to simulate the nutriment apart from the mother's milk/ other parental feeding.
-        this.foodLevel = rand.nextInt(nutritionalValue);    // Ali: why??
+        this.foodLevel = rand.nextInt(nutritionalValue);
         inHibernation = false;
         hiberSteps = 0;
 

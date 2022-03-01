@@ -44,16 +44,6 @@ public class SimulationStep
     }
 
     /**
-     * Increment the steps by the given value.
-     *
-     * @param num (int) the amount to increment
-     */
-    public void incStep(int num)
-    {
-        currentStep += num;
-    }
-
-    /**
      * Reset the current step to 0.
      */
     public void reset()

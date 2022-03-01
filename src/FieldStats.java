@@ -6,7 +6,7 @@ import java.util.HashMap;
  * for any name of species that is found in the field.
  * 
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.28
+ * @version 2022.03.01
  */
 public class FieldStats
 {
@@ -103,7 +103,7 @@ public class FieldStats
                 nonZero++;
             }
         }
-        return nonZero >= 1;
+        return nonZero > 1;
     }
     
     /**

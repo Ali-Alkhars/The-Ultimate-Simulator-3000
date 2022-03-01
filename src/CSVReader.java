@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -88,8 +87,6 @@ public abstract class CSVReader {
      */
     public ArrayList<String> getChoicesList()
     {
-        File file = new File(getFileName());
-
         ArrayList<String> choicesList = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(getFileName()))) {
             // Skip first line as they are headers.
@@ -99,7 +96,7 @@ public abstract class CSVReader {
                 choicesList.add(attributes[0]);
             }
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
             System.out.println("Issue when parsing CSV");
             return null;
         }
