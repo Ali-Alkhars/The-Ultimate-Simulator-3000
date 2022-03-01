@@ -7,7 +7,7 @@ import java.util.Iterator;
  * could be initialised for prey animals.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566). (contains some code by David J. Barnes and Michael Kölling)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 
 public class Animal extends Species
@@ -68,8 +68,8 @@ public class Animal extends Species
         this.isFemale = randomSex();
         this.hibernates = hibernates;
         this.isNocturnal = isNocturnal;
-        // Default value is nutritionalValue to simulate the nutriment apport from the mother's milk/ other parental feeding.
-        this.foodLevel = rand.nextInt(nutritionalValue);
+        // Default value is nutritionalValue to simulate the nutriment apart from the mother's milk/ other parental feeding.
+        this.foodLevel = rand.nextInt(nutritionalValue);    // Ali: why??
         inHibernation = false;
         hiberSteps = 0;
 
@@ -187,9 +187,11 @@ public class Animal extends Species
         Iterator<Location> locationIterator = adjacent.iterator();
 
         ArrayList<Animal> neighboringAnimals = new ArrayList<>();
-        while (locationIterator.hasNext()) {
+        while (locationIterator.hasNext())
+        {
             Location where = locationIterator.next();
             Object species = field.getObjectAt(where);
+
             if (species instanceof Animal) {
                 Animal neighboringAnimal = (Animal) species;
                 if (neighboringAnimal.isAlive()) {
@@ -239,10 +241,13 @@ public class Animal extends Species
         Field field = getField();
         List<Location> adjacent = field.adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
-        while(it.hasNext()) {
+
+        while(it.hasNext())
+        {
             Location where = it.next();
             Object species = field.getObjectAt(where); // change in Field
-            if(species instanceof Plant) {
+            if(species instanceof Plant)
+            {
                 Plant plantSquare = (Plant) species;
                 if(plantSquare.isAlive()) {
                     plantSquare.isEaten();
@@ -265,11 +270,11 @@ public class Animal extends Species
     protected boolean canReproduce(ArrayList<Animal> neighboringAnimalsList)
     {
         // task to reproduce is handed to women only so that the same reproduction does not happen twice
-        if (this.isFemale) {
+        if (this.isFemale)
+        {
             for (Animal neighbor : neighboringAnimalsList) {
                 if (!neighbor.isFemale && neighbor.getName().equals(this.getName())) {
                     // The neighbor is a male of the same species
-                    setLocation(neighbor.getLocation());
                     return true;
                 }
             }
@@ -281,7 +286,7 @@ public class Animal extends Species
      * Creates the appropriate number of animals of the same species. These new animals of course share the same features as their "parent"
      * except the sex which is randomized,  their age and foodLevel are not randomized.
      *
-     * @param  speciesInSimulation (List<Species>) List of Species objcets in the simulation for the newborns to be added to it.
+     * @param  speciesInSimulation (List<Species>) List of Species objects in the simulation for the newborns to be added to it.
      */
     protected void reproduce(List<Species> speciesInSimulation)
     {
@@ -391,8 +396,8 @@ public class Animal extends Species
     }
 
     /**
-     * Increments the animal's food level by a given number (the nutritional value of the food he just ate). It is public because a predator's
-     * food level can be incremented another predator in the case that it attacks it.
+     * Increments the animal's food level by a given number (the nutritional value of the food he just ate).
+     * It is public because a predator's food level can be incremented another predator in the case that it attacks it.
      *
      * @param value (int) the number to increment foodLevel by.
      */

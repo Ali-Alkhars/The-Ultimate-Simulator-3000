@@ -1,8 +1,9 @@
 /**
- * Setting and allowing other classes to retrieve data related to plants.
+ * This class reads from "plants.csv" the information about all the plants
+ * that are available to be put in the simulation.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 
 public class PlantCSVReader extends CSVReader

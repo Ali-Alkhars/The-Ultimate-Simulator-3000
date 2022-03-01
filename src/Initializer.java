@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Initializing the simulation. It first launches the UI, then builds the appropriate objects to run the simulation desired by the user.
+ * Initializing the simulation. It first launches the UI, then builds the appropriate
+ * objects to run the simulation desired by the user.
+ *
+ * This is the class that should be called to run the simulation.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 
-public class Initializer {
-
+public class Initializer
+{
     // The default width for the grid.
     private static final int DEFAULT_WIDTH = 120;
     // The default depth of the grid.
@@ -100,8 +103,7 @@ public class Initializer {
     {
         ArrayList<String> animalChoices = animalReader.getChoicesList();
         ArrayList<String> habitatChoices = habitatReader.getChoicesList();
-        GUIHandler g = new GUIHandler(this, animalChoices, habitatChoices, CLIMATE_CHANGE_SCENARIO_NAMES);
-        handler = g;
+        handler = new GUIHandler(this, animalChoices, habitatChoices, CLIMATE_CHANGE_SCENARIO_NAMES);
     }
 
     /**
@@ -129,7 +131,7 @@ public class Initializer {
         populateWithPlants(field);
         Time timeObject = new Time(simulatorStepCounter, DEFAULT_START_TIME);
         createdSimulator = new Simulator(simulationHabitat, timeObject ,speciesToEvolveInSimulation, field, simulatorStepCounter, view);
-        return createdSimulator; // why return ?
+        return createdSimulator; // Ali: why return ?
     }
 
     /**
@@ -157,7 +159,8 @@ public class Initializer {
             Habitat chosenHabitat = new Habitat(simulatorStepCounter, climateChangeScenario ,habitatReader.getSpringTemperatures(), habitatReader.getSummerTemperatures(), habitatReader.getAutumnTemperatures(), habitatReader.getWinterTemperatures());
             habitatPlantConcentration = habitatReader.getPlantConcentration();
             return chosenHabitat;
-        } else {
+        }
+        else {
             System.out.println("Habitat name was not specified successfully when attempting to create habitat object.");
             return null;
         }
@@ -175,20 +178,23 @@ public class Initializer {
 
         for(String animalName : animalsToCreate.keySet()) {
             animalReader.extractDataFor(animalName);
-            if (animalsToCreate.get(animalName) != 0) {
+            if (animalsToCreate.get(animalName) != 0)
+            {
+                // Retrieve appropriate data.
+                String name = animalReader.getName();
+                int maximumTemperature = animalReader.getMaximumTemperature();
+                int minimumTemperature = animalReader.getMinimumTemperature();
+                int maxAge = animalReader.getMaximumAge();
+                int breedingAge = animalReader.getBreedingAge();
+                double breedingProbability = animalReader.getBreedingProbability();
+                int maxLitterSize = animalReader.getMaxLitterSize();
+                int nutritionalValue = animalReader.getNutritionalValue();
+                boolean hibernates = animalReader.canHibernate();
+                boolean isNocturnal = animalReader.isNocturnal();
+
                 if (animalReader.isPredator()) {
                     // Predator object should be created, retrieving appropriate data.
                     int strength = animalReader.getStrength();
-                    String name = animalReader.getName();
-                    int maximumTemperature = animalReader.getMaximumTemperature();
-                    int minimumTemperature = animalReader.getMinimumTemperature();
-                    int maxAge = animalReader.getMaximumAge();
-                    int breedingAge = animalReader.getBreedingAge();
-                    double breedingProbability = animalReader.getBreedingProbability();
-                    int maxLitterSize = animalReader.getMaxLitterSize();
-                    int nutritionalValue = animalReader.getNutritionalValue();
-                    boolean hibernates = animalReader.canHibernate();
-                    boolean isNocturnal = animalReader.isNocturnal();
 
                     // Creating the right number of Predator objects.
                     for (int i = 0; i < animalsToCreate.get(animalName); i++) {
@@ -196,34 +202,20 @@ public class Initializer {
                         Predator newPredator = new Predator(strength, field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
                         speciesToEvolveInSimulation.add(newPredator);
                     }
-
-                    // Setting the color for this species.
-                    view.setColor(name, listOfColorsForAnimals.get(IdxOfColorToUseNext));
-                    IdxOfColorToUseNext ++;
-                } else {
-                    // Animal object should be created, retrieving appropriate data.
-                    String name = animalReader.getName();
-                    int maximumTemperature = animalReader.getMaximumTemperature();
-                    int minimumTemperature = animalReader.getMinimumTemperature();
-                    int maxAge = animalReader.getMaximumAge();
-                    int breedingAge = animalReader.getBreedingAge();
-                    double breedingProbability = animalReader.getBreedingProbability();
-                    int maxLitterSize = animalReader.getMaxLitterSize();
-                    int nutritionalValue = animalReader.getNutritionalValue();
-                    boolean hibernates = animalReader.canHibernate();
-                    boolean isNocturnal = animalReader.isNocturnal();
-
+                }
+                else {
+                    // Animal object should be created
                     // Creating the right number of Animal objects.
                     for (int i = 0; i < animalsToCreate.get(animalName); i++) {
                         freeLocationToPlaceAnimal = findAvailableLocation(field);
                         Animal newAnimal = new Animal(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, breedingProbability, maxAge, breedingAge, maxLitterSize, RANDOM_ANIMAL_AGE, hibernates, isNocturnal);
                         speciesToEvolveInSimulation.add(newAnimal);
                     }
-
-                    // Setting the color for this species.
-                    view.setColor(name, listOfColorsForAnimals.get(IdxOfColorToUseNext));
-                    IdxOfColorToUseNext ++;
                 }
+
+                // Setting the color for this species.
+                view.setColor(name, listOfColorsForAnimals.get(IdxOfColorToUseNext));
+                IdxOfColorToUseNext ++;
             }
         }
     }
@@ -238,14 +230,16 @@ public class Initializer {
     private ClimateScenarios createChosenClimateChangeScenario(String scenarioName)
     {
         ClimateScenarios chosenScenario;
-        // inversé comme ca si ya un pb le default c de ne pas en avoir
         if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(3))) {
             chosenScenario = ClimateScenarios.SCENARIO4;
-        } else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(2))) {
+        }
+        else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(2))) {
             chosenScenario = ClimateScenarios.SCENARIO3;
-        } else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(1))) {
+        }
+        else if (scenarioName.equals(CLIMATE_CHANGE_SCENARIO_NAMES.get(1))) {
             chosenScenario = ClimateScenarios.SCENARIO2;
-        } else{
+        }
+        else{
             chosenScenario = ClimateScenarios.SCENARIO1;
         }
         return chosenScenario;
@@ -266,8 +260,7 @@ public class Initializer {
             randomWidth = rand.nextInt(fieldWidth);
             randomDepth = rand.nextInt(fieldDepth);
         }
-        Location freeLocation = new Location(randomDepth, randomWidth);
-        return freeLocation;
+        return new Location(randomDepth, randomWidth);
     }
 
     /**
@@ -287,7 +280,7 @@ public class Initializer {
      */
     private void populateWithPlants(Field field)
     {
-        Location freeLocationToPlaceAnimal;
+        Location freeLocationToPlacePlant;
         plantReader.extractDataFor(DEFAULT_PLANT_NAME);
         String name = plantReader.getName();
         int maximumTemperature = plantReader.getMaximumTemperature();
@@ -296,8 +289,8 @@ public class Initializer {
         double reproductionProbability = plantReader.getReproductionProbability();
         int maxHealth = plantReader.getMaxHealth();
         for (int i = 0; i< getNumberOfPlants(); i++) {
-            freeLocationToPlaceAnimal = findAvailableLocation(field);
-            Plant createdPlant = new Plant(field, freeLocationToPlaceAnimal, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, maxHealth);
+            freeLocationToPlacePlant = findAvailableLocation(field);
+            Plant createdPlant = new Plant(field, freeLocationToPlacePlant, name, maximumTemperature, minimumTemperature, nutritionalValue, reproductionProbability, maxHealth);
             speciesToEvolveInSimulation.add(createdPlant);
         }
         view.setColor(name, DEFAULT_PLANT_COLOR);
@@ -311,8 +304,7 @@ public class Initializer {
     private int getNumberOfPlants()
     {
         int fieldArea = calculateFieldArea();
-        int numberOfPlants = (int)(fieldArea * habitatPlantConcentration);
-        return numberOfPlants;
+        return (int)(fieldArea * habitatPlantConcentration);
     }
 
     /**

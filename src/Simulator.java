@@ -1,8 +1,6 @@
-import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.awt.Color;
 
 /**
  * This is the main class of the simulation, as it connects all the other classes
@@ -10,7 +8,7 @@ import java.awt.Color;
  * there are preys who feed on plants, and predators who compete for the preys.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (k20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 public class Simulator
 {

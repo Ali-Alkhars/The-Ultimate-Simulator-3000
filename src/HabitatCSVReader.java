@@ -1,10 +1,11 @@
 import java.util.Arrays;
 
 /**
- * Handling the reading and retrieving of data relating to habitats.
+ * This class reads from "habitats.csv" the information about all the habitats
+ * that are available to be put in the simulation.
  *
  * @author Anton Sirgue (K21018741) and Ali Alkhars (K20055566)
- * @version 2022.02.22
+ * @version 2022.02.28
  */
 
 public class HabitatCSVReader extends CSVReader {

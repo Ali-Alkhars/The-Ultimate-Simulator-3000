@@ -23,7 +23,8 @@ public class Habitat
     private ClimateScenarios changeScenario;
     // true if the current season is Spring
     private boolean isSpring;
-    private Random random;
+    // A random number generator
+    private static final Random rand = Randomizer.getRandom();
 
     /**
      * Initialise the Habitat fields and fill the
@@ -40,7 +41,6 @@ public class Habitat
     {
         this.simStep = simStep;
         this.changeScenario = changeScenario;
-        random = new Random();
 
         // Season initialisations
         initialiseSeasons(spring, summer, autumn, winter);
@@ -165,8 +165,8 @@ public class Habitat
      */
     private void randomizeTemperature()
     {
-        int randomize = random.nextInt(2);
-        int change = random.nextInt(currentSeason.getTempChange() + 1);
+        int randomize = rand.nextInt(2);
+        int change = rand.nextInt(currentSeason.getTempChange() + 1);
         Thermometer currentTemp = currentSeason.getCurrentTemp();
 
         // make sure that the temperature doesn't go beyond the temperature upper limit
@@ -175,7 +175,7 @@ public class Habitat
         }
         // make sure that the temperature doesn't go below the temperature lower limit
         else if(randomize == 1 && (getCurrentTemperature() - change) >= currentSeason.getLowerLimitTemp()) {
-            currentTemp.incrementTemperature(change);
+            currentTemp.incrementTemperature(- change);
         }
     }
 

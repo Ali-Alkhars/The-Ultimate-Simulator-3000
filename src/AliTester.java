@@ -34,7 +34,7 @@ public class AliTester
         Season spring = new Season("spring", 20, 1);
         Season winter = new Season("winter", 0, 10);
         Season autumn = new Season("autumn", 15, 5);
-        ClimateChange change = new ChangeScenario2();
+        ClimateScenarios change = ClimateScenarios.SCENARIO2;
 
         SimulationStep sim = new SimulationStep();
 

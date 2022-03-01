@@ -1,5 +1,6 @@
 /**
- * Specific behaviours relating to reading data relative to animals.
+ * This class reads from "animals.csv" the information about all the animals
+ * that are available to be put in the simulation.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741).
  * @version 2022.02.28
@@ -32,9 +33,9 @@ public class AnimalCSVReader extends CSVReader {
     private int nutritionalValue;
     // Animal's strength (0 if not a predator).
     private int strength;
-    // Whether or not animal can hibernate.
+    // Whether an animal can hibernate.
     private boolean hibernates;
-    // Whether or not animal is nocturnal.
+    // Whether an animal is nocturnal.
     private boolean isNocturnal;
 
     /**

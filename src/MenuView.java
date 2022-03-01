@@ -93,7 +93,7 @@ public class MenuView
 
         // Labels to guide animals choice.
         JLabel animalChoicePrompt = new JLabel("Please choose the animals you want to see evolve in this habitat:");
-        JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding more than 300 animals)");
+        JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding more than 300 of each animal you choose)");
         animalChoicePrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         animalChoiceExplanationPrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         // Technique to set the italic font: https://java2everyone.blogspot.com/2008/12/set-jlabel-text-italic.html?m=0

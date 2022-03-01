@@ -7,7 +7,7 @@ import java.util.Random;
  * of the species.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741). (contains some code by David J. Barnes and Michael Kölling)
- * @version 2022.02.26
+ * @version 2022.02.28
  */
 public abstract class Species
 {
@@ -29,6 +29,8 @@ public abstract class Species
     private final int nutritionalValue;
     // The likelihood of a specie to reproduce.
     private final double reproductionProbability;
+    // A random number generator
+    protected static final Random rand = Randomizer.getRandom();
 
     /**
      * Create a new specie at location in field.
@@ -62,6 +64,11 @@ public abstract class Species
      */
     abstract public void act(List<Species> newSpecies, boolean isNight, int temperature, boolean yearPassed);
 
+    /**
+     * An abstract class to enforce all subclasses to make their elements reproduce
+     *
+     * @param newOfThisKind List of Species objects in the simulation for the newborns to be added to it
+     */
     abstract void reproduce(List<Species> newOfThisKind);
 
     /**
@@ -73,15 +80,6 @@ public abstract class Species
     {
         return alive;
     }
-
-    /**
-     * If alive is true change to false, vice versa.
-     */
-    protected void toggleIsAlive()
-    {
-        alive = ! alive;
-    }
-
 
     /**
      * Indicate that the animal is no longer alive. It is removed from the field.
@@ -136,10 +134,10 @@ public abstract class Species
      */
     protected boolean survivesTemperature(int temperature)
     {
-        if (temperature <= maximumTemperature && temperature >= minimumTemperature) {
+        if (temperature > maximumTemperature || temperature < minimumTemperature) {
             return Math.random() <= DYING_OF_COLD_OR_HEAT_PROBABILITY;
         }
-        return false;
+        return true;
     }
 
     /**

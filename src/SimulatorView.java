@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.awt.event.ActionListener;
 import javax.swing.border.LineBorder;
-import javax.swing.border.EmptyBorder;
 
 /**
  * A graphical view of the simulation grid.
@@ -14,7 +13,7 @@ import javax.swing.border.EmptyBorder;
  * setColor method.
  *
  * @author David J. Barnes, Michael Kölling, Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.02.27
+ * @version 2022.02.28
  */
 public class SimulatorView extends JFrame
 {
@@ -30,7 +29,7 @@ public class SimulatorView extends JFrame
     private final String TEMPERATURE_PREFIX = "Temperature: ";
     // Prefix preceding the current season display.
     private final String SEASON_PREFIX = "Season: ";
-    // JLabels for all the previously mentionned information displays.
+    // JLabels for all the previously mentioned information displays.
     private JLabel stepLabel, infoLabel, timeLabel, temperatureLabel, seasonLabel;
     // Container to show population data.
     private JPanel population;
@@ -74,7 +73,7 @@ public class SimulatorView extends JFrame
         fieldView = new FieldView(height, width);
 
         // BUILDS THE VIEW
-        JFrame frame = new JFrame("Life Simulator 3000");
+        JFrame frame = new JFrame("Ultimate Simulator 3000");
         frame.setMinimumSize(new Dimension(800, 600));
 
         // Information display on habitat conditions and step counter.
@@ -192,8 +191,10 @@ public class SimulatorView extends JFrame
 
         fieldView.preparePaint();
 
-        for(int row = 0; row < field.getDepth(); row++) {
-            for(int col = 0; col < field.getWidth(); col++) {
+        for(int row = 0; row < field.getDepth(); row++)
+        {
+            for(int col = 0; col < field.getWidth(); col++)
+            {
                 Object specie = field.getObjectAt(row, col);
                 if(specie != null) {
                     Species speciesObjects = (Species) specie;
@@ -230,7 +231,8 @@ public class SimulatorView extends JFrame
             colorDisplay.setMaximumSize(new Dimension(10, 10));
             colorDisplay.setBorder(LineBorder.createGrayLineBorder());
             colorDisplay.setBackground(colors.get(speciesName));
-            // The pre-leading space should be improved as it is just a way to add a natural looking padding between the colored square and text. 
+            // The pre-leading space should be improved as it is just a way to add a
+            // natural looking padding between the colored square and text.
             JLabel nameAndCount = new JLabel(" " + speciesName + ": " + count);
             speciesDetails.add(colorDisplay);
             speciesDetails.add(nameAndCount);
