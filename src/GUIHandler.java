@@ -60,7 +60,9 @@ public class GUIHandler
     public void switchToSimulatorView(String chosenHabitat,HashMap<String, Integer> selectedAnimals,String chosenScenario)
     {
         simulatorOnDisplay = simulationInitializer.initializeSimulation(chosenHabitat, selectedAnimals, chosenScenario);
-        currentFrame.setVisible(false);
+        if (simulatorOnDisplay != null) {
+            currentFrame.setVisible(false);
+        }
     }
 
     /**

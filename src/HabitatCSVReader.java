@@ -19,6 +19,8 @@ public class HabitatCSVReader extends CSVReader {
     private int[] autumnTemperatures;
     // The concentration of plants in a given habitat.
     private double plantConcentration;
+    // Tool to alert user about any potential error.
+    private ErrorThrower errorThrower;
 
     // Name of the CSV files containing data on fields.
     private static final String FILE_NAME = "habitats.csv";
@@ -27,6 +29,7 @@ public class HabitatCSVReader extends CSVReader {
      * Build a HabitatCSVReader and initialize its fields.
      */
     public HabitatCSVReader() {
+        errorThrower = new ErrorThrower();
         winterTemperatures = new int[2];
         autumnTemperatures = new int[2];
         springTemperatures = new int[2];
@@ -46,7 +49,7 @@ public class HabitatCSVReader extends CSVReader {
     {
         extractedData = removeHabitatName(extractedData);
         if (extractedData.length != 9) {
-            System.out.println("Habitat issue, please restart.");
+            errorThrower.throwMessage("Habitat issue, please restart.");
         }
 
         for(int i = 0; i < extractedData.length; i++) {

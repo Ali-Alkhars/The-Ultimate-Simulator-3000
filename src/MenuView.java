@@ -13,12 +13,20 @@ import java.util.HashMap;
  */
 public class MenuView
 {
+    // The GUIHandler object governing the GUI.
     private GUIHandler handler;
+    // The list of habitats to choose from.
     private ArrayList<String> habitatList;
+    // The list of animals to choose from.
     private ArrayList<String> animalList;
+    // The list of climate change scenario to choose from.
     private ArrayList<String> climateChangeScenarioList;
+    // The list of JTextField receiving the number of animals inputted by the user.
     private ArrayList<JTextField> animalNumberReceivers;
+    // The HashMap storing animals chosen by the user.
     private HashMap<String, Integer> selectedAnimals;
+    // Tool to alert user about any potential error.
+    private ErrorThrower errorThrower;
 
     /**
      * Initializes all fields with the appropriate list of animal, habitat and climate change scneario choices as well as the GUIHandler
@@ -37,6 +45,7 @@ public class MenuView
         this.handler = handler;
         animalNumberReceivers = new ArrayList<>();
         selectedAnimals = new HashMap<>();
+        errorThrower = new ErrorThrower();
     }
 
     /**
@@ -159,7 +168,7 @@ public class MenuView
 
         // Labels to guide animals choice.
         JLabel animalChoicePrompt = new JLabel("Please choose the animals you want to see evolve in this habitat:");
-        JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding 300 of each animal you choose)");
+        JLabel animalChoiceExplanationPrompt = new JLabel("(Input the number of each of these animals you want to include, we recommend adding twice the number of preys than predators)");
         animalChoicePrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         animalChoiceExplanationPrompt.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         // Technique to set the italic font: https://java2everyone.blogspot.com/2008/12/set-jlabel-text-italic.html?m=0
@@ -264,7 +273,7 @@ public class MenuView
      * @param message (String) The error message.
      */
     private void throwErrorMessage(String message) {
-        System.out.println(message);
+        errorThrower.throwMessage(message);
     }
 
     /**

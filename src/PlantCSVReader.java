@@ -22,12 +22,15 @@ public class PlantCSVReader extends CSVReader
     private double reproductionProbability;
     // The plant's maximum health.
     private int maxHealth;
-
+    // Tool to alert user about any potential error.
+    private ErrorThrower errorThrower;
+    
     /**
      * Build an PlantCSVReader and initializes field.
      */
     public PlantCSVReader ()
     {
+        errorThrower = new ErrorThrower();
         name = null;
         maximumTemperature = 0;
         minimumTemperature = 0;
@@ -45,7 +48,7 @@ public class PlantCSVReader extends CSVReader
     protected void populateFields(String[] extractedData)
     {
         if (extractedData.length != 6) {
-            System.out.println("Plant csv issue, please restart.");
+            errorThrower.throwMessage("Plant .csv issue, please restart.");
         }
         name = extractedData[0];
         maximumTemperature = Integer.valueOf(extractedData[1]);
