@@ -9,7 +9,7 @@ import java.util.HashMap;
  * and climate change scenario to be implemented in their simulation.
  *
  * @author Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
- * @version 2022.03.01
+ * @version 2022.03.02
  */
 public class MenuView
 {
@@ -29,7 +29,8 @@ public class MenuView
     private ErrorThrower errorThrower;
 
     /**
-     * Initializes all fields with the appropriate list of animal, habitat and climate change scneario choices as well as the GUIHandler
+     * Initializes all fields with the appropriate list of animal,
+     * habitat and climate change scenario choices as well as the GUIHandler
      * currently governing the GUI.
      *
      * @param handler (GUIHandler) the GUIHandler currenly handling the GUI.
@@ -261,7 +262,7 @@ public class MenuView
                 int numericValue = Integer.parseInt(inputValue);
                 inputtedNumbers.add(numericValue);
             } catch (NumberFormatException e) {
-                throwErrorMessage("One of the values inputted is not a number or on cell was left blank, please try again.");
+                throwErrorMessage("One of the values inputted is not a number or one cell was left blank, please try again.");
             }
         }
         return inputtedNumbers;

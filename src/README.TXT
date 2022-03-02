@@ -1,5 +1,5 @@
-THE SIMULATOR 3000
-Ali Alkhars(K20055566) and Anton Sirgue (K21018741)
+THE ULTIMATE SIMULATOR 3000
+Ali Alkhars (K20055566) and Anton Sirgue (K21018741)
 
 Description: This project revolves around the simulation of natural habitats. Users can choose a habitat,
 a climate change scenario, as well as a number of various animals. It simulates the animals' interactions
